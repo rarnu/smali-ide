@@ -11,3 +11,6 @@ smaliide
 smaliide.app/
 smaliide.exe
 
+# Mac
+.DS_Store
+

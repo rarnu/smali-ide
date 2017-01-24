@@ -5,13 +5,15 @@ unit frmMain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, frmBase;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
+  ExtCtrls, ComCtrls, frmBase;
 
 type
 
   { TFormMain }
 
   TFormMain = class(TFormBase)
+    imgLst: TImageList;
     miAbout: TMenuItem;
     mm7: TMenuItem;
     miUpdate: TMenuItem;
@@ -50,13 +52,24 @@ type
     mm1: TMenuItem;
     miExit: TMenuItem;
     mmMain: TMainMenu;
+    pgCode: TPageControl;
+    pnlProjectFiles: TPanel;
+    splProjectFiles: TSplitter;
+    tbMain: TToolBar;
+    tvProjectFiles: TTreeView;
   private
+    FCurrentProjectName: string;
+    FCurrentProjectPath: string;
+
   protected
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
   public
-
+    procedure LoadProjectFiles(path: string);
+  published
+    property CurrentProjectName: string read FCurrentProjectName write FCurrentProjectName;
+    property CurrentProjectPath: string read FCurrentProjectPath write FCurrentProjectPath;
   end;
 
 var
@@ -65,6 +78,9 @@ var
 implementation
 
 {$R *.lfm}
+
+uses
+  projectUtils;
 
 { TFormMain }
 
@@ -80,7 +96,12 @@ end;
 
 procedure TFormMain.InitLogic;
 begin
-  //
+  LoadProjectFiles('/media/psf/Home/Develop/mi5/Updater/apktool.yml');
+end;
+
+procedure TFormMain.LoadProjectFiles(path: string);
+begin
+  projectUtils.LoadProjectFiles(path, tvProjectFiles.Items, nil);
 end;
 
 end.

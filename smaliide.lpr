@@ -5,7 +5,7 @@ program smaliide;
 uses
   {$IFNDEF WINDOWS} cthreads, {$ENDIF}
   Interfaces,
-  Forms, frmMain;
+  Forms, frmMain, projectUtils;
 
 {$R *.res}
 
