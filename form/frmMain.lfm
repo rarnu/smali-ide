@@ -1,0 +1,139 @@
+object FormMain: TFormMain
+  Left = 425
+  Height = 432
+  Top = 448
+  Width = 774
+  Caption = 'Smali IDE'
+  Menu = mmMain
+  LCLVersion = '5.7'
+  object mmMain: TMainMenu
+    left = 40
+    top = 40
+    object miFile: TMenuItem
+      Caption = '&File'
+      object miNewProj: TMenuItem
+        Caption = '&New Project'
+        ShortCut = 16462
+      end
+      object miOpenProj: TMenuItem
+        Caption = '&Open Project'
+        ShortCut = 16463
+      end
+      object mm0: TMenuItem
+        Caption = '-'
+      end
+      object miSaveFile: TMenuItem
+        Caption = '&Save File'
+        ShortCut = 16467
+      end
+      object miSaveAllFiles: TMenuItem
+        Caption = 'Save &All Files'
+      end
+      object mm1: TMenuItem
+        Caption = '-'
+      end
+      object miExit: TMenuItem
+        Caption = 'E&xit'
+      end
+    end
+    object miEdit: TMenuItem
+      Caption = '&Edit'
+      object miUndo: TMenuItem
+        Caption = 'Undo'
+        ShortCut = 16474
+      end
+      object miRedo: TMenuItem
+        Caption = 'Redo'
+        ShortCut = 16473
+      end
+      object mm2: TMenuItem
+        Caption = '-'
+      end
+      object miCut: TMenuItem
+        Caption = 'Cut'
+        ShortCut = 16472
+      end
+      object miCopy: TMenuItem
+        Caption = 'Copy'
+        ShortCut = 16451
+      end
+      object miPaste: TMenuItem
+        Caption = 'Paste'
+        ShortCut = 16470
+      end
+      object miDelete: TMenuItem
+        Caption = 'Delete'
+        ShortCut = 46
+      end
+      object mm3: TMenuItem
+        Caption = '-'
+      end
+      object miSelectAll: TMenuItem
+        Caption = 'Select All'
+        ShortCut = 16449
+      end
+    end
+    object miSearch: TMenuItem
+      Caption = '&Search'
+      object miFind: TMenuItem
+        Caption = '&Find'
+        ShortCut = 16454
+      end
+      object miFindNext: TMenuItem
+        Caption = 'Find Next'
+        ShortCut = 114
+      end
+      object miReplace: TMenuItem
+        Caption = '&Replace'
+        ShortCut = 16466
+      end
+      object mm4: TMenuItem
+        Caption = '-'
+      end
+      object miFindInFiles: TMenuItem
+        Caption = 'Find in Files'
+        ShortCut = 49222
+      end
+      object mm5: TMenuItem
+        Caption = '-'
+      end
+      object miGotoLine: TMenuItem
+        Caption = 'Goto Line'
+        ShortCut = 16455
+      end
+    end
+    object miCode: TMenuItem
+      Caption = '&Code'
+      object miTemplate: TMenuItem
+        Caption = 'Template'
+      end
+      object miToJava: TMenuItem
+        Caption = 'To Java'
+      end
+      object mm6: TMenuItem
+        Caption = '-'
+      end
+      object miSyntxHighlight: TMenuItem
+        Caption = 'Syntax Highlight'
+        object miSyntaxDefault: TMenuItem
+          Caption = 'Default'
+        end
+      end
+    end
+    object miHelp: TMenuItem
+      Caption = '&Help'
+      object miDocument: TMenuItem
+        Caption = 'Documents'
+      end
+      object miUpdate: TMenuItem
+        Caption = 'Check Update'
+      end
+      object mm7: TMenuItem
+        Caption = '-'
+      end
+      object miAbout: TMenuItem
+        Caption = 'About'
+      end
+    end
+  end
+end

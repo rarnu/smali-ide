@@ -1,0 +1,13 @@
+# compiled files
+
+*.o
+*.ppu
+*.lps
+lib/
+
+# executables
+
+smaliide
+smaliide.app/
+smaliide.exe
+

@@ -1,0 +1,8 @@
+object FormBase: TFormBase
+  Left = 425
+  Height = 240
+  Top = 473
+  Width = 320
+  OnCreate = FormCreate
+  LCLVersion = '5.7'
+end
