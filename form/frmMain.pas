@@ -80,7 +80,7 @@ implementation
 {$R *.lfm}
 
 uses
-  projectUtils;
+  projectUtils, smaliCodeView;
 
 { TFormMain }
 
@@ -95,8 +95,14 @@ begin
 end;
 
 procedure TFormMain.InitLogic;
+var
+  page: TSmaliCodeView;
 begin
   LoadProjectFiles('/media/psf/Home/Develop/mi5/Updater/apktool.yml');
+  page := TSmaliCodeView.Create(pgCode);
+  page.Parent := pgCode;
+  page.FileName:= 'TEST';
+  pgCode.TabIndex:= 0;
 end;
 
 procedure TFormMain.LoadProjectFiles(path: string);

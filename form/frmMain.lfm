@@ -24,7 +24,7 @@ inherited FormMain: TFormMain
       Width = 240
       Align = alClient
       BorderStyle = bsNone
-      DefaultItemHeight = 32
+      DefaultItemHeight = 40
       HideSelection = False
       Images = imgLst
       ReadOnly = True
@@ -45,7 +45,9 @@ inherited FormMain: TFormMain
     Top = 32
     Width = 713
     Align = alClient
+    MultiLine = True
     TabOrder = 2
+    Options = [nboShowCloseButtons, nboMultiLine]
   end
   object tbMain: TToolBar[3]
     Left = 0
