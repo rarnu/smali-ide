@@ -5,11 +5,24 @@ unit projectUtils;
 interface
 
 uses
-  Classes, SysUtils, ComCtrls;
+  Classes, SysUtils, ComCtrls, Dialogs;
 
+function OpenProject(): String;
 procedure LoadProjectFiles(path: string; root: TTreeNodes; parent: TTreeNode);
 
 implementation
+
+function OpenProject: String;
+begin
+  Result := '';
+  with TOpenDialog.Create(nil) do begin
+    Filter:= 'yml file|*.yml';
+    if Execute then begin
+      Result := FileName;
+    end;
+    Free;
+  end;
+end;
 
 procedure LoadProjectFiles(path: string; root: TTreeNodes; parent: TTreeNode);
 var

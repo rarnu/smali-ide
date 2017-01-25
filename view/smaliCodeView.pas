@@ -5,7 +5,7 @@ unit smaliCodeView;
 interface
 
 uses
-  Classes, SysUtils, StdCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType;
+  Classes, SysUtils, StdCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms;
 
 type
 
@@ -15,7 +15,9 @@ type
   private
     FEditor: TSynEdit;
     FFileName: string;
+    FIsChanged: Boolean;
     FMenu: TPopupMenu;
+    FTitle: string;
     // menu items
     FMiUndo: TMenuItem;
     FMiRedo: TMenuItem;
@@ -26,16 +28,21 @@ type
     FMiDelete: TMenuItem;
     FMiS2: TMenuItem;
     FMiToJava: TMenuItem;
-    procedure SetCFileName(AValue: string);
+    procedure OnEditorChange(Sender: TObject);
+    procedure SetFileName(AValue: string);
   protected
     procedure menuClicked(sender: TObject);
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
+    function QueryClose(): Boolean;
+    procedure Save();
+    procedure SaveAs();
   published
-    property FileName: string read FFileName write SetCFileName;
+    property FileName: string read FFileName write SetFileName;
     property Editor: TSynEdit read FEditor write FEditor;
     property Menu: TPopupMenu read FMenu write FMenu;
+    property IsChanged: Boolean read FIsChanged;
   end;
 
 implementation
@@ -45,10 +52,17 @@ uses
 
 { TSmaliCodeView }
 
-procedure TSmaliCodeView.SetCFileName(AValue: string);
+procedure TSmaliCodeView.SetFileName(AValue: string);
 begin
   FFileName:=AValue;
-  self.Caption:= ExtractFileName(FFileName);
+  FTitle:= ExtractFileName(FFileName);
+  Caption:= FTitle;
+end;
+
+procedure TSmaliCodeView.OnEditorChange(Sender: TObject);
+begin
+  FIsChanged := True;
+  Caption:= FTitle + ' *';
 end;
 
 procedure TSmaliCodeView.menuClicked(sender: TObject);
@@ -100,6 +114,7 @@ begin
     RightGutter.Visible:= False;
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
+    OnChange:=@OnEditorChange;
   end;
   FMenu := TPopupMenu.Create(Self);
   FMenu.Parent := Self;
@@ -156,6 +171,43 @@ destructor TSmaliCodeView.Destroy;
 begin
   FEditor.Free;
   inherited Destroy;
+end;
+
+function TSmaliCodeView.QueryClose: Boolean;
+var
+  dlg: TModalResult;
+begin
+  Result := True;
+  if FIsChanged then begin
+    dlg := MessageDlg('Hint', 'File changed, do you want to save it?', mtConfirmation, mbYesNoCancel, 0);
+    if dlg = mrYes then begin
+      Save();
+    end;
+    if dlg = mrCancel then begin
+      Result := False;
+    end;
+  end;
+end;
+
+procedure TSmaliCodeView.Save;
+begin
+  FEditor.Lines.SaveToFile(FileName);
+  FIsChanged := False;
+  Caption:= FTitle;
+end;
+
+procedure TSmaliCodeView.SaveAs;
+var
+  dlg: TSaveDialog;
+begin
+  dlg := TSaveDialog.Create(nil);
+  dlg.Filter:= 'smali file|*.smali';
+  if dlg.Execute then begin
+    FEditor.Lines.SaveToFile(dlg.FileName);
+    self.FileName:= dlg.FileName;
+    FIsChanged := False;
+  end;
+  dlg.Free;
 end;
 
 end.

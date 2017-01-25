@@ -13,6 +13,7 @@ procedure Cut(edit: TSynEdit);
 procedure Copy(edit: TSynEdit);
 procedure Paste(edit: TSynEdit);
 procedure Delete(edit: TSynEdit);
+procedure SelectAll(edit: TSynEdit);
 
 implementation
 
@@ -44,6 +45,11 @@ end;
 procedure Delete(edit: TSynEdit);
 begin
   edit.SelText:= '';
+end;
+
+procedure SelectAll(edit: TSynEdit);
+begin
+  edit.SelectAll;
 end;
 
 end.
