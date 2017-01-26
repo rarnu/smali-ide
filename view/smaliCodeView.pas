@@ -10,6 +10,9 @@ uses
 
 type
 
+  TCharSet = set of Char;
+  TOnCodeJump = procedure (sender: TObject; path: string; method: string; typ: Integer) of object;
+
   { TSmaliCodeView }
 
   TSmaliCodeView = class(TTabSheet)
@@ -18,8 +21,10 @@ type
     FFileName: string;
     FIsChanged: Boolean;
     FMenu: TPopupMenu;
+    FOnCodeJump: TOnCodeJump;
     FTitle: string;
     // menu items
+    FMiJump: TMenuItem;
     FMiUndo: TMenuItem;
     FMiRedo: TMenuItem;
     FMiS1: TMenuItem;
@@ -52,11 +57,12 @@ type
     FReplaceBtnReplace: TButton;
     FReplaceBtnReplaceAll: TButton;
 
-    FFindPosition: Integer;
-
     procedure btnClicked(Sender: TObject);
     procedure OnEditorChange(Sender: TObject);
     procedure SetFileName(AValue: string);
+    function FindSmaliString(aset: TCharSet): string;
+    function FindClassToJump(): string;
+    function FindMethodToJump(): string;
   protected
     procedure menuClicked(sender: TObject);
   public
@@ -70,11 +76,13 @@ type
     procedure CancelFind();
     procedure Replace();
     procedure CancelReplace();
+    function FindMethodAndJump(methodSig: string): Boolean;
   published
     property FileName: string read FFileName write SetFileName;
     property Editor: TSynEdit read FEditor write FEditor;
     property Menu: TPopupMenu read FMenu write FMenu;
     property IsChanged: Boolean read FIsChanged;
+    property OnCodeJump: TOnCodeJump read FOnCodeJump write FOnCodeJump;
   end;
 
 implementation
@@ -90,6 +98,51 @@ begin
   FTitle:= ExtractFileName(FFileName);
   Caption:= FTitle;
   FEditor.Lines.LoadFromFile(FFileName);
+end;
+
+function TSmaliCodeView.FindSmaliString(aset: TCharSet): string;
+var
+  s: string = '';
+  idx: Integer;
+  c: Char;
+begin
+  // find class to jump
+  idx:= FEditor.SelStart;
+  while idx > 0 do begin
+    c := FEditor.Lines.Text[idx];
+    if (c in aset) then begin
+      s := c + s;
+    end else begin
+      Break;
+    end;
+    Dec(idx);
+  end;
+  idx := FEditor.SelStart + 1;
+  while idx < FEditor.Lines.Text.Length do begin
+    c := FEditor.Lines.Text[idx];
+    if (c in aset) then begin
+      s := s + c;
+    end else begin
+      Break;
+    end;
+    Inc(idx);
+  end;
+  Result := s;
+
+end;
+
+function TSmaliCodeView.FindClassToJump: string;
+const
+  CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', ';', '_', '$'];
+begin
+  Result := FindSmaliString(CLASS_CHARS);
+end;
+
+function TSmaliCodeView.FindMethodToJump: string;
+const
+  CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', ';', '_', '$', '-', '<', '>', '(', ')', '[', ':'];
+begin
+  Result := FindSmaliString(CLASS_CHARS);
 end;
 
 procedure TSmaliCodeView.OnEditorChange(Sender: TObject);
@@ -126,8 +179,29 @@ begin
 end;
 
 procedure TSmaliCodeView.menuClicked(sender: TObject);
+var
+  c: string;
+  methodSig: string;
 begin
-  if (sender = FMiUndo) then begin
+  if (sender = FMiJump) then begin
+    c := FindClassToJump();
+    if (c <> '') and (c.StartsWith('L')) and (c.EndsWith(';')) then begin
+      c := c.Substring(1, c.Length - 2);
+      if (Assigned(FOnCodeJump)) then begin
+        FOnCodeJump(Self, c, '', 0);
+      end;
+    end else begin
+      c := FindMethodToJump();
+      if (c <> '') and (c.StartsWith('L')) and (c.Contains('->')) then begin
+        methodSig:= c.Substring(c.IndexOf('->') + 2);
+        c := c.Substring(0, c.IndexOf('->'));
+        c := c.Substring(1, c.Length - 2);
+        if (Assigned(FOnCodeJump)) then begin
+          FOnCodeJump(Self, c, methodSig, 1);
+        end;
+      end;
+    end;
+  end else if (sender = FMiUndo) then begin
     TextUtils.Undo(FEditor);
   end else if (sender = FMiRedo) then begin
     TextUtils.Redo(FEditor);
@@ -181,6 +255,10 @@ begin
   FEditor.PopupMenu := FMenu;
 
   // init menu
+  FMiJump:= TMenuItem.Create(FMenu);
+  FMiJump.Caption:= 'Jump';
+  FMiJump.ShortCut:= ShortCut(VK_F2, []);
+  FMiJump.OnClick:= @menuClicked;
   FMiUndo:= TMenuItem.Create(FMenu);
   FMiUndo.Caption:= 'Undo';
   FMiUndo.ShortCut:= ShortCut(VK_Z, [ssCtrl]);
@@ -215,6 +293,7 @@ begin
   FMiToJava.OnClick:= @menuClicked;
 
   with FMenu.Items do begin
+    Add(FMiJump);
     Add(FMiUndo);
     Add(FMiRedo);
     Add(FMiS1);
@@ -473,6 +552,38 @@ begin
   FReplaceEdit.Text:= '';
   FPnlReplace.Visible:= False;
   FEditor.SetFocus;
+end;
+
+function TSmaliCodeView.FindMethodAndJump(methodSig: string): Boolean;
+var
+  r: Integer;
+  start: Integer;
+  hit: Boolean = False;
+  s: string;
+  i: integer;
+begin
+  // find method and jump
+  Result := False;
+  FEditor.SelStart:= 1;
+  while not hit do begin
+    r := FEditor.SearchReplace(methodSig, '', []);
+    s := '';
+    if (r <> 0) then begin
+      start:= FEditor.SelStart;
+      for i := start downto 0 do begin
+        if (FEditor.Lines.Text[i] = #13) or (FEditor.Lines.Text[i] = #10) then begin
+          Break;
+        end;
+        s := FEditor.Lines.Text[i] + s;
+      end;
+      if (s.Trim.StartsWith('.method')) or (s.Trim.StartsWith('.field')) then begin
+        Result := True;
+        Break;
+      end;
+    end else begin
+      Break;
+    end;
+  end;
 end;
 
 end.

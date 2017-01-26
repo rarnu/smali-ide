@@ -98,10 +98,11 @@ type
     procedure miUpdateClick(Sender: TObject);
     procedure pgCodeCloseTabClicked(Sender: TObject);
     procedure tvProjectFilesClick(Sender: TObject);
+
   private
     FCurrentProjectName: string;
     FCurrentProjectPath: string;
-
+    procedure codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);
     function IsPageExists(path: string): Integer;
   protected
     procedure InitComponents; override;
@@ -149,6 +150,7 @@ begin
         page := TSmaliCodeView.Create(pgCode);
         page.Parent := pgCode;
         page.FileName:= path;
+        page.OnCodeJump:=@codeJumpCallback;
         pgCode.TabIndex:= pgCode.PageCount - 1;
       end else begin
         // TODO: open other file
@@ -174,6 +176,43 @@ begin
         Break;
       end;
     end;
+  end;
+end;
+
+procedure TFormMain.codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);
+var
+  filePath: string;
+  openPath: string;
+  page: TSmaliCodeView;
+  idx: Integer;
+  ret: Boolean;
+begin
+
+  filePath:= ExtractFilePath(CurrentProjectPath) + 'smali/' + path;
+  WriteLn(filePath);
+  if (FileExists(filePath + '.smali')) then begin
+    openPath:= filePath + '.smali';
+  end else if (FileExists(filePath + '.1.smali')) then begin
+    openPath:= filePath + '.1.smali';
+  end;
+  if (FileExists(openPath)) then begin
+    // open code jump
+    idx := IsPageExists(openPath);
+    if idx = -1 then begin
+      page := TSmaliCodeView.Create(pgCode);
+      page.Parent := pgCode;
+      page.FileName:= openPath;
+      page.OnCodeJump:=@codeJumpCallback;
+      pgCode.TabIndex:= pgCode.PageCount - 1;
+    end else begin
+      pgCode.TabIndex:= idx;
+    end;
+  end else begin
+    if (typ = 0) then MessageDlg('Hint', Format('Class "%s" is not included in the project.', [path]), mtInformation, [mbOK], 0);
+  end;
+  if (typ = 1) then begin
+    ret := TSmaliCodeView(pgCode.ActivePage).FindMethodAndJump(method);
+    if not ret then MessageDlg('Hint', Format('Method "%s" is not included in class "%s".', [method, path]), mtInformation, [mbOK], 0);
   end;
 end;
 
