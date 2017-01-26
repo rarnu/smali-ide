@@ -73,23 +73,36 @@ type
     tBtnRedo: TToolButton;
     tSp3: TToolButton;
     tvProjectFiles: TTreeView;
+    procedure miAboutClick(Sender: TObject);
     procedure miCopyClick(Sender: TObject);
     procedure miCutClick(Sender: TObject);
     procedure miDeleteClick(Sender: TObject);
+    procedure miDocumentClick(Sender: TObject);
+    procedure miExitClick(Sender: TObject);
     procedure miFindClick(Sender: TObject);
+    procedure miFindInFilesClick(Sender: TObject);
+    procedure miFindNextClick(Sender: TObject);
+    procedure miGotoLineClick(Sender: TObject);
+    procedure miNewProjClick(Sender: TObject);
     procedure miOpenProjClick(Sender: TObject);
     procedure miPasteClick(Sender: TObject);
     procedure miRedoClick(Sender: TObject);
+    procedure miReplaceClick(Sender: TObject);
     procedure miSaveAllFilesClick(Sender: TObject);
     procedure miSaveAsClick(Sender: TObject);
     procedure miSaveFileClick(Sender: TObject);
     procedure miSelectAllClick(Sender: TObject);
+    procedure miTemplateClick(Sender: TObject);
+    procedure miToJavaClick(Sender: TObject);
     procedure miUndoClick(Sender: TObject);
+    procedure miUpdateClick(Sender: TObject);
     procedure pgCodeCloseTabClicked(Sender: TObject);
     procedure tvProjectFilesClick(Sender: TObject);
   private
     FCurrentProjectName: string;
     FCurrentProjectPath: string;
+
+    function IsPageExists(path: string): Integer;
   protected
     procedure InitComponents; override;
     procedure InitEvents; override;
@@ -117,6 +130,8 @@ procedure TFormMain.tvProjectFilesClick(Sender: TObject);
 var
   node: TTreeNode;
   path: string;
+  page: TSmaliCodeView;
+  idx: Integer;
 begin
   //
   node := tvProjectFiles.Selected;
@@ -126,9 +141,40 @@ begin
       path:= node.Parent.Text + '/' + path;
       node := node.Parent;
     end;
-    // TODO: open file
+    // open file
+    path:= ExtractFilePath(CurrentProjectPath) + path;
+    idx := IsPageExists(path);
+    if idx = -1 then begin
+      if (path.EndsWith('.smali')) then begin
+        page := TSmaliCodeView.Create(pgCode);
+        page.Parent := pgCode;
+        page.FileName:= path;
+        pgCode.TabIndex:= pgCode.PageCount - 1;
+      end else begin
+        // TODO: open other file
+      end;
+    end else begin
+      pgCode.TabIndex:= idx;
+    end;
+
   end;
 
+end;
+
+function TFormMain.IsPageExists(path: string): Integer;
+var
+  i: Integer;
+begin
+  // TODO: is page exists
+  Result := -1;
+  for i := 0 to pgCode.PageCount - 1 do begin
+    if (pgCode.Pages[i] is TSmaliCodeView) then begin
+      if (TSmaliCodeView(pgCode.Pages[i]).FileName = path) then begin
+        Result := i;
+        Break;
+      end;
+    end;
+  end;
 end;
 
 procedure TFormMain.miOpenProjClick(Sender: TObject);
@@ -160,9 +206,44 @@ begin
   end;
 end;
 
+procedure TFormMain.miDocumentClick(Sender: TObject);
+begin
+  // TODO: documents
+end;
+
+procedure TFormMain.miExitClick(Sender: TObject);
+begin
+  // TODO: exit
+end;
+
 procedure TFormMain.miFindClick(Sender: TObject);
 begin
-  // TODO: find
+  // find
+  if (pgCode.ActivePage is TSmaliCodeView) then begin
+    TSmaliCodeView(pgCode.ActivePage).Find();
+  end;
+end;
+
+procedure TFormMain.miFindInFilesClick(Sender: TObject);
+begin
+  // TODO: file in files
+end;
+
+procedure TFormMain.miFindNextClick(Sender: TObject);
+begin
+  if (pgCode.ActivePage is TSmaliCodeView) then begin
+    TSmaliCodeView(pgCode.ActivePage).FindNext();
+  end;
+end;
+
+procedure TFormMain.miGotoLineClick(Sender: TObject);
+begin
+  // TODO: goto line
+end;
+
+procedure TFormMain.miNewProjClick(Sender: TObject);
+begin
+  // TODO: new project
 end;
 
 procedure TFormMain.miCopyClick(Sender: TObject);
@@ -172,10 +253,22 @@ begin
   end;
 end;
 
+procedure TFormMain.miAboutClick(Sender: TObject);
+begin
+  // TODO: about
+end;
+
 procedure TFormMain.miRedoClick(Sender: TObject);
 begin
   if (pgCode.ActivePage is TSmaliCodeView) then begin
     TextUtils.Redo(TSmaliCodeView(pgCode.ActivePage).Editor);
+  end;
+end;
+
+procedure TFormMain.miReplaceClick(Sender: TObject);
+begin
+  if (pgCode.ActivePage is TSmaliCodeView) then begin
+    TSmaliCodeView(pgCode.ActivePage).Replace();
   end;
 end;
 
@@ -212,11 +305,28 @@ begin
   end;
 end;
 
+procedure TFormMain.miTemplateClick(Sender: TObject);
+begin
+  // TODO: code template
+
+end;
+
+procedure TFormMain.miToJavaClick(Sender: TObject);
+begin
+  // TODO: smali to java
+
+end;
+
 procedure TFormMain.miUndoClick(Sender: TObject);
 begin
   if (pgCode.ActivePage is TSmaliCodeView) then begin
     TextUtils.Undo(TSmaliCodeView(pgCode.ActivePage).Editor);
   end;
+end;
+
+procedure TFormMain.miUpdateClick(Sender: TObject);
+begin
+  // TODO: check update
 end;
 
 procedure TFormMain.pgCodeCloseTabClicked(Sender: TObject);
@@ -248,14 +358,8 @@ begin
 end;
 
 procedure TFormMain.InitLogic;
-var
-  page: TSmaliCodeView;
 begin
-  // TODO: test
-  page := TSmaliCodeView.Create(pgCode);
-  page.Parent := pgCode;
-  page.FileName:= 'TEST';
-  pgCode.TabIndex:= 0;
+  //
 end;
 
 end.

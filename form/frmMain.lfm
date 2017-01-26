@@ -1,7 +1,7 @@
 inherited FormMain: TFormMain
-  Left = 476
+  Left = 581
   Height = 630
-  Top = 256
+  Top = 293
   Width = 958
   Caption = 'Smali IDE'
   ClientHeight = 607
@@ -66,6 +66,7 @@ inherited FormMain: TFormMain
       Top = 2
       Caption = 'New Project'
       ImageIndex = 3
+      OnClick = miNewProjClick
     end
     object tBtnOpenProject: TToolButton
       Left = 37
@@ -163,6 +164,7 @@ inherited FormMain: TFormMain
       Top = 2
       Caption = 'Java'
       ImageIndex = 13
+      OnClick = miToJavaClick
     end
   end
   object mmMain: TMainMenu[4]
@@ -174,6 +176,7 @@ inherited FormMain: TFormMain
       object miNewProj: TMenuItem
         Caption = '&New Project'
         ShortCut = 16462
+        OnClick = miNewProjClick
       end
       object miOpenProj: TMenuItem
         Caption = '&Open Project'
@@ -202,6 +205,7 @@ inherited FormMain: TFormMain
       end
       object miExit: TMenuItem
         Caption = 'E&xit'
+        OnClick = miExitClick
       end
     end
     object miEdit: TMenuItem
@@ -258,10 +262,12 @@ inherited FormMain: TFormMain
       object miFindNext: TMenuItem
         Caption = 'Find Next'
         ShortCut = 114
+        OnClick = miFindNextClick
       end
       object miReplace: TMenuItem
         Caption = '&Replace'
         ShortCut = 16466
+        OnClick = miReplaceClick
       end
       object mm4: TMenuItem
         Caption = '-'
@@ -269,6 +275,7 @@ inherited FormMain: TFormMain
       object miFindInFiles: TMenuItem
         Caption = 'Find in Files'
         ShortCut = 49222
+        OnClick = miFindInFilesClick
       end
       object mm5: TMenuItem
         Caption = '-'
@@ -276,15 +283,18 @@ inherited FormMain: TFormMain
       object miGotoLine: TMenuItem
         Caption = 'Goto Line'
         ShortCut = 16455
+        OnClick = miGotoLineClick
       end
     end
     object miCode: TMenuItem
       Caption = '&Code'
       object miTemplate: TMenuItem
         Caption = 'Template'
+        OnClick = miTemplateClick
       end
       object miToJava: TMenuItem
         Caption = 'To Java'
+        OnClick = miToJavaClick
       end
       object mm6: TMenuItem
         Caption = '-'
@@ -300,15 +310,18 @@ inherited FormMain: TFormMain
       Caption = '&Help'
       object miDocument: TMenuItem
         Caption = 'Documents'
+        OnClick = miDocumentClick
       end
       object miUpdate: TMenuItem
         Caption = 'Check Update'
+        OnClick = miUpdateClick
       end
       object mm7: TMenuItem
         Caption = '-'
       end
       object miAbout: TMenuItem
         Caption = 'About'
+        OnClick = miAboutClick
       end
     end
   end
