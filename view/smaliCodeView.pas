@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes;
+  SynEditTypes, synhighlightersmali;
 
 type
 
@@ -18,6 +18,7 @@ type
   TSmaliCodeView = class(TTabSheet)
   private
     FEditor: TSynEdit;
+    FHighlighter: TSynSmaliSyn;
     FFileName: string;
     FIsChanged: Boolean;
     FMenu: TPopupMenu;
@@ -76,6 +77,7 @@ type
     procedure CancelFind();
     procedure Replace();
     procedure CancelReplace();
+    procedure GotoLine(line: Integer);
     function FindMethodAndJump(methodSig: string): Boolean;
   published
     property FileName: string read FFileName write SetFileName;
@@ -128,7 +130,6 @@ begin
     Inc(idx);
   end;
   Result := s;
-
 end;
 
 function TSmaliCodeView.FindClassToJump: string;
@@ -226,6 +227,7 @@ var
 begin
   inherited Create(TheOwner);
   FEditor := TSynEdit.Create(Self);
+  FHighlighter := TSynSmaliSyn.Create(Self);
   with FEditor do begin
     Parent := Self;
     Align:= alClient;
@@ -249,6 +251,7 @@ begin
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
     OnChange:=@OnEditorChange;
+    Highlighter := FHighlighter;
   end;
   FMenu := TPopupMenu.Create(Self);
   FMenu.Parent := Self;
@@ -552,6 +555,11 @@ begin
   FReplaceEdit.Text:= '';
   FPnlReplace.Visible:= False;
   FEditor.SetFocus;
+end;
+
+procedure TSmaliCodeView.GotoLine(line: Integer);
+begin
+  // TODO: goto line
 end;
 
 function TSmaliCodeView.FindMethodAndJump(methodSig: string): Boolean;

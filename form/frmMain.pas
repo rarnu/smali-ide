@@ -6,14 +6,19 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, ComCtrls, frmBase, math;
+  ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType;
 
 type
-
   { TFormMain }
 
   TFormMain = class(TFormBase)
+    edtFilterClass: TEdit;
+    edtFilterFile: TEdit;
     imgLst: TImageList;
+    lstSearchResult: TListBox;
+    miSearchResult: TMenuItem;
+    miClassIndex: TMenuItem;
+    miView: TMenuItem;
     miSaveAs: TMenuItem;
     miAbout: TMenuItem;
     mm7: TMenuItem;
@@ -53,15 +58,21 @@ type
     mm1: TMenuItem;
     miExit: TMenuItem;
     mmMain: TMainMenu;
+    pnlSearch: TPanel;
+    pnlClassIndex: TPanel;
     pgCode: TPageControl;
     pnlProjectFiles: TPanel;
+    splBottom: TSplitter;
+    splRight: TSplitter;
     splProjectFiles: TSplitter;
+    sbMain: TStatusBar;
     tbMain: TToolBar;
     tBtnNewProject: TToolButton;
     tBtnCut: TToolButton;
     tBtnCopy: TToolButton;
     tBtnPaste: TToolButton;
     tBtnDelete: TToolButton;
+    tvClassIndex: TTreeView;
     tSp4: TToolButton;
     tBtnJava: TToolButton;
     tBtnOpenProject: TToolButton;
@@ -73,7 +84,10 @@ type
     tBtnRedo: TToolButton;
     tSp3: TToolButton;
     tvProjectFiles: TTreeView;
+    procedure lstSearchResultKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure miAboutClick(Sender: TObject);
+    procedure miClassIndexClick(Sender: TObject);
     procedure miCopyClick(Sender: TObject);
     procedure miCutClick(Sender: TObject);
     procedure miDeleteClick(Sender: TObject);
@@ -91,6 +105,7 @@ type
     procedure miSaveAllFilesClick(Sender: TObject);
     procedure miSaveAsClick(Sender: TObject);
     procedure miSaveFileClick(Sender: TObject);
+    procedure miSearchResultClick(Sender: TObject);
     procedure miSelectAllClick(Sender: TObject);
     procedure miTemplateClick(Sender: TObject);
     procedure miToJavaClick(Sender: TObject);
@@ -98,7 +113,6 @@ type
     procedure miUpdateClick(Sender: TObject);
     procedure pgCodeCloseTabClicked(Sender: TObject);
     procedure tvProjectFilesClick(Sender: TObject);
-
   private
     FCurrentProjectName: string;
     FCurrentProjectPath: string;
@@ -123,7 +137,7 @@ implementation
 {$R *.lfm}
 
 uses
-  projectUtils, smaliCodeView, TextUtils;
+  smaliCodeView, TextUtils, CodeUtils, ProjectUtils;
 
 { TFormMain }
 
@@ -137,37 +151,41 @@ begin
   //
   node := tvProjectFiles.Selected;
   if (node <> nil) then begin
-    path:= node.Text;
-    while (node.Parent <> nil) do begin
-      path:= node.Parent.Text + '/' + path;
-      node := node.Parent;
-    end;
-    // open file
-    path:= ExtractFilePath(CurrentProjectPath) + path;
-    idx := IsPageExists(path);
-    if idx = -1 then begin
-      if (path.EndsWith('.smali')) then begin
-        page := TSmaliCodeView.Create(pgCode);
-        page.Parent := pgCode;
-        page.FileName:= path;
-        page.OnCodeJump:=@codeJumpCallback;
-        pgCode.TabIndex:= pgCode.PageCount - 1;
-      end else begin
-        // TODO: open other file
-      end;
+    if (node.ImageIndex = 1) then begin
+      // expand node
+      if (not node.HasChildren) then ProjectUtils.ExpandProjectNode(CurrentProjectPath, tvProjectFiles.Items, node);
     end else begin
-      pgCode.TabIndex:= idx;
+      path:= node.Text;
+      while (node.Parent <> nil) do begin
+        path:= node.Parent.Text + '/' + path;
+        node := node.Parent;
+      end;
+      // open file
+      path:= ExtractFilePath(CurrentProjectPath) + path;
+      idx := IsPageExists(path);
+      if idx = -1 then begin
+        if (path.EndsWith('.smali')) then begin
+          page := TSmaliCodeView.Create(pgCode);
+          page.Parent := pgCode;
+          page.FileName:= path;
+          page.OnCodeJump:=@codeJumpCallback;
+          pgCode.TabIndex:= pgCode.PageCount - 1;
+        end else begin
+          // TODO: open other file
+        end;
+      end else begin
+        pgCode.TabIndex:= idx;
+      end;
     end;
 
   end;
-
 end;
 
 function TFormMain.IsPageExists(path: string): Integer;
 var
   i: Integer;
 begin
-  // TODO: is page exists
+  // is page exists
   Result := -1;
   for i := 0 to pgCode.PageCount - 1 do begin
     if (pgCode.Pages[i] is TSmaliCodeView) then begin
@@ -186,15 +204,26 @@ var
   page: TSmaliCodeView;
   idx: Integer;
   ret: Boolean;
+  smaliIdx: Integer = 1;
 begin
+  while True do begin
+    if (smaliIdx = 1) then begin
+      filePath:= ExtractFilePath(CurrentProjectPath) + 'smali/' + path;
+    end else begin
+      filePath:= ExtractFilePath(CurrentProjectPath) + 'smali_classes' + IntToStr(smaliIdx) + '/' + path;
+    end;
 
-  filePath:= ExtractFilePath(CurrentProjectPath) + 'smali/' + path;
-  WriteLn(filePath);
-  if (FileExists(filePath + '.smali')) then begin
-    openPath:= filePath + '.smali';
-  end else if (FileExists(filePath + '.1.smali')) then begin
-    openPath:= filePath + '.1.smali';
+    if (FileExists(filePath + '.smali')) then begin
+      openPath:= filePath + '.smali';
+      Break;
+    end else if (FileExists(filePath + '.1.smali')) then begin
+      openPath:= filePath + '.1.smali';
+      Break;
+    end;
+    Inc(smaliIdx);
+    if (smaliIdx > 9) then Break;
   end;
+
   if (FileExists(openPath)) then begin
     // open code jump
     idx := IsPageExists(openPath);
@@ -218,9 +247,9 @@ end;
 
 procedure TFormMain.miOpenProjClick(Sender: TObject);
 begin
-  CurrentProjectPath:= projectUtils.OpenProject();
+  CurrentProjectPath:= ProjectUtils.OpenProject();
   if (CurrentProjectPath <> '') then begin
-    projectUtils.LoadProjectFiles(CurrentProjectPath, tvProjectFiles.Items, nil);
+    ProjectUtils.LoadProject(CurrentProjectPath, tvProjectFiles.Items);
   end;
 end;
 
@@ -297,6 +326,23 @@ begin
   // TODO: about
 end;
 
+procedure TFormMain.miClassIndexClick(Sender: TObject);
+begin
+  pnlClassIndex.Visible:= not pnlClassIndex.Visible;
+  splRight.Visible:= pnlClassIndex.Visible;
+  miClassIndex.Checked:= pnlClassIndex.Visible;
+end;
+
+procedure TFormMain.lstSearchResultKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_ESCAPE) then begin
+    pnlSearch.Visible:= False;
+    splBottom.Visible:= False;
+    miSearchResult.Checked:= False;
+  end;
+end;
+
 procedure TFormMain.miRedoClick(Sender: TObject);
 begin
   if (pgCode.ActivePage is TSmaliCodeView) then begin
@@ -335,6 +381,13 @@ begin
   if (pgCode.ActivePage is TSmaliCodeView) then begin
     TSmaliCodeView(pgCode.ActivePage).Save();
   end;
+end;
+
+procedure TFormMain.miSearchResultClick(Sender: TObject);
+begin
+  pnlSearch.Visible:= not pnlSearch.Visible;
+  splBottom.Visible:= pnlSearch.Visible;
+  miSearchResult.Checked:= pnlSearch.Visible;
 end;
 
 procedure TFormMain.miSelectAllClick(Sender: TObject);
@@ -388,7 +441,10 @@ end;
 
 procedure TFormMain.InitComponents;
 begin
-  //
+  pnlClassIndex.Visible:= False;
+  pnlSearch.Visible:= False;
+  splRight.Visible:= False;
+  splBottom.Visible:= False;
 end;
 
 procedure TFormMain.InitEvents;

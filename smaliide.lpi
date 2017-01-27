@@ -56,19 +56,19 @@
         <ResourceBaseClass Value="Form"/>
       </Unit3>
       <Unit4>
-        <Filename Value="util/projectUtils.pas"/>
+        <Filename Value="view/smaliCodeView.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="view/smaliCodeView.pas"/>
+        <Filename Value="util/TextUtils.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
       <Unit6>
-        <Filename Value="util/TextUtils.pas"/>
+        <Filename Value="util/CodeUtils.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="util/CodeUtils.pas"/>
+        <Filename Value="util/ProjectUtils.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit7>
     </Units>

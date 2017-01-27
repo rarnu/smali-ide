@@ -1,7 +1,7 @@
 inherited FormMain: TFormMain
-  Left = 581
+  Left = 573
   Height = 630
-  Top = 293
+  Top = 315
   Width = 958
   Caption = 'Smali IDE'
   ClientHeight = 607
@@ -9,18 +9,18 @@ inherited FormMain: TFormMain
   Menu = mmMain
   object pnlProjectFiles: TPanel[0]
     Left = 0
-    Height = 571
+    Height = 455
     Top = 36
     Width = 240
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 571
+    ClientHeight = 455
     ClientWidth = 240
     TabOrder = 0
     object tvProjectFiles: TTreeView
       Left = 0
-      Height = 571
-      Top = 0
+      Height = 428
+      Top = 27
       Width = 240
       Align = alClient
       BorderStyle = bsNone
@@ -33,18 +33,26 @@ inherited FormMain: TFormMain
       OnClick = tvProjectFilesClick
       Options = [tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips]
     end
+    object edtFilterFile: TEdit
+      Left = 0
+      Height = 27
+      Top = 0
+      Width = 240
+      Align = alTop
+      TabOrder = 1
+    end
   end
   object splProjectFiles: TSplitter[1]
     Left = 240
-    Height = 571
+    Height = 455
     Top = 36
     Width = 5
   end
   object pgCode: TPageControl[2]
     Left = 245
-    Height = 571
+    Height = 455
     Top = 36
-    Width = 713
+    Width = 489
     Align = alClient
     MultiLine = True
     TabOrder = 2
@@ -167,7 +175,88 @@ inherited FormMain: TFormMain
       OnClick = miToJavaClick
     end
   end
-  object mmMain: TMainMenu[4]
+  object pnlClassIndex: TPanel[4]
+    Left = 739
+    Height = 455
+    Top = 36
+    Width = 219
+    Align = alRight
+    BevelOuter = bvNone
+    ClientHeight = 455
+    ClientWidth = 219
+    TabOrder = 4
+    object tvClassIndex: TTreeView
+      Left = 0
+      Height = 428
+      Top = 27
+      Width = 219
+      Align = alClient
+      TabOrder = 0
+    end
+    object edtFilterClass: TEdit
+      Left = 0
+      Height = 27
+      Top = 0
+      Width = 219
+      Align = alTop
+      TabOrder = 1
+    end
+  end
+  object splRight: TSplitter[5]
+    Left = 734
+    Height = 455
+    Top = 36
+    Width = 5
+    Align = alRight
+    ResizeAnchor = akRight
+  end
+  object sbMain: TStatusBar[6]
+    Left = 0
+    Height = 21
+    Top = 586
+    Width = 958
+    Panels = <    
+      item
+        Width = 300
+      end    
+      item
+        Width = 50
+      end>
+    SimplePanel = False
+  end
+  object pnlSearch: TPanel[7]
+    Left = 0
+    Height = 90
+    Top = 496
+    Width = 958
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 90
+    ClientWidth = 958
+    TabOrder = 7
+    object lstSearchResult: TListBox
+      Left = 0
+      Height = 90
+      Top = 0
+      Width = 958
+      Align = alClient
+      ItemHeight = 0
+      OnKeyDown = lstSearchResultKeyDown
+      ScrollWidth = 956
+      TabOrder = 0
+      TopIndex = -1
+    end
+  end
+  object splBottom: TSplitter[8]
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 491
+    Width = 958
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object mmMain: TMainMenu[9]
     Images = imgLst
     left = 40
     top = 40
@@ -252,6 +341,19 @@ inherited FormMain: TFormMain
         OnClick = miSelectAllClick
       end
     end
+    object miView: TMenuItem
+      Caption = '&View'
+      object miClassIndex: TMenuItem
+        Caption = 'Class Index'
+        ShowAlwaysCheckable = True
+        OnClick = miClassIndexClick
+      end
+      object miSearchResult: TMenuItem
+        Caption = 'Search Result'
+        ShowAlwaysCheckable = True
+        OnClick = miSearchResultClick
+      end
+    end
     object miSearch: TMenuItem
       Caption = '&Search'
       object miFind: TMenuItem
@@ -325,7 +427,7 @@ inherited FormMain: TFormMain
       end
     end
   end
-  object imgLst: TImageList[5]
+  object imgLst: TImageList[10]
     Height = 32
     Width = 32
     left = 40

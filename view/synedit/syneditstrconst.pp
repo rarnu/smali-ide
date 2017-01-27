@@ -121,6 +121,7 @@ resourcestring
   SYNS_AttrSASMComment          =  'SASM Comment';
   SYNS_AttrSASMKey              =  'SASM Key';
   SYNS_AttrSecondReservedWord   =  'Second reserved word';
+  SYNS_AttrThirdReservedWord    =  'Third reserved word';
   SYNS_AttrSection              =  'Section';
   SYNS_AttrSpace                =  'Space';
   SYNS_AttrSpecialVariable      =  'Special variable';
@@ -238,6 +239,7 @@ const
   SYNS_XML_AttrSASMComment          =  'SASM Comment';
   SYNS_XML_AttrSASMKey              =  'SASM Key';
   SYNS_XML_AttrSecondReservedWord   =  'Second reserved word';
+  SYNS_XML_AttrThirdReservedWord    =  'Third reserved word';
   SYNS_XML_AttrSection              =  'Section';
   SYNS_XML_AttrSpace                =  'Space';
   SYNS_XML_AttrSpecialVariable      =  'Special variable';
