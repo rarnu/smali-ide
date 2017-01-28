@@ -184,6 +184,7 @@ inherited FormMain: TFormMain
       Width = 219
       Align = alClient
       TabOrder = 0
+      OnClick = tvClassIndexClick
     end
     object edtFilterClass: TEdit
       Left = 0
@@ -191,6 +192,7 @@ inherited FormMain: TFormMain
       Top = 0
       Width = 219
       Align = alTop
+      OnChange = edtFilterClassChange
       TabOrder = 1
     end
   end

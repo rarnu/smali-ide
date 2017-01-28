@@ -83,6 +83,7 @@ type
     tBtnRedo: TToolButton;
     tSp3: TToolButton;
     tvProjectFiles: TTreeView;
+    procedure edtFilterClassChange(Sender: TObject);
     procedure lstSearchResultKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure miAboutClick(Sender: TObject);
@@ -111,10 +112,14 @@ type
     procedure miUndoClick(Sender: TObject);
     procedure miUpdateClick(Sender: TObject);
     procedure pgCodeCloseTabClicked(Sender: TObject);
+    procedure tvClassIndexClick(Sender: TObject);
     procedure tvProjectFilesClick(Sender: TObject);
   private
     FCurrentProjectName: string;
     FCurrentProjectPath: string;
+    procedure buildClassIndexCallback(sender: TObject; path: string;
+      count: Integer);
+    procedure buildClassIndexCompleteCallback(sender: TObject);
     procedure codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);
     function IsPageExists(path: string): Integer;
   protected
@@ -136,7 +141,7 @@ implementation
 {$R *.lfm}
 
 uses
-  smaliCodeView, TextUtils, CodeUtils, ProjectUtils;
+  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils;
 
 { TFormMain }
 
@@ -244,11 +249,41 @@ begin
   end;
 end;
 
+procedure TFormMain.buildClassIndexCallback(sender: TObject; path: string;
+  count: Integer);
+begin
+  sbMain.Panels[0].Text:= Format('Indexing: [%d] %s', [count, path]);
+  Application.ProcessMessages;
+end;
+
+procedure TFormMain.buildClassIndexCompleteCallback(sender: TObject);
+var
+  indexPath: string;
+  list: TStringList;
+  s: string;
+begin
+  sbMain.Panels[0].Text:= 'Ready';
+  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(CurrentProjectPath) + '/index';
+  if (FileExists(indexPath)) then begin
+    tvClassIndex.BeginUpdate;
+    list := TStringList.Create;
+    list.LoadFromFile(indexPath);
+    for s in list do begin
+      if (s.Trim <> '') then begin
+        tvClassIndex.Items.Add(nil, s.Trim);
+      end;
+    end;
+    list.Free;
+    tvClassIndex.EndUpdate;
+  end;
+end;
+
 procedure TFormMain.miOpenProjClick(Sender: TObject);
 begin
   CurrentProjectPath:= ProjectUtils.OpenProject();
   if (CurrentProjectPath <> '') then begin
     ProjectUtils.LoadProject(CurrentProjectPath, tvProjectFiles.Items);
+    CodeUtils.ThreadBuildClassIndex(CurrentProjectPath, @buildClassIndexCallback, @buildClassIndexCompleteCallback);
   end;
 end;
 
@@ -339,6 +374,21 @@ begin
     pnlSearch.Visible:= False;
     splBottom.Visible:= False;
     miSearchResult.Checked:= False;
+  end;
+end;
+
+procedure TFormMain.edtFilterClassChange(Sender: TObject);
+var
+  filter: string;
+  i: Integer;
+begin
+  filter:= edtFilterClass.Text;
+  for i := 0 to tvClassIndex.Items.Count - 1 do begin
+    if (filter.Trim = '') then begin
+      tvClassIndex.Items.Item[i].Visible := True;
+    end else begin
+      tvClassIndex.Items.Item[i].Visible := tvClassIndex.Items.Item[i].Text.Contains(filter);
+    end;
   end;
 end;
 
@@ -436,6 +486,34 @@ begin
   end;
   idx := ifthen(idx > 0, idx - 1, 0);
   pgCode.TabIndex:= idx;
+end;
+
+procedure TFormMain.tvClassIndexClick(Sender: TObject);
+var
+  node: TTreeNode;
+begin
+  node := tvClassIndex.Selected;
+  if (node = nil) then Exit;
+
+  // TODO: class click
+  (*
+  path:= ExtractFilePath(CurrentProjectPath) + path;
+      idx := IsPageExists(path);
+      if idx = -1 then begin
+        if (path.EndsWith('.smali')) then begin
+          page := TSmaliCodeView.Create(pgCode);
+          page.Parent := pgCode;
+          page.FileName:= path;
+          page.OnCodeJump:=@codeJumpCallback;
+          pgCode.TabIndex:= pgCode.PageCount - 1;
+        end else begin
+          // TODO: open other file
+        end;
+      end else begin
+        pgCode.TabIndex:= idx;
+      end;
+  *)
+
 end;
 
 procedure TFormMain.InitComponents;
