@@ -116,7 +116,9 @@ var
 begin
   indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FPath);
   ForceDirectories(indexPath);
-  FClassList.SaveToFile(indexPath + '/index');
+  if (not FileExists(indexPath + '/index')) then begin
+    FClassList.SaveToFile(indexPath + '/index');
+  end;
   if (Assigned(FOnBuildIndexCompleteCallback)) then begin
     FOnBuildIndexCompleteCallback(Self);
   end;
@@ -228,8 +230,14 @@ end;
 { TBuildClassIndexThread }
 
 procedure TBuildClassIndexThread.Execute;
+var
+  indexPath: string;
 begin
-  BuildClassIndex(FPath);
+  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FPath);
+  ForceDirectories(indexPath);
+  if (not FileExists(indexPath + '/index')) then begin
+    BuildClassIndex(FPath);
+  end;
 end;
 
 constructor TBuildClassIndexThread.Create(path: string);
