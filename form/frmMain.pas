@@ -491,29 +491,26 @@ end;
 procedure TFormMain.tvClassIndexClick(Sender: TObject);
 var
   node: TTreeNode;
+  path: string;
+  idx: Integer;
+  page: TSmaliCodeView;
 begin
   node := tvClassIndex.Selected;
   if (node = nil) then Exit;
-
-  // TODO: class click
-  (*
-  path:= ExtractFilePath(CurrentProjectPath) + path;
-      idx := IsPageExists(path);
-      if idx = -1 then begin
-        if (path.EndsWith('.smali')) then begin
-          page := TSmaliCodeView.Create(pgCode);
-          page.Parent := pgCode;
-          page.FileName:= path;
-          page.OnCodeJump:=@codeJumpCallback;
-          pgCode.TabIndex:= pgCode.PageCount - 1;
-        end else begin
-          // TODO: open other file
-        end;
-      end else begin
-        pgCode.TabIndex:= idx;
-      end;
-  *)
-
+  path := CodeUtils.ClassIndexToFilePath(CurrentProjectPath, node.Text);
+  if (path.Trim <> '') then begin
+    idx := IsPageExists(path);
+    if idx = -1 then begin
+      page := TSmaliCodeView.Create(pgCode);
+      page.Parent := pgCode;
+      page.FileName:= path;
+      page.OnCodeJump:=@codeJumpCallback;
+      pgCode.TabIndex:= pgCode.PageCount - 1;
+    end else begin
+      pgCode.TabIndex:= idx;
+    end;
+    CodeUtils.BuildMethodIndex(CurrentProjectPath, path, tvClassIndex.Items, node);
+  end;
 end;
 
 procedure TFormMain.InitComponents;

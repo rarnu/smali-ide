@@ -5,7 +5,7 @@ unit CodeUtils;
 interface
 
 uses
-  Classes, SysUtils, ComCtrls, lockbox;
+  Classes, SysUtils, ComCtrls, lockbox, Dialogs;
 
 type
 
@@ -36,7 +36,8 @@ type
   end;
 
 procedure ThreadBuildClassIndex(projectPath: string; callback: TOnBuildIndexCallback; complete: TOnBuildIndexCompleteCallback);
-procedure BuildMethodIndex(classPath: string);
+procedure BuildMethodIndex(projectPath: string; classPath: string; root: TTreeNodes; parent: TTreeNode);
+function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;
 function ConvertSmaliToJava(path: string): string;
 
 implementation
@@ -131,9 +132,91 @@ begin
   end;
 end;
 
-procedure BuildMethodIndex(classPath: string);
+function ExtractField(str: string): string;
 begin
-  // TODO: build method index
+  // .field private static final TAG:Ljava/lang/String;
+  Result := str.Substring(str.LastIndexOf(' ')).Trim;
+end;
+
+function ExtractMethod(str: string): string;
+begin
+  // .method public constructor <init>()V
+  //.method static synthetic a(Lcom/android/updater/ActivityForDialog;Lcom/android/updater/A;)Lcom/android/updater/A;
+  Result := str.Substring(str.LastIndexOf(' ')).Trim;
+end;
+
+procedure BuildMethodIndex(projectPath: string; classPath: string;
+  root: TTreeNodes; parent: TTreeNode);
+var
+  savePath: string;
+  i: Integer;
+  list: TStringList;
+begin
+  // build method index
+  savePath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
+  ForceDirectories(savePath);
+  savePath += md5EncryptString(classPath);
+  list := TStringList.Create;
+  if (not FileExists(savePath)) then begin
+    with TStringList.Create do begin
+      LoadFromFile(classPath);
+      for i := 0 to Count - 1 do begin
+        if (Strings[i].StartsWith('.field')) then begin
+          list.Add(ExtractField(Strings[i]));
+        end else if (Strings[i].StartsWith('.method')) then begin
+          list.Add(ExtractMethod(Strings[i]));
+        end;
+      end;
+      Free;
+    end;
+    list.SaveToFile(savePath);
+  end else begin
+    list.LoadFromFile(savePath);
+  end;
+  if (root <> nil) and (parent <> nil) and (not parent.HasChildren) then begin
+    for i := 0 to list.Count - 1 do begin
+      root.AddChild(parent, list[i]);
+    end;
+  end;
+  list.Free;
+end;
+
+function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;
+var
+  i: Integer;
+  basePath: string;
+  fullPath: string;
+begin
+  Result := '';
+  // class index to file path
+  basePath:= ExtractFilePath(projectPath);
+  for i := 1 to 9 do begin
+    if (i = 1) then begin
+      fullPath:= basePath + 'smali/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.smali';
+      if (FileExists(fullPath)) then begin
+        Result := fullPath;
+        Break;
+      end else begin
+        fullPath:= basePath + 'smali/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.1.smali';
+        if (FileExists(fullPath)) then begin
+          Result := fullPath;
+          Break;
+        end;
+      end;
+    end else begin
+      fullPath:= basePath + 'smali_classes' + IntToStr(i) + '/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.smali';
+      if (FileExists(fullPath)) then begin
+        Result := fullPath;
+        Break;
+      end else begin
+        fullPath:= basePath + 'smali_classes' + IntToStr(i) + '/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.1.smali';
+        if (FileExists(fullPath)) then begin
+          Result := fullPath;
+          Break;
+        end;
+      end;
+    end;
+  end;
 end;
 
 function ConvertSmaliToJava(path: string): string;

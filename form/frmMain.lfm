@@ -183,8 +183,11 @@ inherited FormMain: TFormMain
       Top = 27
       Width = 219
       Align = alClient
+      ReadOnly = True
+      ScrollBars = ssAutoBoth
       TabOrder = 0
       OnClick = tvClassIndexClick
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
     end
     object edtFilterClass: TEdit
       Left = 0

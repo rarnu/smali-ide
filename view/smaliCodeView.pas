@@ -26,6 +26,7 @@ type
     FTitle: string;
     // menu items
     FMiJump: TMenuItem;
+    FMiS0: TMenuItem;
     FMiUndo: TMenuItem;
     FMiRedo: TMenuItem;
     FMiS1: TMenuItem;
@@ -262,6 +263,8 @@ begin
   FMiJump.Caption:= 'Jump';
   FMiJump.ShortCut:= ShortCut(VK_F2, []);
   FMiJump.OnClick:= @menuClicked;
+  FMiS0:= TMenuItem.Create(FMenu);
+  FMiS0.Caption:= '-';
   FMiUndo:= TMenuItem.Create(FMenu);
   FMiUndo.Caption:= 'Undo';
   FMiUndo.ShortCut:= ShortCut(VK_Z, [ssCtrl]);
@@ -297,6 +300,7 @@ begin
 
   with FMenu.Items do begin
     Add(FMiJump);
+    Add(FMiS0);
     Add(FMiUndo);
     Add(FMiRedo);
     Add(FMiS1);
