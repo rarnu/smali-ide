@@ -13,6 +13,7 @@ type
 
   TFormMain = class(TFormBase)
     edtFilterClass: TEdit;
+    imgIndex: TImageList;
     imgLst: TImageList;
     lstSearchResult: TListBox;
     miSearchResult: TMenuItem;

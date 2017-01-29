@@ -153,6 +153,7 @@ var
   savePath: string;
   i: Integer;
   list: TStringList;
+  n: TTreeNode;
 begin
   // build method index
   savePath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
@@ -177,7 +178,14 @@ begin
   end;
   if (root <> nil) and (parent <> nil) and (not parent.HasChildren) then begin
     for i := 0 to list.Count - 1 do begin
-      root.AddChild(parent, list[i]);
+      n := root.AddChild(parent, list[i]);
+      if (list[i].Contains(':')) then begin
+        n.ImageIndex:= 0;
+        n.SelectedIndex:= 0;
+      end else begin
+        n.ImageIndex:= 1;
+        n.SelectedIndex:= 1;
+      end;
     end;
   end;
   list.Free;
