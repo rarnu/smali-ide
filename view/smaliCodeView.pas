@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes, synhighlightersmali;
+  SynEditTypes, synhighlightersmali, SynCompletion;
 
 type
 
@@ -19,6 +19,7 @@ type
   private
     FEditor: TSynEdit;
     FHighlighter: TSynSmaliSyn;
+    FCompleteSmali: TSynCompletion;
     FFileName: string;
     FIsChanged: Boolean;
     FMenu: TPopupMenu;
@@ -224,11 +225,28 @@ constructor TSmaliCodeView.Create(TheOwner: TComponent);
 var
   i: integer;
   part: TSynGutterPartBase;
-
+  smaliCmdPath: string;
+  smaliCmd: string;
 begin
   inherited Create(TheOwner);
   FEditor := TSynEdit.Create(Self);
   FHighlighter := TSynSmaliSyn.Create(Self);
+  FCompleteSmali:= TSynCompletion.Create(Self);
+  with TStringList.Create do begin
+    smaliCmdPath:= ExtractFilePath(ParamStr(0)) + 'template/smalicmd';
+    if (FileExists(smaliCmdPath)) then begin
+      LoadFromFile(smaliCmdPath);
+      smaliCmd:= Text;
+    end;
+    Free;
+  end;
+  with FCompleteSmali do begin
+    ItemList.Text:= smaliCmd;
+    ShowSizeDrag:= True;
+    EndOfTokenChr:= '()[];';
+    Editor := FEditor;
+    ShortCut:= Menus.ShortCut(VK_J, [ssCtrl]);
+  end;
   with FEditor do begin
     Parent := Self;
     Align:= alClient;
@@ -254,6 +272,7 @@ begin
     OnChange:=@OnEditorChange;
     Highlighter := FHighlighter;
   end;
+
   FMenu := TPopupMenu.Create(Self);
   FMenu.Parent := Self;
   FEditor.PopupMenu := FMenu;

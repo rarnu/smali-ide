@@ -16,6 +16,8 @@ type
     imgIndex: TImageList;
     imgLst: TImageList;
     lstSearchResult: TListBox;
+    mm8: TMenuItem;
+    miSettings: TMenuItem;
     miSearchResult: TMenuItem;
     miClassIndex: TMenuItem;
     miView: TMenuItem;
@@ -108,6 +110,7 @@ type
     procedure miSaveFileClick(Sender: TObject);
     procedure miSearchResultClick(Sender: TObject);
     procedure miSelectAllClick(Sender: TObject);
+    procedure miSettingsClick(Sender: TObject);
     procedure miTemplateClick(Sender: TObject);
     procedure miToJavaClick(Sender: TObject);
     procedure miUndoClick(Sender: TObject);
@@ -445,6 +448,11 @@ begin
   if (pgCode.ActivePage is TSmaliCodeView) then begin
     TextUtils.SelectAll(TSmaliCodeView(pgCode.ActivePage).Editor);
   end;
+end;
+
+procedure TFormMain.miSettingsClick(Sender: TObject);
+begin
+  // TODO: settings
 end;
 
 procedure TFormMain.miTemplateClick(Sender: TObject);

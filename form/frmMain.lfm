@@ -408,6 +408,13 @@ inherited FormMain: TFormMain
     end
     object miHelp: TMenuItem
       Caption = '&Help'
+      object miSettings: TMenuItem
+        Caption = 'Settings'
+        OnClick = miSettingsClick
+      end
+      object mm8: TMenuItem
+        Caption = '-'
+      end
       object miDocument: TMenuItem
         Caption = 'Documents'
         OnClick = miDocumentClick
