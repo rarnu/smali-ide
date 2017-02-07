@@ -16,6 +16,13 @@ type
     imgIndex: TImageList;
     imgLst: TImageList;
     lstSearchResult: TListBox;
+    miConsole: TMenuItem;
+    mm10: TMenuItem;
+    miInstallFramework: TMenuItem;
+    mm9: TMenuItem;
+    miCompile: TMenuItem;
+    miDecompile: TMenuItem;
+    miPackage: TMenuItem;
     mm8: TMenuItem;
     miSettings: TMenuItem;
     miSearchResult: TMenuItem;
@@ -91,8 +98,11 @@ type
       Shift: TShiftState);
     procedure miAboutClick(Sender: TObject);
     procedure miClassIndexClick(Sender: TObject);
+    procedure miCompileClick(Sender: TObject);
+    procedure miConsoleClick(Sender: TObject);
     procedure miCopyClick(Sender: TObject);
     procedure miCutClick(Sender: TObject);
+    procedure miDecompileClick(Sender: TObject);
     procedure miDeleteClick(Sender: TObject);
     procedure miDocumentClick(Sender: TObject);
     procedure miExitClick(Sender: TObject);
@@ -100,6 +110,7 @@ type
     procedure miFindInFilesClick(Sender: TObject);
     procedure miFindNextClick(Sender: TObject);
     procedure miGotoLineClick(Sender: TObject);
+    procedure miInstallFrameworkClick(Sender: TObject);
     procedure miNewProjClick(Sender: TObject);
     procedure miOpenProjClick(Sender: TObject);
     procedure miPasteClick(Sender: TObject);
@@ -175,6 +186,7 @@ begin
         if (path.EndsWith('.smali')) then begin
           page := TSmaliCodeView.Create(pgCode);
           page.Parent := pgCode;
+          page.ProjectPath:= CurrentProjectPath;
           page.FileName:= path;
           page.OnCodeJump:=@codeJumpCallback;
           pgCode.TabIndex:= pgCode.PageCount - 1;
@@ -238,6 +250,7 @@ begin
     if idx = -1 then begin
       page := TSmaliCodeView.Create(pgCode);
       page.Parent := pgCode;
+      page.ProjectPath:= CurrentProjectPath;
       page.FileName:= openPath;
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
@@ -305,6 +318,11 @@ begin
   end;
 end;
 
+procedure TFormMain.miDecompileClick(Sender: TObject);
+begin
+  // TODO: decompile package
+end;
+
 procedure TFormMain.miDeleteClick(Sender: TObject);
 begin
   if (pgCode.ActivePage is TSmaliCodeView) then begin
@@ -347,6 +365,11 @@ begin
   // TODO: goto line
 end;
 
+procedure TFormMain.miInstallFrameworkClick(Sender: TObject);
+begin
+  // TODO: install framework
+end;
+
 procedure TFormMain.miNewProjClick(Sender: TObject);
 begin
   // TODO: new project
@@ -369,6 +392,16 @@ begin
   pnlClassIndex.Visible:= not pnlClassIndex.Visible;
   splRight.Visible:= pnlClassIndex.Visible;
   miClassIndex.Checked:= pnlClassIndex.Visible;
+end;
+
+procedure TFormMain.miCompileClick(Sender: TObject);
+begin
+  // TODO: compile package
+end;
+
+procedure TFormMain.miConsoleClick(Sender: TObject);
+begin
+  // TODO: show /hide console
 end;
 
 procedure TFormMain.lstSearchResultKeyDown(Sender: TObject; var Key: Word;
@@ -501,24 +534,42 @@ procedure TFormMain.tvClassIndexClick(Sender: TObject);
 var
   node: TTreeNode;
   path: string;
-  idx: Integer;
   page: TSmaliCodeView;
+
+  function OpenNewPage(p: string): TSmaliCodeView;
+  var
+    idx: Integer;
+  begin
+
+    idx:= IsPageExists(p);
+    if (idx = -1) then begin
+      Result := TSmaliCodeView.Create(pgCode);
+      Result.Parent := pgCode;
+      Result.ProjectPath:= CurrentProjectPath;
+      Result.FileName:= p;
+      Result.OnCodeJump:= @codeJumpCallback;
+      pgCode.TabIndex:= pgCode.PageCount - 1;
+    end else begin
+      pgCode.TabIndex:= idx;
+      Result := TSmaliCodeView(pgCode.Pages[idx]);
+    end;
+  end;
+
 begin
   node := tvClassIndex.Selected;
   if (node = nil) then Exit;
   path := CodeUtils.ClassIndexToFilePath(CurrentProjectPath, node.Text);
   if (path.Trim <> '') then begin
-    idx := IsPageExists(path);
-    if idx = -1 then begin
-      page := TSmaliCodeView.Create(pgCode);
-      page.Parent := pgCode;
-      page.FileName:= path;
-      page.OnCodeJump:=@codeJumpCallback;
-      pgCode.TabIndex:= pgCode.PageCount - 1;
-    end else begin
-      pgCode.TabIndex:= idx;
-    end;
+    page := OpenNewPage(path);
     CodeUtils.BuildMethodIndex(CurrentProjectPath, path, tvClassIndex.Items, node);
+  end else begin
+    if (node.Parent <> nil) then begin
+      path := CodeUtils.ClassIndexToFilePath(CurrentProjectPath, node.Parent.Text);
+      if (path.Trim <> '') then begin
+        page := OpenNewPage(path);
+        page.FindMethodAndJump(node.Text);
+      end;
+    end;
   end;
 end;
 

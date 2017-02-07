@@ -456,7 +456,7 @@ var
   L: SizeUInt;
 {$ENDIF}
 begin
-  Result := p^ in ['a'..'z','A'..'Z','0'..'9','_'];
+  Result := p^ in ['a'..'z','A'..'Z','0'..'9','_', '/', '-', '.'];
   if Result then exit;
 
   {$IF FPC_FULLVERSION >= 20701}

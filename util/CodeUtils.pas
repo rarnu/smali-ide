@@ -37,6 +37,8 @@ type
 
 procedure ThreadBuildClassIndex(projectPath: string; callback: TOnBuildIndexCallback; complete: TOnBuildIndexCompleteCallback);
 procedure BuildMethodIndex(projectPath: string; classPath: string; root: TTreeNodes; parent: TTreeNode);
+procedure BuildMethodIndex(projectPath: string; classPath: string);
+function LoadMethodIndex(projectPath: string; classPath: string): string;
 function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;
 function ConvertSmaliToJava(path: string): string;
 
@@ -189,6 +191,48 @@ begin
     end;
   end;
   list.Free;
+end;
+
+procedure BuildMethodIndex(projectPath: string; classPath: string);
+var
+  savePath: string;
+  list: TStringList;
+  i: Integer;
+begin
+  savePath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
+  ForceDirectories(savePath);
+  savePath += md5EncryptString(classPath);
+  list := TStringList.Create;
+  if (not FileExists(savePath)) then begin
+    with TStringList.Create do begin
+      LoadFromFile(classPath);
+      for i := 0 to Count - 1 do begin
+        if (Strings[i].StartsWith('.field')) then begin
+          list.Add(ExtractField(Strings[i]));
+        end else if (Strings[i].StartsWith('.method')) then begin
+          list.Add(ExtractMethod(Strings[i]));
+        end;
+      end;
+      Free;
+    end;
+    list.SaveToFile(savePath);
+  end;
+end;
+
+function LoadMethodIndex(projectPath: string; classPath: string): string;
+var
+  idxPath: string;
+begin
+  idxPath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
+  idxPath += md5EncryptString(classPath);
+  Result := '';
+  if (FileExists(idxPath)) then begin
+    with TStringList.Create do begin
+      LoadFromFile(idxPath);
+      Result := Text;
+      Free;
+    end;
+  end;
 end;
 
 function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;

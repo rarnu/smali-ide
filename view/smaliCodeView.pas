@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes, synhighlightersmali, SynCompletion;
+  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds;
 
 type
 
@@ -20,10 +20,12 @@ type
     FEditor: TSynEdit;
     FHighlighter: TSynSmaliSyn;
     FCompleteSmali: TSynCompletion;
+    FCompleteClass: TSynCompletion;
     FFileName: string;
     FIsChanged: Boolean;
     FMenu: TPopupMenu;
     FOnCodeJump: TOnCodeJump;
+    FProjectPath: string;
     FTitle: string;
     // menu items
     FMiJump: TMenuItem;
@@ -61,6 +63,10 @@ type
     FReplaceBtnReplaceAll: TButton;
 
     procedure btnClicked(Sender: TObject);
+    procedure completeClassCompletion(var Value: string; SourceValue: string;
+      var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState
+      );
+    procedure completeClassExecute(Sender: TObject);
     procedure OnEditorChange(Sender: TObject);
     procedure SetFileName(AValue: string);
     function FindSmaliString(aset: TCharSet): string;
@@ -82,6 +88,7 @@ type
     procedure GotoLine(line: Integer);
     function FindMethodAndJump(methodSig: string): Boolean;
   published
+    property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read FFileName write SetFileName;
     property Editor: TSynEdit read FEditor write FEditor;
     property Menu: TPopupMenu read FMenu write FMenu;
@@ -92,7 +99,7 @@ type
 implementation
 
 uses
-  TextUtils;
+  TextUtils, EncryptUtils, CodeUtils;
 
 { TSmaliCodeView }
 
@@ -181,6 +188,48 @@ begin
   end;
 end;
 
+procedure TSmaliCodeView.completeClassCompletion(var Value: string;
+  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
+  Shift: TShiftState);
+begin
+  if (FCompleteClass.Tag = 0) then Value:= 'L' + Value.Replace('.', '/') + ';';
+end;
+
+procedure TSmaliCodeView.completeClassExecute(Sender: TObject);
+var
+  i: Integer;
+  str: string = '';
+  cls: string = '';
+  indexPath: string;
+begin
+  FCompleteClass.ItemList.Clear;
+  // complete class execute
+  for i := FEditor.SelStart - 1 downto 1 do begin
+    str := FEditor.Lines.Text[i] + str;
+    if (str.Length = 2) then Break;
+  end;
+  if (str = '->') then begin
+    // hint method and field
+    FCompleteClass.Tag:= 1;
+    for i := FEditor.SelStart - 3 downto 1 do begin
+      if (not (FEditor.Lines.Text[i] in ['a'..'z', 'A'..'Z', '0'..'9', '/', ';', '$', '_'])) then Break;
+      cls := FEditor.Lines.Text[i] + cls;
+    end;
+    cls := cls.Substring(1, cls.Length - 2).Replace('/', '.');
+    indexPath:= CodeUtils.ClassIndexToFilePath(ProjectPath, cls);
+    if (FileExists(indexPath)) then begin
+      CodeUtils.BuildMethodIndex(ProjectPath, indexPath);
+      FCompleteClass.ItemList.Text:= CodeUtils.LoadMethodIndex(ProjectPath, indexPath);
+    end;
+  end else begin
+    FCompleteClass.Tag:= 0;
+    indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FProjectPath);
+    if (FileExists(indexPath + '/index')) then begin
+      FCompleteClass.ItemList.LoadFromFile(indexPath + '/index');
+    end;
+  end;
+end;
+
 procedure TSmaliCodeView.menuClicked(sender: TObject);
 var
   c: string;
@@ -232,6 +281,7 @@ begin
   FEditor := TSynEdit.Create(Self);
   FHighlighter := TSynSmaliSyn.Create(Self);
   FCompleteSmali:= TSynCompletion.Create(Self);
+  FCompleteClass := TSynCompletion.Create(Self);
   with TStringList.Create do begin
     smaliCmdPath:= ExtractFilePath(ParamStr(0)) + 'template/smalicmd';
     if (FileExists(smaliCmdPath)) then begin
@@ -241,11 +291,21 @@ begin
     Free;
   end;
   with FCompleteSmali do begin
+    ExecCommandID:= ecUserDefinedFirst;
     ItemList.Text:= smaliCmd;
     ShowSizeDrag:= True;
-    EndOfTokenChr:= '()[];';
+    EndOfTokenChr:= ';';
     Editor := FEditor;
     ShortCut:= Menus.ShortCut(VK_J, [ssCtrl]);
+  end;
+  with FCompleteClass do begin
+    ExecCommandID:= ecUserDefinedFirst + 1;
+    ShowSizeDrag:= True;
+    EndOfTokenChr:= ';';
+    Editor := FEditor;
+    ShortCut:= Menus.ShortCut(VK_K, [ssCtrl]);
+    OnExecute:=@completeClassExecute;
+    OnCodeCompletion:=@completeClassCompletion;
   end;
   with FEditor do begin
     Parent := Self;

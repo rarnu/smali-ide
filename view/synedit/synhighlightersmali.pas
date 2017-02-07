@@ -113,24 +113,24 @@ uses
 const
   ShellScriptKeysCount = 45;
   ShellScriptKeys: array[1..ShellScriptKeysCount] of string = (
-    'super', 'class', 'IMPLEMENTS', 'source', 'METHOD', 'END', 'PROLOGUE', 'LOCAL', 'CATCH', 'CATCHALL',
-    'SPARSE', 'SWITCH', 'PACKED', 'ARRAY', 'DATA', 'FIELD', 'ANNOTATION', 'SUBANNOTATION',
-    'ENUM', 'RESTART', 'LINE', 'PARAM', 'REGISTERS', 'LOCALS', 'PARAMETER', 'INTERFACE', 'public', 'PROTECTED',
-    'PRIVATE', 'ABSTRACT', 'STATIC', 'FINAL', 'SYNCHRONIZED', 'TRANSIENT', 'VOLATILE', 'NATIVE', 'STRICTFP', 'SYNTHETIC',
-    'BRIDGE', 'VARARGS', 'DECLARED', 'BUILD', 'RUNTIME', 'SYSTEM', 'CONSTRUCTOR');
+    'super', 'class', 'implements', 'source', 'method', 'end', 'prologue', 'local', 'catch', 'catchall',
+    'sparse', 'switch', 'packed', 'array', 'data', 'field', 'annotation', 'subannotation',
+    'enum', 'restart', 'line', 'param', 'registers', 'locals', 'parameter', 'interface', 'public', 'protected',
+    'private', 'abstract', 'static', 'final', 'synchronized', 'transient', 'volatile', 'native', 'strictfp', 'synthetic',
+    'bridge', 'varargs', 'declared', 'build', 'runtime', 'system', 'constructor');
 
   ShellScriptSecondKeysCount = 55;
   ShellScriptSecondKeys: array[1..ShellScriptSecondKeysCount] of string = (
-    'init', 'clinit', 'cinst', 'WIDE', 'STRING', 'CHECK', 'CAST', 'NEW', 'INSTANCE',
-    'nop', 'THROW', 'MOVE', 'RESULT', 'OBJECT', 'EXCEPTION', 'ARRAY', 'LENGTH', 'NEG', 'NOT',
-    'INVOKE', 'DIRECT', 'VIRTUAL', 'IGET', 'IPUT', 'RETURN', 'VOID', 'MONITOR', 'AGET', 'APUT',
-    'ENTER', 'EXIT', 'if', 'MUL', 'ADD', 'SUB', 'RSUB', 'DIV', 'REM', 'AND', 'OR', 'XOR',
-    'SHL', 'SHR', 'USHR', 'ADDR', 'INSTANCE', 'OF', 'SGET', 'SPUT', 'GOTO', 'CMP', 'CMPL', 'CMPG',
-    'FILL', 'FILLED'
+    'init', 'clinit', 'const', 'wide', 'string', 'check', 'cast', 'new', 'instance',
+    'nop', 'throw', 'move', 'result', 'object', 'exception', 'array', 'length', 'neg', 'not',
+    'invoke', 'direct', 'virtual', 'iget', 'iput', 'return', 'void', 'monitor', 'aget', 'aput',
+    'enter', 'exit', 'if', 'mul', 'add', 'sub', 'rsub', 'div', 'rem', 'and', 'or', 'xor',
+    'shl', 'shr', 'ushr', 'addr', 'instance', 'of', 'sget', 'sput', 'goto', 'cmp', 'cmpl', 'cmpg',
+    'fill', 'filled'
     );
   ShellScriptThirdKeyCount = 20;
   ShellScriptThirdKeys: array[1..ShellScriptThirdKeyCount] of string = (
-    'int', 'long', 'float', 'DOUBLE', 'TO', 'BYTE', 'CHAR', 'SHORT', 'NE', 'LT', 'GE', 'GT', 'LE', 'EQ',
+    'int', 'long', 'float', 'double', 'to', 'byte', 'char', 'short', 'ne', 'lt', 'ge', 'gt', 'le', 'eq',
     'nez', 'ltz', 'gez', 'gtz', 'lez', 'eqz'
   );
 

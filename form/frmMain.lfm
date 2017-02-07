@@ -351,6 +351,14 @@ inherited FormMain: TFormMain
         ShowAlwaysCheckable = True
         OnClick = miSearchResultClick
       end
+      object mm10: TMenuItem
+        Caption = '-'
+      end
+      object miConsole: TMenuItem
+        Caption = 'Console'
+        ShowAlwaysCheckable = True
+        OnClick = miConsoleClick
+      end
     end
     object miSearch: TMenuItem
       Caption = '&Search'
@@ -384,6 +392,24 @@ inherited FormMain: TFormMain
         Caption = 'Goto Line'
         ShortCut = 16455
         OnClick = miGotoLineClick
+      end
+    end
+    object miPackage: TMenuItem
+      Caption = '&Package'
+      object miDecompile: TMenuItem
+        Caption = '&Decompile'
+        OnClick = miDecompileClick
+      end
+      object miCompile: TMenuItem
+        Caption = '&Compile'
+        OnClick = miCompileClick
+      end
+      object mm9: TMenuItem
+        Caption = '-'
+      end
+      object miInstallFramework: TMenuItem
+        Caption = 'Install Framework'
+        OnClick = miInstallFrameworkClick
       end
     end
     object miCode: TMenuItem
