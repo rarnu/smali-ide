@@ -64,17 +64,28 @@ type
 
     procedure btnClicked(Sender: TObject);
     procedure completeClassCompletion(var Value: string; SourceValue: string;
-      var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState
-      );
+      var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState);
     procedure completeClassExecute(Sender: TObject);
+    procedure completeClassCancel(Sender: TObject);
+    procedure completeClassKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure completeClassKeyPress(Sender: TObject; var Key: char);
+
+    procedure completeSmaliCancel(Sender: TObject);
+    procedure completeSmaliCompletion(var Value: string; SourceValue: string;
+      var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState);
+    procedure completeSmaliKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure completeSmaliKeyPress(Sender: TObject; var Key: char);
+
     procedure OnEditorChange(Sender: TObject);
     procedure SetFileName(AValue: string);
     function FindSmaliString(aset: TCharSet): string;
     function FindClassToJump(): string;
     function FindMethodToJump(): string;
-  protected
     procedure menuClicked(sender: TObject);
+  protected
+
   public
+
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
     function QueryClose(): Boolean;
@@ -193,6 +204,7 @@ procedure TSmaliCodeView.completeClassCompletion(var Value: string;
   Shift: TShiftState);
 begin
   if (FCompleteClass.Tag = 0) then Value:= 'L' + Value.Replace('.', '/') + ';';
+  FCompleteClass.Deactivate;
 end;
 
 procedure TSmaliCodeView.completeClassExecute(Sender: TObject);
@@ -270,6 +282,59 @@ begin
   end;
 end;
 
+procedure TSmaliCodeView.completeSmaliCancel(Sender: TObject);
+var
+  f: TCustomForm;
+begin
+  f := GetParentForm(Self);
+  while f.ActiveControl <> FEditor do begin
+    Application.ProcessMessages;
+    f.ActiveControl := FEditor;
+    FEditor.SetFocus;
+  end;
+end;
+
+procedure TSmaliCodeView.completeSmaliCompletion(var Value: string;
+  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
+  Shift: TShiftState);
+begin
+  FCompleteSmali.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeSmaliKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = VK_ESCAPE) then FCompleteSmali.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeSmaliKeyPress(Sender: TObject; var Key: char);
+begin
+  if (Ord(Key) = VK_ESCAPE) then FCompleteSmali.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeClassKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = VK_ESCAPE) then FCompleteClass.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeClassKeyPress(Sender: TObject; var Key: char);
+begin
+  if (Ord(Key) = VK_ESCAPE) then FCompleteClass.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeClassCancel(Sender: TObject);
+var
+  f: TCustomForm;
+begin
+  f := GetParentForm(Self);
+  while f.ActiveControl <> FEditor do begin
+    Application.ProcessMessages;
+    f.ActiveControl := FEditor;
+    FEditor.SetFocus;
+  end;
+end;
+
 constructor TSmaliCodeView.Create(TheOwner: TComponent);
 var
   i: integer;
@@ -297,6 +362,10 @@ begin
     EndOfTokenChr:= ';';
     Editor := FEditor;
     ShortCut:= Menus.ShortCut(VK_J, [ssCtrl]);
+    OnCodeCompletion:=@completeSmaliCompletion;
+    OnCancel:=@completeSmaliCancel;
+    OnKeyPress:=@completeSmaliKeyPress;
+    OnKeyDown:=@completeSmaliKeyDown;
   end;
   with FCompleteClass do begin
     ExecCommandID:= ecUserDefinedFirst + 1;
@@ -306,6 +375,9 @@ begin
     ShortCut:= Menus.ShortCut(VK_K, [ssCtrl]);
     OnExecute:=@completeClassExecute;
     OnCodeCompletion:=@completeClassCompletion;
+    OnCancel:=@completeClassCancel;
+    OnKeyPress:=@completeClassKeyPress;
+    OnKeyDown:=@completeClassKeyDown;
   end;
   with FEditor do begin
     Parent := Self;
@@ -642,7 +714,9 @@ end;
 
 procedure TSmaliCodeView.GotoLine(line: Integer);
 begin
-  // TODO: goto line
+  // goto line
+  FEditor.CaretY:= line;
+  FEditor.SetFocus;
 end;
 
 function TSmaliCodeView.FindMethodAndJump(methodSig: string): Boolean;
