@@ -31,6 +31,7 @@ inherited FormMain: TFormMain
       ScrollBars = ssAutoBoth
       TabOrder = 0
       OnClick = tvProjectFilesClick
+      OnMouseUp = tvProjectFilesMouseUp
       Options = [tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips]
     end
   end
@@ -2329,5 +2330,28 @@ inherited FormMain: TFormMain
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00
     }
+  end
+  object popCodeFiles: TPopupMenu[12]
+    left = 40
+    top = 224
+    object miNewClass: TMenuItem
+      Caption = 'New Class'
+      OnClick = miNewClassClick
+    end
+    object miNewInterfce: TMenuItem
+      Caption = 'New Interface'
+      OnClick = miNewInterfceClick
+    end
+    object miNewTextFile: TMenuItem
+      Caption = 'New Text File'
+      OnClick = miNewTextFileClick
+    end
+    object mm11: TMenuItem
+      Caption = '-'
+    end
+    object miDeleteFile: TMenuItem
+      Caption = 'Delete File'
+      OnClick = miDeleteFileClick
+    end
   end
 end

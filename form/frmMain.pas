@@ -16,6 +16,11 @@ type
     imgIndex: TImageList;
     imgLst: TImageList;
     lstSearchResult: TListBox;
+    miDeleteFile: TMenuItem;
+    mm11: TMenuItem;
+    miNewTextFile: TMenuItem;
+    miNewInterfce: TMenuItem;
+    miNewClass: TMenuItem;
     miConsole: TMenuItem;
     mm10: TMenuItem;
     miInstallFramework: TMenuItem;
@@ -71,6 +76,7 @@ type
     pnlClassIndex: TPanel;
     pgCode: TPageControl;
     pnlProjectFiles: TPanel;
+    popCodeFiles: TPopupMenu;
     splBottom: TSplitter;
     splRight: TSplitter;
     splProjectFiles: TSplitter;
@@ -104,6 +110,7 @@ type
     procedure miCutClick(Sender: TObject);
     procedure miDecompileClick(Sender: TObject);
     procedure miDeleteClick(Sender: TObject);
+    procedure miDeleteFileClick(Sender: TObject);
     procedure miDocumentClick(Sender: TObject);
     procedure miExitClick(Sender: TObject);
     procedure miFindClick(Sender: TObject);
@@ -111,7 +118,10 @@ type
     procedure miFindNextClick(Sender: TObject);
     procedure miGotoLineClick(Sender: TObject);
     procedure miInstallFrameworkClick(Sender: TObject);
+    procedure miNewClassClick(Sender: TObject);
+    procedure miNewInterfceClick(Sender: TObject);
     procedure miNewProjClick(Sender: TObject);
+    procedure miNewTextFileClick(Sender: TObject);
     procedure miOpenProjClick(Sender: TObject);
     procedure miPasteClick(Sender: TObject);
     procedure miRedoClick(Sender: TObject);
@@ -129,6 +139,8 @@ type
     procedure pgCodeCloseTabClicked(Sender: TObject);
     procedure tvClassIndexClick(Sender: TObject);
     procedure tvProjectFilesClick(Sender: TObject);
+    procedure tvProjectFilesMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FCurrentProjectName: string;
     FCurrentProjectPath: string;
@@ -198,6 +210,21 @@ begin
       end;
     end;
 
+  end;
+end;
+
+procedure TFormMain.tvProjectFilesMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  node: TTreeNode;
+  p: TPoint;
+begin
+  if (Button = mbRight) then begin
+    node := tvProjectFiles.GetNodeAt(X, Y);
+    if (node <> nil) then begin
+      p := ClientToScreen(TPoint.Create(X, trunc(node.Top + node.Height * 1.5)));
+      popCodeFiles.PopUp(p.X, p.y);
+    end;
   end;
 end;
 
@@ -330,6 +357,11 @@ begin
   end;
 end;
 
+procedure TFormMain.miDeleteFileClick(Sender: TObject);
+begin
+  // TODO: delete file
+end;
+
 procedure TFormMain.miDocumentClick(Sender: TObject);
 begin
   // TODO: documents
@@ -370,9 +402,24 @@ begin
   // TODO: install framework
 end;
 
+procedure TFormMain.miNewClassClick(Sender: TObject);
+begin
+  // TODO: new class
+end;
+
+procedure TFormMain.miNewInterfceClick(Sender: TObject);
+begin
+  // TODO: new interface
+end;
+
 procedure TFormMain.miNewProjClick(Sender: TObject);
 begin
   // TODO: new project
+end;
+
+procedure TFormMain.miNewTextFileClick(Sender: TObject);
+begin
+  // TODO: new text file
 end;
 
 procedure TFormMain.miCopyClick(Sender: TObject);
