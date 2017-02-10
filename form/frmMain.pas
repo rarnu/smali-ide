@@ -359,8 +359,31 @@ begin
 end;
 
 procedure TFormMain.miDeleteFileClick(Sender: TObject);
+var
+  node: TTreeNode;
+  path: string;
 begin
-  // TODO: delete file
+  node := tvProjectFiles.Selected;
+  path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+  if (DirectoryExists(path)) then begin
+    if MessageDlg('Hint', 'Delete whole folder? You cannot undo this operation.', mtConfirmation, mbOKCancel, 0) = mrOK then begin
+       // delete directory
+      if DeleteDirectory(path, False) then begin
+        tvProjectFiles.Items.Delete(node);
+      end else begin
+        MessageDlg('Error', 'Delete folder failed.', mtError, [mbOK], 0);
+      end;
+    end;
+  end else begin
+    if MessageDlg('Hint', 'Delete the file? You cannot undo this operation.', mtConfirmation, mbOKCancel, 0) = mrOK then begin
+      // delete file
+      if DeleteFile(path) then begin
+        tvProjectFiles.Items.Delete(node);
+      end else begin
+        MessageDlg('Error', 'Delete file failed', mtError, [mbOK], 0);
+      end;
+    end;
+  end;
 end;
 
 procedure TFormMain.miDocumentClick(Sender: TObject);
@@ -394,8 +417,19 @@ begin
 end;
 
 procedure TFormMain.miGotoLineClick(Sender: TObject);
+var
+  line: string;
+  linenum: Integer;
+  page: TSmaliCodeView;
 begin
-  // TODO: goto line
+  // goto line
+  if (pgCode.ActivePage is TSmaliCodeView) then begin
+    line := InputBox('Goto Line', 'Input a line number to goto:', '');
+    linenum:= StrToIntDef(line, -1);
+    if (linenum <> -1) then begin
+      TSmaliCodeView(pgCode.ActivePage).GotoLine(linenum);
+    end;
+  end;
 end;
 
 procedure TFormMain.miInstallFrameworkClick(Sender: TObject);

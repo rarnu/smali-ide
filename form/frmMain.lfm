@@ -4,27 +4,28 @@ inherited FormMain: TFormMain
   Top = 315
   Width = 958
   Caption = 'Smali IDE'
-  ClientHeight = 607
+  ClientHeight = 630
   ClientWidth = 958
   Menu = mmMain
   object pnlProjectFiles: TPanel[0]
     Left = 0
-    Height = 455
+    Height = 478
     Top = 36
     Width = 240
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 455
+    ClientHeight = 478
     ClientWidth = 240
     TabOrder = 0
     object tvProjectFiles: TTreeView
       Left = 0
-      Height = 455
+      Height = 478
       Top = 0
       Width = 240
       Align = alClient
       BorderStyle = bsNone
       DefaultItemHeight = 40
+      ExpandSignSize = 7
       HideSelection = False
       Images = imgLst
       ReadOnly = True
@@ -37,13 +38,13 @@ inherited FormMain: TFormMain
   end
   object splProjectFiles: TSplitter[1]
     Left = 240
-    Height = 455
+    Height = 478
     Top = 36
     Width = 5
   end
   object pgCode: TPageControl[2]
     Left = 245
-    Height = 455
+    Height = 478
     Top = 36
     Width = 489
     Align = alClient
@@ -170,20 +171,21 @@ inherited FormMain: TFormMain
   end
   object pnlClassIndex: TPanel[4]
     Left = 739
-    Height = 455
+    Height = 478
     Top = 36
     Width = 219
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 455
+    ClientHeight = 478
     ClientWidth = 219
     TabOrder = 4
     object tvClassIndex: TTreeView
       Left = 0
-      Height = 428
+      Height = 451
       Top = 27
       Width = 219
       Align = alClient
+      ExpandSignSize = 7
       Images = imgIndex
       ReadOnly = True
       ScrollBars = ssAutoBoth
@@ -203,7 +205,7 @@ inherited FormMain: TFormMain
   end
   object splRight: TSplitter[5]
     Left = 734
-    Height = 455
+    Height = 478
     Top = 36
     Width = 5
     Align = alRight
@@ -212,7 +214,7 @@ inherited FormMain: TFormMain
   object sbMain: TStatusBar[6]
     Left = 0
     Height = 21
-    Top = 586
+    Top = 609
     Width = 958
     Panels = <    
       item
@@ -226,7 +228,7 @@ inherited FormMain: TFormMain
   object pnlSearch: TPanel[7]
     Left = 0
     Height = 90
-    Top = 496
+    Top = 519
     Width = 958
     Align = alBottom
     BevelOuter = bvNone
@@ -250,15 +252,15 @@ inherited FormMain: TFormMain
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 491
+    Top = 514
     Width = 958
     Align = alBottom
     ResizeAnchor = akBottom
   end
   object mmMain: TMainMenu[9]
     Images = imgLst
-    left = 40
-    top = 40
+    Left = 40
+    Top = 40
     object miFile: TMenuItem
       Caption = '&File'
       object miNewProj: TMenuItem
@@ -462,8 +464,8 @@ inherited FormMain: TFormMain
   object imgLst: TImageList[10]
     Height = 32
     Width = 32
-    left = 40
-    top = 96
+    Left = 40
+    Top = 96
     Bitmap = {
       4C690E0000002000000020000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2261,8 +2263,8 @@ inherited FormMain: TFormMain
     }
   end
   object imgIndex: TImageList[11]
-    left = 44
-    top = 160
+    Left = 44
+    Top = 160
     Bitmap = {
       4C69020000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -2332,8 +2334,8 @@ inherited FormMain: TFormMain
     }
   end
   object popCodeFiles: TPopupMenu[12]
-    left = 40
-    top = 224
+    Left = 40
+    Top = 224
     object miNewClass: TMenuItem
       Caption = 'New Class'
       OnClick = miNewClassClick
