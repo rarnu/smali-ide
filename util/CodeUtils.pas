@@ -41,6 +41,7 @@ procedure BuildMethodIndex(projectPath: string; classPath: string);
 function LoadMethodIndex(projectPath: string; classPath: string): string;
 function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;
 function ConvertSmaliToJava(path: string): string;
+function NodeToPath(projectPath: string; node: TTreeNode): string;
 
 implementation
 
@@ -277,6 +278,23 @@ function ConvertSmaliToJava(path: string): string;
 begin
   // TODO: smali to java
   result := '';
+end;
+
+function NodeToPath(projectPath: string; node: TTreeNode): string;
+var
+  p: string = '';
+begin
+  // TODO: node to path
+  p := node.Text;
+  while node.Parent <> nil do begin
+    p := node.Parent.Text + '/' + p;
+    node := node.Parent;
+  end;
+  p := ExtractFilePath(projectPath) + p;
+  if (DirectoryExists(p)) then begin
+    p += '/';
+  end;
+  Result := p;
 end;
 
 { TBuildClassIndexThread }

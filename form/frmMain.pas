@@ -222,7 +222,8 @@ begin
   if (Button = mbRight) then begin
     node := tvProjectFiles.GetNodeAt(X, Y);
     if (node <> nil) then begin
-      p := ClientToScreen(TPoint.Create(X, trunc(node.Top + node.Height * 1.5)));
+      tvProjectFiles.Selected := node;
+      p := ClientToScreen(TPoint.Create(X, Y + node.Height));
       popCodeFiles.PopUp(p.X, p.y);
     end;
   end;
@@ -403,13 +404,24 @@ begin
 end;
 
 procedure TFormMain.miNewClassClick(Sender: TObject);
+var
+  node: TTreeNode;
+  path: string;
 begin
   // TODO: new class
+  node := tvProjectFiles.Selected;
+  path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+
 end;
 
 procedure TFormMain.miNewInterfceClick(Sender: TObject);
+var
+  node: TTreeNode;
+  path: string;
 begin
   // TODO: new interface
+  node := tvProjectFiles.Selected;
+  path := CodeUtils.NodeToPath(CurrentProjectPath, node);
 end;
 
 procedure TFormMain.miNewProjClick(Sender: TObject);
@@ -418,8 +430,13 @@ begin
 end;
 
 procedure TFormMain.miNewTextFileClick(Sender: TObject);
+var
+  node: TTreeNode;
+  path: string;
 begin
   // TODO: new text file
+  node := tvProjectFiles.Selected;
+  path := CodeUtils.NodeToPath(CurrentProjectPath, node);
 end;
 
 procedure TFormMain.miCopyClick(Sender: TObject);
