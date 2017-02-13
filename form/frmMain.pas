@@ -172,7 +172,7 @@ implementation
 {$R *.lfm}
 
 uses
-  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils;
+  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf;
 
 { TFormMain }
 
@@ -181,6 +181,7 @@ var
   node: TTreeNode;
   path: string;
   page: TSmaliCodeView;
+  pageText: TTextCodeView;
   idx: Integer;
 begin
   //
@@ -207,7 +208,16 @@ begin
           page.OnCodeJump:=@codeJumpCallback;
           pgCode.TabIndex:= pgCode.PageCount - 1;
         end else begin
-          // TODO: open other file
+          // open other file
+          if (CodeUtils.IsTextFile(path)) then begin
+            pageText := TTextCodeView.Create(pgCode);
+            pageText.Parent := pgCode;
+            pageText.ProjectPath:= CurrentProjectPath;
+            pageText.FileName:= path;
+            pgCode.TabIndex:= pgCode.PageCount - 1;
+          end else if (CodeUtils.IsImageFile(path)) then begin
+            // TODO: open image path
+          end;
         end;
       end else begin
         pgCode.TabIndex:= idx;
@@ -240,8 +250,8 @@ begin
   // is page exists
   Result := -1;
   for i := 0 to pgCode.PageCount - 1 do begin
-    if (pgCode.Pages[i] is TSmaliCodeView) then begin
-      if (TSmaliCodeView(pgCode.Pages[i]).FileName = path) then begin
+    if (pgCode.Pages[i] is ICodeViewIntf) then begin
+      if ((pgCode.Pages[i] as ICodeViewIntf).GetFileName() = path) then begin
         Result := i;
         Break;
       end;
@@ -338,15 +348,15 @@ end;
 
 procedure TFormMain.miPasteClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.Paste(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.Paste((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
 procedure TFormMain.miCutClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.Cut(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.Cut((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
@@ -357,8 +367,8 @@ end;
 
 procedure TFormMain.miDeleteClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.Delete(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.Delete((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
@@ -403,8 +413,8 @@ end;
 procedure TFormMain.miFindClick(Sender: TObject);
 begin
   // find
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TSmaliCodeView(pgCode.ActivePage).Find();
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    (pgCode.ActivePage as ICodeViewIntf).Find();
   end;
 end;
 
@@ -415,8 +425,8 @@ end;
 
 procedure TFormMain.miFindNextClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TSmaliCodeView(pgCode.ActivePage).FindNext();
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    (pgCode.ActivePage as ICodeViewIntf).FindNext();
   end;
 end;
 
@@ -426,11 +436,11 @@ var
   linenum: Integer;
 begin
   // goto line
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
     line := InputBox('Goto Line', 'Input a line number to goto:', '');
     linenum:= StrToIntDef(line, -1);
     if (linenum <> -1) then begin
-      TSmaliCodeView(pgCode.ActivePage).GotoLine(linenum);
+      (pgCode.ActivePage as ICodeViewIntf).GotoLine(linenum);
     end;
   end;
 end;
@@ -501,8 +511,8 @@ end;
 
 procedure TFormMain.miCopyClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.Copy(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.Copy((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
@@ -555,15 +565,15 @@ end;
 
 procedure TFormMain.miRedoClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.Redo(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.Redo((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
 procedure TFormMain.miReplaceClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TSmaliCodeView(pgCode.ActivePage).Replace();
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    (pgCode.ActivePage as ICodeViewIntf).Replace();
   end;
 end;
 
@@ -573,23 +583,23 @@ var
 begin
   // save all files
   for i := 0 to pgCode.PageCount - 1 do begin
-    if (pgCode.Pages[i] is TSmaliCodeView) then begin
-      TSmaliCodeView(pgCode.Pages[i]).Save();
+    if (pgCode.Pages[i] is ICodeViewIntf) then begin
+      (pgCode.Pages[i] as ICodeViewIntf).Save();
     end;
   end;
 end;
 
 procedure TFormMain.miSaveAsClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TSmaliCodeView(pgCode.ActivePage).SaveAs();
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    (pgCode.ActivePage as ICodeViewIntf).SaveAs();
   end;
 end;
 
 procedure TFormMain.miSaveFileClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TSmaliCodeView(pgCode.ActivePage).Save();
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    (pgCode.ActivePage as ICodeViewIntf).Save();
   end;
 end;
 
@@ -602,8 +612,8 @@ end;
 
 procedure TFormMain.miSelectAllClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.SelectAll(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.SelectAll((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
@@ -626,8 +636,8 @@ end;
 
 procedure TFormMain.miUndoClick(Sender: TObject);
 begin
-  if (pgCode.ActivePage is TSmaliCodeView) then begin
-    TextUtils.Undo(TSmaliCodeView(pgCode.ActivePage).Editor);
+  if (pgCode.ActivePage is ICodeViewIntf) then begin
+    TextUtils.Undo((pgCode.ActivePage as ICodeViewIntf).GetEditor());
   end;
 end;
 
@@ -639,11 +649,11 @@ end;
 procedure TFormMain.pgCodeCloseTabClicked(Sender: TObject);
 var
   idx: Integer;
-  tab: TSmaliCodeView;
+  tab: ICodeViewIntf;
 begin
   idx := pgCode.TabIndex;
-  if (Sender is TSmaliCodeView) then begin
-    tab := TSmaliCodeView(Sender);
+  if (Sender is ICodeViewIntf) then begin
+    tab := (Sender as ICodeViewIntf);
     if (tab.QueryClose()) then begin
       tab.Free;
     end;

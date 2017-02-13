@@ -1,35 +1,34 @@
-unit smaliCodeView;
+unit textCodeView;
 
 {$mode objfpc}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf;
+  Classes, SysUtils, StdCtrls, Controls, ComCtrls, ExtCtrls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType,
+  SynEditTypes, Dialogs, Forms, codeViewIntf, SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript, synhighlighterunixshellscript;
 
 type
+  { TTextCodeView }
 
-  TCharSet = set of Char;
-  TOnCodeJump = procedure (sender: TObject; path: string; method: string; typ: Integer) of object;
-
-  { TSmaliCodeView }
-
-  TSmaliCodeView = class(TTabSheet, ICodeViewIntf)
+  TTextCodeView = class(TTabSheet, ICodeViewIntf)
   private
     FEditor: TSynEdit;
-    FHighlighter: TSynSmaliSyn;
-    FCompleteSmali: TSynCompletion;
-    FCompleteClass: TSynCompletion;
-    FFileName: string;
+
+    // TODO: highlighters
+    FHighlightXml: TSynXMLSyn;
+    FHighlightHtml: TSynHTMLSyn;
+    FHighlightCss: TSynCssSyn;
+    FHighlightJs: TSynJScriptSyn;
+    FHighlightShell: TSynUNIXShellScriptSyn;
+
     FIsChanged: Boolean;
     FMenu: TPopupMenu;
-    FOnCodeJump: TOnCodeJump;
-    FProjectPath: string;
     FTitle: string;
+    FFileName: string;
+    FProjectPath: string;
+
     // menu items
-    FMiJump: TMenuItem;
-    FMiS0: TMenuItem;
     FMiUndo: TMenuItem;
     FMiRedo: TMenuItem;
     FMiS1: TMenuItem;
@@ -37,8 +36,6 @@ type
     FMiCopy: TMenuItem;
     FMiPaste: TMenuItem;
     FMiDelete: TMenuItem;
-    FMiS2: TMenuItem;
-    FMiToJava: TMenuItem;
 
     // find & replace
     FPnlFind: TPanel;
@@ -61,31 +58,12 @@ type
     FReplaceEdit: TEdit;
     FReplaceBtnReplace: TButton;
     FReplaceBtnReplaceAll: TButton;
-
     procedure btnClicked(Sender: TObject);
-    procedure completeClassCompletion(var Value: string; SourceValue: string;
-      var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState);
-    procedure completeClassExecute(Sender: TObject);
-    procedure completeClassCancel(Sender: TObject);
-    procedure completeClassKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure completeClassKeyPress(Sender: TObject; var Key: char);
-
-    procedure completeSmaliCancel(Sender: TObject);
-    procedure completeSmaliCompletion(var Value: string; SourceValue: string;
-      var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState);
-    procedure completeSmaliKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure completeSmaliKeyPress(Sender: TObject; var Key: char);
     function GetEditor: TSynEdit;
     function GetFileName: string;
-
+    procedure menuClicked(Sender: TObject);
     procedure OnEditorChange(Sender: TObject);
     procedure SetFileName(AValue: string);
-    function FindSmaliString(aset: TCharSet): string;
-    function FindClassToJump(): string;
-    function FindMethodToJump(): string;
-    procedure menuClicked(sender: TObject);
-  protected
-
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
@@ -98,24 +76,22 @@ type
     procedure Replace();
     procedure CancelReplace();
     procedure GotoLine(line: Integer);
-    function FindMethodAndJump(methodSig: string): Boolean;
   published
     property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read GetFileName write SetFileName;
     property Editor: TSynEdit read GetEditor;
     property Menu: TPopupMenu read FMenu write FMenu;
     property IsChanged: Boolean read FIsChanged;
-    property OnCodeJump: TOnCodeJump read FOnCodeJump write FOnCodeJump;
   end;
 
 implementation
 
 uses
-  TextUtils, EncryptUtils, CodeUtils;
+  TextUtils;
 
-{ TSmaliCodeView }
+{ TTextCodeView }
 
-procedure TSmaliCodeView.SetFileName(AValue: string);
+procedure TTextCodeView.SetFileName(AValue: string);
 begin
   FFileName:=AValue;
   FTitle:= ExtractFileName(FFileName);
@@ -123,57 +99,30 @@ begin
   FEditor.Lines.LoadFromFile(FFileName);
 end;
 
-function TSmaliCodeView.FindSmaliString(aset: TCharSet): string;
-var
-  s: string = '';
-  idx: Integer;
-  c: Char;
-begin
-  // find class to jump
-  idx:= FEditor.SelStart;
-  while idx > 0 do begin
-    c := FEditor.Lines.Text[idx];
-    if (c in aset) then begin
-      s := c + s;
-    end else begin
-      Break;
-    end;
-    Dec(idx);
-  end;
-  idx := FEditor.SelStart + 1;
-  while idx < FEditor.Lines.Text.Length do begin
-    c := FEditor.Lines.Text[idx];
-    if (c in aset) then begin
-      s := s + c;
-    end else begin
-      Break;
-    end;
-    Inc(idx);
-  end;
-  Result := s;
-end;
-
-function TSmaliCodeView.FindClassToJump: string;
-const
-  CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', ';', '_', '$'];
-begin
-  Result := FindSmaliString(CLASS_CHARS);
-end;
-
-function TSmaliCodeView.FindMethodToJump: string;
-const
-  CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', ';', '_', '$', '-', '<', '>', '(', ')', '[', ':'];
-begin
-  Result := FindSmaliString(CLASS_CHARS);
-end;
-
-procedure TSmaliCodeView.OnEditorChange(Sender: TObject);
+procedure TTextCodeView.OnEditorChange(Sender: TObject);
 begin
   FIsChanged := True;
   Caption:= FTitle + ' *';
 end;
 
-procedure TSmaliCodeView.btnClicked(Sender: TObject);
+procedure TTextCodeView.menuClicked(Sender: TObject);
+begin
+  if (sender = FMiUndo) then begin
+    TextUtils.Undo(FEditor);
+  end else if (sender = FMiRedo) then begin
+    TextUtils.Redo(FEditor);
+  end else if (sender = FMiCut) then begin
+    TextUtils.Cut(FEditor);
+  end else if (sender = FMiCopy) then begin
+    TextUtils.Copy(FEditor);
+  end else if (sender = FMiPaste) then begin
+    TextUtils.Paste(FEditor);
+  end else if (sender = FMiDelete) then begin
+    TextUtils.Delete(FEditor);
+  end;
+end;
+
+procedure TTextCodeView.btnClicked(Sender: TObject);
 var
   opt: TSynSearchOptions;
 begin
@@ -200,198 +149,24 @@ begin
   end;
 end;
 
-procedure TSmaliCodeView.completeClassCompletion(var Value: string;
-  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
-  Shift: TShiftState);
-begin
-  if (FCompleteClass.Tag = 0) then Value:= 'L' + Value.Replace('.', '/') + ';';
-  FCompleteClass.Deactivate;
-end;
-
-procedure TSmaliCodeView.completeClassExecute(Sender: TObject);
-var
-  i: Integer;
-  str: string = '';
-  cls: string = '';
-  indexPath: string;
-begin
-  FCompleteClass.ItemList.Clear;
-  // complete class execute
-  for i := FEditor.SelStart - 1 downto 1 do begin
-    str := FEditor.Lines.Text[i] + str;
-    if (str.Length = 2) then Break;
-  end;
-  if (str = '->') then begin
-    // hint method and field
-    FCompleteClass.Tag:= 1;
-    for i := FEditor.SelStart - 3 downto 1 do begin
-      if (not (FEditor.Lines.Text[i] in ['a'..'z', 'A'..'Z', '0'..'9', '/', ';', '$', '_'])) then Break;
-      cls := FEditor.Lines.Text[i] + cls;
-    end;
-    cls := cls.Substring(1, cls.Length - 2).Replace('/', '.');
-    indexPath:= CodeUtils.ClassIndexToFilePath(ProjectPath, cls);
-    if (FileExists(indexPath)) then begin
-      CodeUtils.BuildMethodIndex(ProjectPath, indexPath);
-      FCompleteClass.ItemList.Text:= CodeUtils.LoadMethodIndex(ProjectPath, indexPath);
-      FCompleteClass.Position:= 0;
-    end;
-  end else begin
-    FCompleteClass.Tag:= 0;
-    indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FProjectPath);
-    if (FileExists(indexPath + '/index')) then begin
-      FCompleteClass.ItemList.LoadFromFile(indexPath + '/index');
-      FCompleteClass.Position:= 0;
-    end;
-  end;
-end;
-
-procedure TSmaliCodeView.menuClicked(sender: TObject);
-var
-  c: string;
-  methodSig: string;
-begin
-  if (sender = FMiJump) then begin
-    c := FindClassToJump();
-    if (c <> '') and (c.StartsWith('L')) and (c.EndsWith(';')) then begin
-      c := c.Substring(1, c.Length - 2);
-      if (Assigned(FOnCodeJump)) then begin
-        FOnCodeJump(Self, c, '', 0);
-      end;
-    end else begin
-      c := FindMethodToJump();
-      if (c <> '') and (c.StartsWith('L')) and (c.Contains('->')) then begin
-        methodSig:= c.Substring(c.IndexOf('->') + 2);
-        c := c.Substring(0, c.IndexOf('->'));
-        c := c.Substring(1, c.Length - 2);
-        if (Assigned(FOnCodeJump)) then begin
-          FOnCodeJump(Self, c, methodSig, 1);
-        end;
-      end;
-    end;
-  end else if (sender = FMiUndo) then begin
-    TextUtils.Undo(FEditor);
-  end else if (sender = FMiRedo) then begin
-    TextUtils.Redo(FEditor);
-  end else if (sender = FMiCut) then begin
-    TextUtils.Cut(FEditor);
-  end else if (sender = FMiCopy) then begin
-    TextUtils.Copy(FEditor);
-  end else if (sender = FMiPaste) then begin
-    TextUtils.Paste(FEditor);
-  end else if (sender = FMiDelete) then begin
-    TextUtils.Delete(FEditor);
-  end else if (sender = FMiToJava) then begin
-    // TODO: to java
-  end;
-end;
-
-procedure TSmaliCodeView.completeSmaliCancel(Sender: TObject);
-var
-  f: TCustomForm;
-begin
-  f := GetParentForm(Self);
-  while f.ActiveControl <> FEditor do begin
-    Application.ProcessMessages;
-    f.ActiveControl := FEditor;
-    FEditor.SetFocus;
-  end;
-end;
-
-procedure TSmaliCodeView.completeSmaliCompletion(var Value: string;
-  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
-  Shift: TShiftState);
-begin
-  FCompleteSmali.Deactivate;
-end;
-
-procedure TSmaliCodeView.completeSmaliKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = VK_ESCAPE) then FCompleteSmali.Deactivate;
-end;
-
-procedure TSmaliCodeView.completeSmaliKeyPress(Sender: TObject; var Key: char);
-begin
-  if (Ord(Key) = VK_ESCAPE) then FCompleteSmali.Deactivate;
-end;
-
-function TSmaliCodeView.GetEditor: TSynEdit;
+function TTextCodeView.GetEditor: TSynEdit;
 begin
   Result := FEditor;
 end;
 
-function TSmaliCodeView.GetFileName: string;
+function TTextCodeView.GetFileName: string;
 begin
   Result := FFileName;
 end;
 
-procedure TSmaliCodeView.completeClassKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = VK_ESCAPE) then FCompleteClass.Deactivate;
-end;
-
-procedure TSmaliCodeView.completeClassKeyPress(Sender: TObject; var Key: char);
-begin
-  if (Ord(Key) = VK_ESCAPE) then FCompleteClass.Deactivate;
-end;
-
-procedure TSmaliCodeView.completeClassCancel(Sender: TObject);
-var
-  f: TCustomForm;
-begin
-  f := GetParentForm(Self);
-  while f.ActiveControl <> FEditor do begin
-    Application.ProcessMessages;
-    f.ActiveControl := FEditor;
-    FEditor.SetFocus;
-  end;
-end;
-
-constructor TSmaliCodeView.Create(TheOwner: TComponent);
+constructor TTextCodeView.Create(TheOwner: TComponent);
 var
   i: integer;
   part: TSynGutterPartBase;
-  smaliCmdPath: string;
-  smaliCmd: string;
 begin
   inherited Create(TheOwner);
   FEditor := TSynEdit.Create(Self);
-  FHighlighter := TSynSmaliSyn.Create(Self);
-  FCompleteSmali:= TSynCompletion.Create(Self);
-  FCompleteClass := TSynCompletion.Create(Self);
-  with TStringList.Create do begin
-    smaliCmdPath:= ExtractFilePath(ParamStr(0)) + 'template/smalicmd';
-    if (FileExists(smaliCmdPath)) then begin
-      LoadFromFile(smaliCmdPath);
-      smaliCmd:= Text;
-    end;
-    Free;
-  end;
-  with FCompleteSmali do begin
-    ExecCommandID:= ecUserDefinedFirst;
-    ItemList.Text:= smaliCmd;
-    ShowSizeDrag:= True;
-    EndOfTokenChr:= ';';
-    Editor := FEditor;
-    ShortCut:= Menus.ShortCut(VK_J, [ssCtrl]);
-    OnCodeCompletion:=@completeSmaliCompletion;
-    OnCancel:=@completeSmaliCancel;
-    OnKeyPress:=@completeSmaliKeyPress;
-    OnKeyDown:=@completeSmaliKeyDown;
-  end;
-  with FCompleteClass do begin
-    ExecCommandID:= ecUserDefinedFirst + 1;
-    ShowSizeDrag:= True;
-    EndOfTokenChr:= ';';
-    Editor := FEditor;
-    ShortCut:= Menus.ShortCut(VK_K, [ssCtrl]);
-    OnExecute:=@completeClassExecute;
-    OnCodeCompletion:=@completeClassCompletion;
-    OnCancel:=@completeClassCancel;
-    OnKeyPress:=@completeClassKeyPress;
-    OnKeyDown:=@completeClassKeyDown;
-  end;
+
   with FEditor do begin
     Parent := Self;
     Align:= alClient;
@@ -415,24 +190,16 @@ begin
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
     OnChange:=@OnEditorChange;
-    Highlighter := FHighlighter;
   end;
-
   FMenu := TPopupMenu.Create(Self);
   FMenu.Parent := Self;
   FEditor.PopupMenu := FMenu;
 
   // init menu
-  FMiJump:= TMenuItem.Create(FMenu);
-  FMiJump.Caption:= 'Jump';
-  FMiJump.ShortCut:= ShortCut(VK_F2, []);
-  FMiJump.OnClick:= @menuClicked;
-  FMiS0:= TMenuItem.Create(FMenu);
-  FMiS0.Caption:= '-';
   FMiUndo:= TMenuItem.Create(FMenu);
   FMiUndo.Caption:= 'Undo';
   FMiUndo.ShortCut:= ShortCut(VK_Z, [ssCtrl]);
-  FMiUndo.OnClick:= @menuClicked;
+  FMiUndo.OnClick:=@menuClicked;
   FMiRedo:= TMenuItem.Create(FMenu);
   FMiRedo.Caption := 'Redo';
   FMiRedo.ShortCut:= ShortCut(VK_Y, [ssCtrl]);
@@ -455,16 +222,8 @@ begin
   FMiDelete.Caption:= 'Delete';
   FMiDelete.ShortCut:= ShortCut(VK_DELETE, []);
   FMiDelete.OnClick:= @menuClicked;
-  FMiS2:= TMenuItem.Create(FMenu);
-  FMiS2.Caption:= '-';
-  FMiToJava:= TMenuItem.Create(FMenu);
-  FMiToJava.Caption:= 'To Java';
-  FMiToJava.ShortCut:= ShortCut(VK_RETURN, [ssAlt]);
-  FMiToJava.OnClick:= @menuClicked;
 
   with FMenu.Items do begin
-    Add(FMiJump);
-    Add(FMiS0);
     Add(FMiUndo);
     Add(FMiRedo);
     Add(FMiS1);
@@ -472,8 +231,6 @@ begin
     Add(FMiCopy);
     Add(FMiPaste);
     Add(FMiDelete);
-    Add(FMiS2);
-    Add(FMiToJava);
   end;
 
   // find
@@ -648,13 +405,13 @@ begin
 
 end;
 
-destructor TSmaliCodeView.Destroy;
+destructor TTextCodeView.Destroy;
 begin
   FEditor.Free;
   inherited Destroy;
 end;
 
-function TSmaliCodeView.QueryClose: Boolean;
+function TTextCodeView.QueryClose: Boolean;
 var
   dlg: TModalResult;
 begin
@@ -670,19 +427,19 @@ begin
   end;
 end;
 
-procedure TSmaliCodeView.Save;
+procedure TTextCodeView.Save;
 begin
   FEditor.Lines.SaveToFile(FileName);
   FIsChanged := False;
   Caption:= FTitle;
 end;
 
-procedure TSmaliCodeView.SaveAs;
+procedure TTextCodeView.SaveAs;
 var
   dlg: TSaveDialog;
 begin
   dlg := TSaveDialog.Create(nil);
-  dlg.Filter:= 'smali file|*.smali';
+  dlg.Filter:= 'all file|*.*';
   if dlg.Execute then begin
     FEditor.Lines.SaveToFile(dlg.FileName);
     self.FileName:= dlg.FileName;
@@ -691,33 +448,33 @@ begin
   dlg.Free;
 end;
 
-procedure TSmaliCodeView.Find;
+procedure TTextCodeView.Find;
 begin
   FPnlReplace.Visible:= False;
   FPnlFind.Visible:= True;
   FFindEdit.SetFocus;
 end;
 
-procedure TSmaliCodeView.FindNext;
+procedure TTextCodeView.FindNext;
 begin
   FFindBtnNext.Click;
 end;
 
-procedure TSmaliCodeView.CancelFind;
+procedure TTextCodeView.CancelFind;
 begin
   FFindEdit.Text:= '';
   FPnlFind.Visible:= False;
   FEditor.SetFocus;
 end;
 
-procedure TSmaliCodeView.Replace;
+procedure TTextCodeView.Replace;
 begin
   FPnlFind.Visible:= False;
   FPnlReplace.Visible:= True;
   FReplaceFindEdit.SetFocus;
 end;
 
-procedure TSmaliCodeView.CancelReplace;
+procedure TTextCodeView.CancelReplace;
 begin
   FReplaceFindEdit.Text:= '';
   FReplaceEdit.Text:= '';
@@ -725,43 +482,10 @@ begin
   FEditor.SetFocus;
 end;
 
-procedure TSmaliCodeView.GotoLine(line: Integer);
+procedure TTextCodeView.GotoLine(line: Integer);
 begin
-  // goto line
   FEditor.CaretY:= line;
   FEditor.SetFocus;
-end;
-
-function TSmaliCodeView.FindMethodAndJump(methodSig: string): Boolean;
-var
-  r: Integer;
-  start: Integer;
-  hit: Boolean = False;
-  s: string;
-  i: integer;
-begin
-  // find method and jump
-  Result := False;
-  FEditor.SelStart:= 1;
-  while not hit do begin
-    r := FEditor.SearchReplace(methodSig, '', []);
-    s := '';
-    if (r <> 0) then begin
-      start:= FEditor.SelStart;
-      for i := start downto 0 do begin
-        if (FEditor.Lines.Text[i] = #13) or (FEditor.Lines.Text[i] = #10) then begin
-          Break;
-        end;
-        s := FEditor.Lines.Text[i] + s;
-      end;
-      if (s.Trim.StartsWith('.method')) or (s.Trim.StartsWith('.field')) then begin
-        Result := True;
-        Break;
-      end;
-    end else begin
-      Break;
-    end;
-  end;
 end;
 
 end.
