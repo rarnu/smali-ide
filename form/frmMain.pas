@@ -537,15 +537,29 @@ begin
 end;
 
 procedure TFormMain.miCloseAllOtherPagesClick(Sender: TObject);
+var
+  i: Integer;
+  idx: Integer;
 begin
-  // TODO: close all other pages
-
+  // close all other pages
+  idx:= pgCode.TabIndex;
+  for i := pgCode.PageCount - 1 downto 0 do begin
+    if (i <> idx) then begin
+      pgCode.Pages[i].Free;
+    end;
+  end;
+  pgCode.TabIndex:= 0;
 end;
 
 procedure TFormMain.miCloseAllPagesClick(Sender: TObject);
+var
+  i: Integer;
 begin
-  // TODO: close all pages
-
+  // close all pages
+  for i := pgCode.PageCount - 1 downto 0 do begin
+    pgCode.Pages[i].Free;
+  end;
+  pgCode.TabIndex:= -1;
 end;
 
 procedure TFormMain.miCompileClick(Sender: TObject);
@@ -642,6 +656,7 @@ end;
 procedure TFormMain.miSettingsClick(Sender: TObject);
 begin
   // TODO: settings
+
 end;
 
 procedure TFormMain.miTemplateClick(Sender: TObject);
@@ -666,6 +681,7 @@ end;
 procedure TFormMain.miUpdateClick(Sender: TObject);
 begin
   // TODO: check update
+
 end;
 
 procedure TFormMain.pgCodeCloseTabClicked(Sender: TObject);
@@ -696,7 +712,6 @@ var
   var
     idx: Integer;
   begin
-
     idx:= IsPageExists(p);
     if (idx = -1) then begin
       Result := TSmaliCodeView.Create(pgCode);
