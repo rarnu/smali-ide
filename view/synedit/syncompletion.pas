@@ -1396,9 +1396,9 @@ procedure TSynBaseCompletion.Execute(s: string; x, y: integer);
 var
   CurSynEdit: TCustomSynEdit;
 begin
-  //writeln('TSynBaseCompletion.Execute ',Form.CurrentEditor.Name);
+  // writeln('TSynBaseCompletion.Execute ',Form.CurrentEditor.Name);
 
-  //Todo: This is dangerous, if other plugins also change/changed the flag.
+  // This is dangerous, if other plugins also change/changed the flag.
   FAddedPersistentCaret := False;
 
   CurrentString := s;

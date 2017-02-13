@@ -1,0 +1,7 @@
+.class public interface abstract annotation {% class name %}
+.super Ljava/lang/Object;
+.source "{% java file name %}.java"
+
+# interfaces
+.implements Ljava/lang/annotation/Annotation;
+

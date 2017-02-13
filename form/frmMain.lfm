@@ -2344,6 +2344,14 @@ inherited FormMain: TFormMain
       Caption = 'New Interface'
       OnClick = miNewInterfceClick
     end
+    object miNewEnum: TMenuItem
+      Caption = 'New Enum'
+      OnClick = miNewEnumClick
+    end
+    object miNewAnnotation: TMenuItem
+      Caption = 'New Annotation'
+      OnClick = miNewAnnotationClick
+    end
     object miNewTextFile: TMenuItem
       Caption = 'New Text File'
       OnClick = miNewTextFileClick

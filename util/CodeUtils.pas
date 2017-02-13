@@ -5,7 +5,7 @@ unit CodeUtils;
 interface
 
 uses
-  Classes, SysUtils, ComCtrls, lockbox, Dialogs;
+  Classes, SysUtils, ComCtrls, lockbox, Dialogs, smaliCodeView;
 
 type
 
@@ -42,6 +42,16 @@ function LoadMethodIndex(projectPath: string; classPath: string): string;
 function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;
 function ConvertSmaliToJava(path: string): string;
 function NodeToPath(projectPath: string; node: TTreeNode): string;
+
+function IsTextFile(path: string): Boolean;
+function IsImageFile(path: string): Boolean;
+
+procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
+procedure NewAnnotation(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
+
+
 
 implementation
 
@@ -138,9 +148,12 @@ begin
 end;
 
 function ExtractField(str: string): string;
+var
+  n: string;
 begin
-  // .field private static final TAG:Ljava/lang/String;
-  Result := str.Substring(str.LastIndexOf(' ')).Trim;
+  // .field private static final TAG:Ljava/lang/String;=
+  n := str.Substring(0, str.LastIndexOf('=')).Trim;
+  Result := n.Substring(n.LastIndexOf(' ')).Trim;
 end;
 
 function ExtractMethod(str: string): string;
@@ -284,7 +297,7 @@ function NodeToPath(projectPath: string; node: TTreeNode): string;
 var
   p: string = '';
 begin
-  // TODO: node to path
+  // node to path
   p := node.Text;
   while node.Parent <> nil do begin
     p := node.Parent.Text + '/' + p;
@@ -295,6 +308,105 @@ begin
     p += '/';
   end;
   Result := p;
+end;
+
+procedure NewFile(projectPath: string; filePath: string; name: string; template: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+var
+  indexPath: string;
+  smaliFilePath: string;
+  tmpPath: string;
+  classPath: string;
+  page: TSmaliCodeView;
+  n: TTreeNode;
+begin
+  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/index';
+  ForceDirectories(indexPath);
+  smaliFilePath:= filePath + name + '.smali';
+  tmpPath:= ExtractFilePath(ParamStr(0)) + 'template/' + template;
+  classPath:= FullPathToClassPath(smaliFilePath);
+  with TStringList.Create do begin
+    LoadFromFile(tmpPath);
+    Text:= StringReplace(Text, '{% class name %}', 'L' + StringReplace(classPath, '.', '/', [rfIgnoreCase, rfReplaceAll]) + ';', [rfReplaceAll, rfIgnoreCase]);
+    Text:= StringReplace(Text, '{% java file name %}', string(ExtractFileName(smaliFilePath)).Replace('.smali', '').Trim, [rfIgnoreCase, rfReplaceAll]);
+    SaveToFile(smaliFilePath);
+    Free;
+  end;
+  with TStringList.Create do begin
+    if (FileExists(indexPath)) then
+      LoadFromFile(indexPath);
+    Add(classPath);
+    Sort;
+    SaveToFile(indexPath);
+    Free;
+  end;
+  n := root.AddChild(node, ExtractFileName(smaliFilePath));
+  n.ImageIndex:= 2;
+  n.SelectedIndex:= 2;
+  page := TSmaliCodeView.Create(pageControl);
+  page.Parent := pageControl;
+  page.ProjectPath:= projectPath;
+  page.FileName:= smaliFilePath;
+  page.OnCodeJump:=onCodeJump;
+  pageControl.TabIndex:= pageControl.PageCount - 1;
+end;
+
+function IsTextFile(path: string): Boolean;
+var
+  ext: string;
+begin
+  ext := string(ExtractFileExt(path)).ToLower;
+  Result := (ext = '.txt') or (ext = '.xml') or (ext = '.conf') or (ext = '.ini') or (ext = '.js')
+    or (ext = '.css') or (ext = '.html') or (ext = '.htm') or (ext = '.aidl') or (ext = '.sh')
+    or (ext = '.properties') or (ext = '.gradle');
+end;
+
+function IsImageFile(path: string): Boolean;
+var
+  ext: string;
+begin
+  ext := string(ExtractFileExt(path)).ToLower;
+  Result := (ext = '.png') or (ext = '.jpg') or (ext = '.jpeg') or (ext = '.bmp') or (ext = '.gif');
+end;
+
+procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes;
+  node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+var
+  cn: string;
+begin
+  cn := InputBox('New Class', 'Class Name', '').Trim;
+  if (cn = '') then Exit;
+  NewFile(projectPath, filePath, cn, 'new_class', root, node, pageControl, onCodeJump);
+end;
+
+procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes;
+  node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+var
+  cn: string;
+begin
+  cn := InputBox('New Interface', 'Interface Name', '').Trim;
+  if (cn = '') then Exit;
+  NewFile(projectPath, filePath, cn, 'new_interface', root, node, pageControl, onCodeJump);
+end;
+
+procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes;
+  node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
+var
+  cn: string;
+begin
+  cn := InputBox('New Enum', 'Enum Name', '').Trim;
+  if (cn = '') then Exit;
+  NewFile(projectPath, filePath, cn, 'new_enum', root, node, pagecontrol, onCodeJump);
+end;
+
+procedure NewAnnotation(projectPath: string; filePath: string;
+  root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl;
+  onCodeJump: TOnCodeJump);
+var
+  cn: string;
+begin
+  cn := InputBox('New Annotation', 'Annotation Name', '').Trim;
+  if (cn = '') then Exit;
+  NewFile(projectPath, filePath, cn, 'new_annotation', root, node, pagecontrol, onCodeJump);
 end;
 
 { TBuildClassIndexThread }

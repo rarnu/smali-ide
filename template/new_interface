@@ -1,0 +1,4 @@
+.class public interface abstract {% class name %}
+.super Ljava/lang/Object;
+.source "{% java file name %}.java"
+

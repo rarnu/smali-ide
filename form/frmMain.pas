@@ -16,6 +16,8 @@ type
     imgIndex: TImageList;
     imgLst: TImageList;
     lstSearchResult: TListBox;
+    miNewAnnotation: TMenuItem;
+    miNewEnum: TMenuItem;
     miDeleteFile: TMenuItem;
     mm11: TMenuItem;
     miNewTextFile: TMenuItem;
@@ -118,7 +120,9 @@ type
     procedure miFindNextClick(Sender: TObject);
     procedure miGotoLineClick(Sender: TObject);
     procedure miInstallFrameworkClick(Sender: TObject);
+    procedure miNewAnnotationClick(Sender: TObject);
     procedure miNewClassClick(Sender: TObject);
+    procedure miNewEnumClick(Sender: TObject);
     procedure miNewInterfceClick(Sender: TObject);
     procedure miNewProjClick(Sender: TObject);
     procedure miNewTextFileClick(Sender: TObject);
@@ -420,7 +424,6 @@ procedure TFormMain.miGotoLineClick(Sender: TObject);
 var
   line: string;
   linenum: Integer;
-  page: TSmaliCodeView;
 begin
   // goto line
   if (pgCode.ActivePage is TSmaliCodeView) then begin
@@ -437,15 +440,37 @@ begin
   // TODO: install framework
 end;
 
+procedure TFormMain.miNewAnnotationClick(Sender: TObject);
+var
+  node: TTreeNode;
+  path: string;
+begin
+  // new annotation
+  node := tvProjectFiles.Selected;
+  path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+  CodeUtils.NewAnnotation(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
+end;
+
 procedure TFormMain.miNewClassClick(Sender: TObject);
 var
   node: TTreeNode;
   path: string;
 begin
-  // TODO: new class
+  // new class
   node := tvProjectFiles.Selected;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+  CodeUtils.NewClass(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
+end;
 
+procedure TFormMain.miNewEnumClick(Sender: TObject);
+var
+  node: TTreeNode;
+  path: string;
+begin
+  // new enum
+  node := tvProjectFiles.Selected;
+  path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+  CodeUtils.NewEnum(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
 
 procedure TFormMain.miNewInterfceClick(Sender: TObject);
@@ -453,9 +478,10 @@ var
   node: TTreeNode;
   path: string;
 begin
-  // TODO: new interface
+  // new interface
   node := tvProjectFiles.Selected;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+  CodeUtils.NewInterface(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
 
 procedure TFormMain.miNewProjClick(Sender: TObject);

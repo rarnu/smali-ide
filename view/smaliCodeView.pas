@@ -232,12 +232,14 @@ begin
     if (FileExists(indexPath)) then begin
       CodeUtils.BuildMethodIndex(ProjectPath, indexPath);
       FCompleteClass.ItemList.Text:= CodeUtils.LoadMethodIndex(ProjectPath, indexPath);
+      FCompleteClass.Position:= 0;
     end;
   end else begin
     FCompleteClass.Tag:= 0;
     indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FProjectPath);
     if (FileExists(indexPath + '/index')) then begin
       FCompleteClass.ItemList.LoadFromFile(indexPath + '/index');
+      FCompleteClass.Position:= 0;
     end;
   end;
 end;
