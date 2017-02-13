@@ -16,6 +16,9 @@ type
     imgIndex: TImageList;
     imgLst: TImageList;
     lstSearchResult: TListBox;
+    miCloseAllOtherPages: TMenuItem;
+    miCloseAllPages: TMenuItem;
+    mm12: TMenuItem;
     miNewAnnotation: TMenuItem;
     miNewEnum: TMenuItem;
     miDeleteFile: TMenuItem;
@@ -66,7 +69,6 @@ type
     miUndo: TMenuItem;
     miFile: TMenuItem;
     miEdit: TMenuItem;
-    miNewProj: TMenuItem;
     miOpenProj: TMenuItem;
     mm0: TMenuItem;
     miSaveFile: TMenuItem;
@@ -84,7 +86,6 @@ type
     splProjectFiles: TSplitter;
     sbMain: TStatusBar;
     tbMain: TToolBar;
-    tBtnNewProject: TToolButton;
     tBtnCut: TToolButton;
     tBtnCopy: TToolButton;
     tBtnPaste: TToolButton;
@@ -106,6 +107,8 @@ type
       Shift: TShiftState);
     procedure miAboutClick(Sender: TObject);
     procedure miClassIndexClick(Sender: TObject);
+    procedure miCloseAllOtherPagesClick(Sender: TObject);
+    procedure miCloseAllPagesClick(Sender: TObject);
     procedure miCompileClick(Sender: TObject);
     procedure miConsoleClick(Sender: TObject);
     procedure miCopyClick(Sender: TObject);
@@ -124,7 +127,6 @@ type
     procedure miNewClassClick(Sender: TObject);
     procedure miNewEnumClick(Sender: TObject);
     procedure miNewInterfceClick(Sender: TObject);
-    procedure miNewProjClick(Sender: TObject);
     procedure miNewTextFileClick(Sender: TObject);
     procedure miOpenProjClick(Sender: TObject);
     procedure miPasteClick(Sender: TObject);
@@ -172,7 +174,7 @@ implementation
 {$R *.lfm}
 
 uses
-  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf;
+  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView;
 
 { TFormMain }
 
@@ -182,6 +184,7 @@ var
   path: string;
   page: TSmaliCodeView;
   pageText: TTextCodeView;
+  pageImage: TImageCodeView;
   idx: Integer;
 begin
   //
@@ -216,7 +219,11 @@ begin
             pageText.FileName:= path;
             pgCode.TabIndex:= pgCode.PageCount - 1;
           end else if (CodeUtils.IsImageFile(path)) then begin
-            // TODO: open image path
+            // open image path
+            pageImage := TImageCodeView.Create(pgCode);
+            pageImage.Parent := pgCode;
+            pageImage.FileName:= path;
+            pgCode.TabIndex:= pgCode.PageCount - 1;
           end;
         end;
       end else begin
@@ -252,6 +259,11 @@ begin
   for i := 0 to pgCode.PageCount - 1 do begin
     if (pgCode.Pages[i] is ICodeViewIntf) then begin
       if ((pgCode.Pages[i] as ICodeViewIntf).GetFileName() = path) then begin
+        Result := i;
+        Break;
+      end;
+    end else if (pgCode.Pages[i] is TImageCodeView) then begin
+      if (TImageCodeView(pgCode.Pages[i]).FileName = path) then begin
         Result := i;
         Break;
       end;
@@ -494,19 +506,15 @@ begin
   CodeUtils.NewInterface(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
 
-procedure TFormMain.miNewProjClick(Sender: TObject);
-begin
-  // TODO: new project
-end;
-
 procedure TFormMain.miNewTextFileClick(Sender: TObject);
 var
   node: TTreeNode;
   path: string;
 begin
-  // TODO: new text file
+  // new text file
   node := tvProjectFiles.Selected;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
+  CodeUtils.NewTextFile(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode);
 end;
 
 procedure TFormMain.miCopyClick(Sender: TObject);
@@ -528,14 +536,28 @@ begin
   miClassIndex.Checked:= pnlClassIndex.Visible;
 end;
 
+procedure TFormMain.miCloseAllOtherPagesClick(Sender: TObject);
+begin
+  // TODO: close all other pages
+
+end;
+
+procedure TFormMain.miCloseAllPagesClick(Sender: TObject);
+begin
+  // TODO: close all pages
+
+end;
+
 procedure TFormMain.miCompileClick(Sender: TObject);
 begin
   // TODO: compile package
+
 end;
 
 procedure TFormMain.miConsoleClick(Sender: TObject);
 begin
   // TODO: show /hide console
+
 end;
 
 procedure TFormMain.lstSearchResultKeyDown(Sender: TObject; var Key: Word;

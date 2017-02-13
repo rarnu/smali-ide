@@ -5,7 +5,7 @@ unit CodeUtils;
 interface
 
 uses
-  Classes, SysUtils, ComCtrls, lockbox, Dialogs, smaliCodeView;
+  Classes, SysUtils, ComCtrls, lockbox, Dialogs, smaliCodeView, textCodeView;
 
 type
 
@@ -50,8 +50,7 @@ procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes; node
 procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
 procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
 procedure NewAnnotation(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
-
-
+procedure NewTextFile(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl);
 
 implementation
 
@@ -317,36 +316,51 @@ var
   tmpPath: string;
   classPath: string;
   page: TSmaliCodeView;
+  pageText: TTextCodeView;
   n: TTreeNode;
 begin
-  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/index';
-  ForceDirectories(indexPath);
-  smaliFilePath:= filePath + name + '.smali';
-  tmpPath:= ExtractFilePath(ParamStr(0)) + 'template/' + template;
-  classPath:= FullPathToClassPath(smaliFilePath);
-  with TStringList.Create do begin
-    LoadFromFile(tmpPath);
-    Text:= StringReplace(Text, '{% class name %}', 'L' + StringReplace(classPath, '.', '/', [rfIgnoreCase, rfReplaceAll]) + ';', [rfReplaceAll, rfIgnoreCase]);
-    Text:= StringReplace(Text, '{% java file name %}', string(ExtractFileName(smaliFilePath)).Replace('.smali', '').Trim, [rfIgnoreCase, rfReplaceAll]);
-    SaveToFile(smaliFilePath);
-    Free;
+  if (template <> '') and (onCodeJump <> nil) then begin
+    indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/index';
+    ForceDirectories(indexPath);
+    smaliFilePath:= filePath + name + '.smali';
+    tmpPath:= ExtractFilePath(ParamStr(0)) + 'template/' + template;
+    classPath:= FullPathToClassPath(smaliFilePath);
+    with TStringList.Create do begin
+      LoadFromFile(tmpPath);
+      Text:= StringReplace(Text, '{% class name %}', 'L' + StringReplace(classPath, '.', '/', [rfIgnoreCase, rfReplaceAll]) + ';', [rfReplaceAll, rfIgnoreCase]);
+      Text:= StringReplace(Text, '{% java file name %}', string(ExtractFileName(smaliFilePath)).Replace('.smali', '').Trim, [rfIgnoreCase, rfReplaceAll]);
+      SaveToFile(smaliFilePath);
+      Free;
+    end;
+    with TStringList.Create do begin
+      if (FileExists(indexPath)) then
+        LoadFromFile(indexPath);
+      Add(classPath);
+      Sort;
+      SaveToFile(indexPath);
+      Free;
+    end;
+    n := root.AddChild(node, ExtractFileName(smaliFilePath));
+    n.ImageIndex:= 2;
+    n.SelectedIndex:= 2;
+    page := TSmaliCodeView.Create(pageControl);
+    page.Parent := pageControl;
+    page.ProjectPath:= projectPath;
+    page.FileName:= smaliFilePath;
+    page.OnCodeJump:=onCodeJump;
+  end else begin
+    smaliFilePath:= filePath + name;
+    with TStringList.Create do begin
+      SaveToFile(filePath + name);
+      Free;
+    end;
+    n := root.AddChild(node, ExtractFileName(smaliFilePath));
+    n.ImageIndex:= 0;
+    n.SelectedIndex:= 0;
+    pageText := TTextCodeView.Create(pageControl);
+    pageText.Parent := pageControl;
+    pageText.FileName:= smaliFilePath;
   end;
-  with TStringList.Create do begin
-    if (FileExists(indexPath)) then
-      LoadFromFile(indexPath);
-    Add(classPath);
-    Sort;
-    SaveToFile(indexPath);
-    Free;
-  end;
-  n := root.AddChild(node, ExtractFileName(smaliFilePath));
-  n.ImageIndex:= 2;
-  n.SelectedIndex:= 2;
-  page := TSmaliCodeView.Create(pageControl);
-  page.Parent := pageControl;
-  page.ProjectPath:= projectPath;
-  page.FileName:= smaliFilePath;
-  page.OnCodeJump:=onCodeJump;
   pageControl.TabIndex:= pageControl.PageCount - 1;
 end;
 
@@ -407,6 +421,19 @@ begin
   cn := InputBox('New Annotation', 'Annotation Name', '').Trim;
   if (cn = '') then Exit;
   NewFile(projectPath, filePath, cn, 'new_annotation', root, node, pagecontrol, onCodeJump);
+end;
+
+procedure NewTextFile(projectPath: string; filePath: string; root: TTreeNodes;
+  node: TTreeNode; pageControl: TPageControl);
+var
+  cn: string;
+begin
+  cn := InputBox('New Text File', 'File Name', '').Trim;
+  if (cn = '') then Exit;
+  if (not cn.Contains('.')) then begin
+    cn += '.txt';
+  end;
+  NewFile(projectPath, filePath, cn, '', root, node, pageControl, nil);
 end;
 
 { TBuildClassIndexThread }

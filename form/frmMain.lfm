@@ -63,106 +63,99 @@ inherited FormMain: TFormMain
     Caption = 'tbMain'
     Images = imgLst
     TabOrder = 3
-    object tBtnNewProject: TToolButton
-      Left = 1
-      Top = 2
-      Caption = 'New Project'
-      ImageIndex = 3
-      OnClick = miNewProjClick
-    end
     object tBtnOpenProject: TToolButton
-      Left = 37
+      Left = 1
       Top = 2
       Caption = 'Open Project'
       ImageIndex = 4
       OnClick = miOpenProjClick
     end
     object tSp1: TToolButton
-      Left = 73
+      Left = 37
       Height = 32
       Top = 2
       Width = 8
       Style = tbsSeparator
     end
     object tBtnSave: TToolButton
-      Left = 81
+      Left = 45
       Top = 2
       Caption = 'Save'
       ImageIndex = 5
       OnClick = miSaveFileClick
     end
     object tBtnSaveAs: TToolButton
-      Left = 117
+      Left = 81
       Top = 2
       Caption = 'Save As'
       ImageIndex = 6
       OnClick = miSaveAsClick
     end
     object tSp2: TToolButton
-      Left = 153
+      Left = 117
       Height = 32
       Top = 2
       Width = 8
       Style = tbsSeparator
     end
     object tBtnUndo: TToolButton
-      Left = 161
+      Left = 125
       Top = 2
       Caption = 'Undo'
       ImageIndex = 7
       OnClick = miUndoClick
     end
     object tBtnRedo: TToolButton
-      Left = 197
+      Left = 161
       Top = 2
       Caption = 'Redo'
       ImageIndex = 8
       OnClick = miRedoClick
     end
     object tSp3: TToolButton
-      Left = 233
+      Left = 197
       Height = 32
       Top = 2
       Width = 8
       Style = tbsSeparator
     end
     object tBtnCut: TToolButton
-      Left = 241
+      Left = 205
       Top = 2
       Caption = 'Cut'
       ImageIndex = 9
       OnClick = miCutClick
     end
     object tBtnCopy: TToolButton
-      Left = 277
+      Left = 241
       Top = 2
       Caption = 'Copy'
       ImageIndex = 10
       OnClick = miCopyClick
     end
     object tBtnPaste: TToolButton
-      Left = 313
+      Left = 277
       Top = 2
       Caption = 'Paste'
       ImageIndex = 11
       OnClick = miPasteClick
     end
     object tBtnDelete: TToolButton
-      Left = 349
+      Left = 313
       Top = 2
       Caption = 'Delete'
       ImageIndex = 12
       OnClick = miDeleteClick
     end
     object tSp4: TToolButton
-      Left = 385
+      Left = 349
       Height = 32
       Top = 2
       Width = 8
       Style = tbsSeparator
     end
     object tBtnJava: TToolButton
-      Left = 393
+      Left = 357
       Top = 2
       Caption = 'Java'
       ImageIndex = 13
@@ -263,11 +256,6 @@ inherited FormMain: TFormMain
     Top = 40
     object miFile: TMenuItem
       Caption = '&File'
-      object miNewProj: TMenuItem
-        Caption = '&New Project'
-        ShortCut = 16462
-        OnClick = miNewProjClick
-      end
       object miOpenProj: TMenuItem
         Caption = '&Open Project'
         ShortCut = 16463
@@ -361,6 +349,17 @@ inherited FormMain: TFormMain
         Caption = 'Console'
         ShowAlwaysCheckable = True
         OnClick = miConsoleClick
+      end
+      object mm12: TMenuItem
+        Caption = '-'
+      end
+      object miCloseAllPages: TMenuItem
+        Caption = 'Close All Pages'
+        OnClick = miCloseAllPagesClick
+      end
+      object miCloseAllOtherPages: TMenuItem
+        Caption = 'Close All Other Pages'
+        OnClick = miCloseAllOtherPagesClick
       end
     end
     object miSearch: TMenuItem
