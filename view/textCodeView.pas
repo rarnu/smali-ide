@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, Controls, ComCtrls, ExtCtrls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType,
-  SynEditTypes, Dialogs, Forms, codeViewIntf, SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript, synhighlighterunixshellscript;
+  SynEditTypes, Dialogs, Forms, codeViewIntf, SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript, synhighlighterunixshellscript, IniFiles;
 
 type
   { TTextCodeView }
@@ -90,7 +90,7 @@ type
 implementation
 
 uses
-  TextUtils;
+  TextUtils, baseData;
 
 { TTextCodeView }
 
@@ -516,6 +516,13 @@ end;
 procedure TTextCodeView.SetCodeTheme(AThemeFile: string);
 begin
   // TODO: set code theme
+  (*
+  FHighlightXml: TSynXMLSyn;
+      FHighlightHtml: TSynHTMLSyn;
+      FHighlightCss: TSynCssSyn;
+      FHighlightJs: TSynJScriptSyn;
+      FHighlightShell: TSynUNIXShellScriptSyn;
+  *)
 end;
 
 procedure TTextCodeView.FocusEditor;

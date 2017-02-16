@@ -233,6 +233,7 @@ begin
           page.Parent := pgCode;
           page.ProjectPath:= CurrentProjectPath;
           page.FileName:= path;
+          page.SetCodeTheme('Default.style');
           page.OnCodeJump:=@codeJumpCallback;
           pgCode.TabIndex:= pgCode.PageCount - 1;
         end else begin
@@ -242,6 +243,7 @@ begin
             pageText.Parent := pgCode;
             pageText.ProjectPath:= CurrentProjectPath;
             pageText.FileName:= path;
+            pageText.SetCodeTheme('Default.style');
             pgCode.TabIndex:= pgCode.PageCount - 1;
           end else if (CodeUtils.IsImageFile(path)) then begin
             // open image path
@@ -346,6 +348,7 @@ begin
       page.Parent := pgCode;
       page.ProjectPath:= CurrentProjectPath;
       page.FileName:= openPath;
+      page.SetCodeTheme('Default.style');
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -770,6 +773,7 @@ begin
       page.Parent := pgCode;
       page.ProjectPath:= CurrentProjectPath;
       page.FileName:= APath;
+      page.SetCodeTheme('Default.style');
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -778,6 +782,7 @@ begin
         pageText.Parent := pgCode;
         pageText.ProjectPath:= CurrentProjectPath;
         pageText.FileName:= APath;
+        pageText.SetCodeTheme('Default.style');
         pgCode.TabIndex:= pgCode.PageCount - 1;
       end
     end;
@@ -917,6 +922,7 @@ var
       Result.Parent := pgCode;
       Result.ProjectPath:= CurrentProjectPath;
       Result.FileName:= p;
+      Result.SetCodeTheme('Default.style');
       Result.OnCodeJump:= @codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin

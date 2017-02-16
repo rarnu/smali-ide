@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf;
+  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf, IniFiles;
 
 type
 
@@ -114,7 +114,7 @@ type
 implementation
 
 uses
-  TextUtils, EncryptUtils, CodeUtils;
+  TextUtils, EncryptUtils, CodeUtils, baseData;
 
 { TSmaliCodeView }
 
@@ -784,9 +784,42 @@ begin
   end;
 end;
 
-procedure TSmaliCodeView.SetCodeTheme(AThemeFile: string);
+function IfThen(b: Boolean; trueValue: TFontStyles; falseValue: TFontStyles): TFontStyles;
 begin
-  // TODO: set code theme
+  if b then Result := trueValue else Result := falseValue;
+end;
+
+procedure TSmaliCodeView.SetCodeTheme(AThemeFile: string);
+var
+  path: string;
+begin
+  // set code theme
+  path := ExtractFilePath(ParamStr(0)) + 'style/' + AThemeFile;
+  with TIniFile.Create(path) do begin
+    FEditor.Color:= ReadInteger(SEC_SMALI, KEY_BACKGROUND, clWhite);
+    with FHighlighter do begin
+      CommentAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_COMMENT_COLOR, clGreen);
+      CommentAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+      IdentifierAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_IDENTIFIER_COLOR, clBlack);
+      IdentifierAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_IDENTIFIER_BOLD, 0) <> 0, [fsBold], []);
+      KeyAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_KEY_COLOR, clBlue);
+      KeyAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_KEY_BOLD, 0) <> 0, [fsBold], []);
+      SecondKeyAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_SECOND_KEY_COLOR, clNavy);
+      SecondKeyAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_SECOND_KEY_BOLD, 0) <> 0, [fsBold], []);
+      ThirdKeyAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_THIRD_KEY_COLOR, clPurple);
+      ThirdKeyAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_THIRD_KEY_BOLD, 0) <> 0, [fsBold], []);
+      NumberAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_NUMBER_COLOR, clBlack);
+      NumberAttri.Style := IfThen(ReadInteger(SEC_SMALI, KEY_NUMBER_BOLD, 0) <> 0, [fsBold], []);
+      SpaceAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_SPACE_COLOR, clWhite);
+      StringAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_STRING_COLOR, clMaroon);
+      StringAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_STRING_BOLD, 0) <> 0, [fsBold], []);
+      SymbolAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_SYMBOL_COLOR, clGray);
+      SymbolAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
+      VarAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_VAR_COLOR, clBlack);
+      VarAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_VAR_BOLD, 0) <> 0, [fsBold], []);
+    end;
+    Free;
+  end;
 end;
 
 end.

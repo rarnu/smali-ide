@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, process;
 
 type
-  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctUpdate, ctCommand);
+  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctCommand);
 
   TOnCommandOutput = procedure(Sender: TObject; ACmdType: TCommandType; AOutput: string) of object;
   TOnCommandComplete = procedure (Sender: TObject; ACmdType: TCommandType; AParam: array of string) of object;
@@ -56,8 +56,7 @@ begin
     ctDecompile: FOnCommandComplete(Self, FCmdType, [FTmpProjectPath]);
     ctCompile: FOnCommandComplete(Self, FCmdType, [FTmpDistPath]);
     ctInstallFramework: FOnCommandComplete(Self, FCmdType, []);
-    ctUpdate:;
-    ctCommand:;
+    ctCommand: FOnCommandComplete(Self, FCmdType, []);
     end;
   end;
 end;
@@ -74,7 +73,7 @@ var
   AProcess: TProcess;
   bytesRead: Integer;
   buffer: array[0..BUF_SIZE - 1] of byte;
-
+  i: Integer;
   outputPath: string;
 begin
   AProcess := TProcess.Create(nil);
@@ -115,13 +114,11 @@ begin
       AProcess.Parameters.Add('if');
       AProcess.Parameters.Add(FParam[0]);
     end;
-  ctUpdate:
-    begin
-      // TODO: update apktool
-    end;
   ctCommand:
     begin
-      // TODO: common command
+      // common command
+      AProcess.Executable:= FParam[0];
+      for i := 1 to Length(FParam) - 1 do AProcess.Parameters.Add(FParam[i]);
     end;
   end;
 
@@ -155,6 +152,8 @@ begin
   //     ProjectPath
   // installFramework:
   //     <jar> path
+  // common:
+  //     executable, param1, param2, ...
 
   SetLength(FParam, Length(AParam));
   for i := 0 to Length(AParam) - 1 do FParam[i] := AParam[i];

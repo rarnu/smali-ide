@@ -7,7 +7,7 @@ uses
   Interfaces,
   Forms, frmMain, smaliCodeView, TextUtils, CodeUtils,
 ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView, 
-SearchInFileUtils, CommandUtils, frmDecompile;
+SearchInFileUtils, CommandUtils, frmDecompile, baseData;
 
 {$R *.res}
 

@@ -163,7 +163,7 @@ type
     property FrameStyle stored GetFrameStyleStored;
     property FrameEdges stored GetFrameEdgesStored;
     property Style stored GetFontStyleStored;
-    // TODO: StyleMask move to TSynHighlighterAttributesModifier
+    // StyleMask move to TSynHighlighterAttributesModifier
     property StyleMask stored GetFontStyleMaskStored;
     // FStyle = [],       FStyleMask = []        ==> no modification
     // FStyle = [fsBold], FStyleMask = []        ==> invert fsBold
