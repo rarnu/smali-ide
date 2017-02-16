@@ -6,7 +6,8 @@ uses
   {$IFNDEF WINDOWS} cthreads, {$ENDIF}
   Interfaces,
   Forms, frmMain, smaliCodeView, TextUtils, CodeUtils,
-ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView;
+ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView, 
+SearchInFileUtils, CommandUtils, frmDecompile;
 
 {$R *.res}
 

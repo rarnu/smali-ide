@@ -22,8 +22,11 @@ type
   procedure Replace();
   procedure CancelReplace();
   procedure GotoLine(line: Integer);
+  procedure GotoPosition(apos: Integer);
   function GetEditor(): TSynEdit;
   function GetFileName(): string;
+  procedure FocusEditor();
+  procedure SetCodeTheme(AThemeFile: string);
   procedure Free;   // hidden method from TObject
   end;
 

@@ -5,7 +5,7 @@ unit CodeUtils;
 interface
 
 uses
-  Classes, SysUtils, ComCtrls, lockbox, Dialogs, smaliCodeView, textCodeView;
+  Classes, SysUtils, ComCtrls, lockbox, Dialogs, smaliCodeView, textCodeView, CommandUtils, strutils;
 
 type
 
@@ -51,6 +51,10 @@ procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes; 
 procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
 procedure NewAnnotation(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
 procedure NewTextFile(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl);
+
+procedure DecompilePackage(AAPkPath: string; AOutputPath: string; AIsNoRes: Boolean; AISNoSrc: Boolean; callback: TOnCommandOutput; complete: TOnCommandComplete);
+procedure CompilePackage(AProjectPath: string; callback: TOnCommandOutput; complete: TOnCommandComplete);
+procedure InstallFramework(AFrameworkPath: string; callback: TOnCommandOutput; complete: TOnCommandComplete);
 
 implementation
 
@@ -136,8 +140,7 @@ begin
   end;
 end;
 
-procedure ThreadBuildClassIndex(projectPath: string;
-  callback: TOnBuildIndexCallback; complete: TOnBuildIndexCompleteCallback);
+procedure ThreadBuildClassIndex(projectPath: string; callback: TOnBuildIndexCallback; complete: TOnBuildIndexCompleteCallback);
 begin
   with TBuildClassIndexThread.Create(projectPath) do begin
     OnBuildIndexCallback:= callback;
@@ -162,8 +165,7 @@ begin
   Result := str.Substring(str.LastIndexOf(' ')).Trim;
 end;
 
-procedure BuildMethodIndex(projectPath: string; classPath: string;
-  root: TTreeNodes; parent: TTreeNode);
+procedure BuildMethodIndex(projectPath: string; classPath: string; root: TTreeNodes; parent: TTreeNode);
 var
   savePath: string;
   i: Integer;
@@ -382,8 +384,7 @@ begin
   Result := (ext = '.png') or (ext = '.jpg') or (ext = '.jpeg') or (ext = '.bmp') or (ext = '.gif');
 end;
 
-procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes;
-  node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
 var
   cn: string;
 begin
@@ -392,8 +393,7 @@ begin
   NewFile(projectPath, filePath, cn, 'new_class', root, node, pageControl, onCodeJump);
 end;
 
-procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes;
-  node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
+procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);
 var
   cn: string;
 begin
@@ -402,8 +402,7 @@ begin
   NewFile(projectPath, filePath, cn, 'new_interface', root, node, pageControl, onCodeJump);
 end;
 
-procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes;
-  node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
+procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
 var
   cn: string;
 begin
@@ -412,9 +411,7 @@ begin
   NewFile(projectPath, filePath, cn, 'new_enum', root, node, pagecontrol, onCodeJump);
 end;
 
-procedure NewAnnotation(projectPath: string; filePath: string;
-  root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl;
-  onCodeJump: TOnCodeJump);
+procedure NewAnnotation(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pagecontrol: TPageControl; onCodeJump: TOnCodeJump);
 var
   cn: string;
 begin
@@ -423,8 +420,7 @@ begin
   NewFile(projectPath, filePath, cn, 'new_annotation', root, node, pagecontrol, onCodeJump);
 end;
 
-procedure NewTextFile(projectPath: string; filePath: string; root: TTreeNodes;
-  node: TTreeNode; pageControl: TPageControl);
+procedure NewTextFile(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl);
 var
   cn: string;
 begin
@@ -434,6 +430,40 @@ begin
     cn += '.txt';
   end;
   NewFile(projectPath, filePath, cn, '', root, node, pageControl, nil);
+end;
+
+procedure DecompilePackage(AAPkPath: string; AOutputPath: string;
+  AIsNoRes: Boolean; AISNoSrc: Boolean; callback: TOnCommandOutput;
+  complete: TOnCommandComplete);
+begin
+  // decompile
+  with TCommandThread.Create(ctDecompile, [AAPkPath, AOutputPath, IfThen(AIsNoRes, '1', '0'), IfThen(AISNoSrc, '1', '0')]) do begin
+    OnCommandOutput:= callback;
+    OnCommandComplete:= complete;
+    Start;
+  end;
+end;
+
+procedure CompilePackage(AProjectPath: string; callback: TOnCommandOutput;
+  complete: TOnCommandComplete);
+begin
+  // compile package
+  with TCommandThread.Create(ctCompile, [AProjectPath]) do begin
+    OnCommandOutput:= callback;
+    OnCommandComplete:= complete;
+    Start;
+  end;
+end;
+
+procedure InstallFramework(AFrameworkPath: string; callback: TOnCommandOutput;
+  complete: TOnCommandComplete);
+begin
+  // install framework
+  with TCommandThread.Create(ctInstallFramework, [AFrameworkPath]) do begin
+    OnCommandOutput:= callback;
+    OnCommandComplete:= complete;
+    Start;
+  end;
 end;
 
 { TBuildClassIndexThread }

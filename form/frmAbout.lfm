@@ -1,5 +1,4 @@
 inherited FormAbout: TFormAbout
   Caption = 'About'
-  OnCreate = FormCreate
   Position = poMainFormCenter
 end

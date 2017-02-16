@@ -1,7 +1,7 @@
 inherited FormMain: TFormMain
-  Left = 573
+  Left = 589
   Height = 630
-  Top = 315
+  Top = 218
   Width = 958
   Caption = 'Smali IDE'
   ClientHeight = 630
@@ -9,17 +9,17 @@ inherited FormMain: TFormMain
   Menu = mmMain
   object pnlProjectFiles: TPanel[0]
     Left = 0
-    Height = 478
+    Height = 273
     Top = 36
     Width = 240
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 478
+    ClientHeight = 273
     ClientWidth = 240
     TabOrder = 0
     object tvProjectFiles: TTreeView
       Left = 0
-      Height = 478
+      Height = 273
       Top = 0
       Width = 240
       Align = alClient
@@ -38,13 +38,13 @@ inherited FormMain: TFormMain
   end
   object splProjectFiles: TSplitter[1]
     Left = 240
-    Height = 478
+    Height = 273
     Top = 36
     Width = 5
   end
   object pgCode: TPageControl[2]
     Left = 245
-    Height = 478
+    Height = 273
     Top = 36
     Width = 489
     Align = alClient
@@ -164,17 +164,17 @@ inherited FormMain: TFormMain
   end
   object pnlClassIndex: TPanel[4]
     Left = 739
-    Height = 478
+    Height = 273
     Top = 36
     Width = 219
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 478
+    ClientHeight = 273
     ClientWidth = 219
     TabOrder = 4
     object tvClassIndex: TTreeView
       Left = 0
-      Height = 451
+      Height = 246
       Top = 27
       Width = 219
       Align = alClient
@@ -198,7 +198,7 @@ inherited FormMain: TFormMain
   end
   object splRight: TSplitter[5]
     Left = 734
-    Height = 478
+    Height = 273
     Top = 36
     Width = 5
     Align = alRight
@@ -220,37 +220,146 @@ inherited FormMain: TFormMain
   end
   object pnlSearch: TPanel[7]
     Left = 0
-    Height = 90
-    Top = 519
+    Height = 152
+    Top = 314
     Width = 958
     Align = alBottom
     BevelOuter = bvNone
-    ClientHeight = 90
+    ClientHeight = 152
     ClientWidth = 958
     TabOrder = 7
     object lstSearchResult: TListBox
       Left = 0
-      Height = 90
-      Top = 0
+      Height = 131
+      Top = 21
       Width = 958
       Align = alClient
       ItemHeight = 0
+      OnClick = lstSearchResultClick
       OnKeyDown = lstSearchResultKeyDown
       ScrollWidth = 956
       TabOrder = 0
       TopIndex = -1
+    end
+    object pnlSearchOper: TPanel
+      Left = 4
+      Height = 21
+      Top = 0
+      Width = 954
+      Align = alTop
+      BorderSpacing.Left = 4
+      BevelOuter = bvNone
+      ClientHeight = 21
+      ClientWidth = 954
+      TabOrder = 1
+      object lblSearchResult: TLabel
+        Left = 0
+        Height = 21
+        Top = 0
+        Width = 92
+        Align = alLeft
+        Caption = 'Search Result'
+        ParentColor = False
+      end
+      object btnCancelsearch: TButton
+        Left = 929
+        Height = 21
+        Top = 0
+        Width = 21
+        Align = alRight
+        AutoSize = True
+        BorderSpacing.Right = 4
+        Caption = 'X'
+        OnClick = btnCancelsearchClick
+        TabOrder = 0
+      end
+      object lblSearchState: TLabel
+        Left = 108
+        Height = 21
+        Top = 0
+        Width = 41
+        Align = alLeft
+        BorderSpacing.Left = 16
+        Caption = 'Ready'
+        ParentColor = False
+      end
     end
   end
   object splBottom: TSplitter[8]
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 514
+    Top = 309
     Width = 958
     Align = alBottom
     ResizeAnchor = akBottom
   end
-  object mmMain: TMainMenu[9]
+  object pnlConsole: TPanel[9]
+    Left = 0
+    Height = 138
+    Top = 471
+    Width = 958
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 138
+    ClientWidth = 958
+    TabOrder = 9
+    Visible = False
+    object mmConsole: TMemo
+      Left = 0
+      Height = 117
+      Top = 21
+      Width = 958
+      Align = alClient
+      ReadOnly = True
+      ScrollBars = ssAutoBoth
+      TabOrder = 0
+      WantTabs = True
+    end
+    object pnlConsoleTitle: TPanel
+      Left = 0
+      Height = 21
+      Top = 0
+      Width = 958
+      Align = alTop
+      BevelOuter = bvNone
+      ClientHeight = 21
+      ClientWidth = 958
+      TabOrder = 1
+      object lblConsoleTitle: TLabel
+        Left = 4
+        Height = 21
+        Top = 0
+        Width = 55
+        Align = alLeft
+        BorderSpacing.Left = 4
+        Caption = 'Console'
+        ParentColor = False
+      end
+      object btnCleanConsole: TButton
+        Left = 937
+        Height = 21
+        Top = 0
+        Width = 21
+        Align = alRight
+        AutoSize = True
+        Caption = 'X'
+        OnClick = btnCleanConsoleClick
+        TabOrder = 0
+      end
+    end
+  end
+  object splConsole: TSplitter[10]
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 466
+    Width = 958
+    Align = alBottom
+    ResizeAnchor = akBottom
+    Visible = False
+  end
+  object mmMain: TMainMenu[11]
     Images = imgLst
     Left = 40
     Top = 40
@@ -460,7 +569,7 @@ inherited FormMain: TFormMain
       end
     end
   end
-  object imgLst: TImageList[10]
+  object imgLst: TImageList[12]
     Height = 32
     Width = 32
     Left = 40
@@ -2261,7 +2370,7 @@ inherited FormMain: TFormMain
       B896B8B8B800B8B8B800B8B8B800
     }
   end
-  object imgIndex: TImageList[11]
+  object imgIndex: TImageList[13]
     Left = 44
     Top = 160
     Bitmap = {
@@ -2332,7 +2441,7 @@ inherited FormMain: TFormMain
       FF00FFFFFF00FFFFFF00FFFFFF00
     }
   end
-  object popCodeFiles: TPopupMenu[12]
+  object popCodeFiles: TPopupMenu[14]
     Left = 40
     Top = 224
     object miNewClass: TMenuItem

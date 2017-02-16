@@ -13,9 +13,12 @@ type
 
   TFormAbout = class(TFormBase)
   private
-    { private declarations }
+  protected
+    procedure InitComponents; override;
+    procedure InitEvents; override;
+    procedure InitLogic; override;
   public
-    { public declarations }
+
   end;
 
 var
@@ -24,6 +27,23 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TFormAbout }
+
+procedure TFormAbout.InitComponents;
+begin
+  //
+end;
+
+procedure TFormAbout.InitEvents;
+begin
+  //
+end;
+
+procedure TFormAbout.InitLogic;
+begin
+  //
+end;
 
 end.
 

@@ -631,8 +631,6 @@ begin
 end;
 
 procedure TSynSmaliSyn.SetSecondKeys(const Value: TStrings);
-var
-  i: Integer;
 begin
   fSecondKeys.Assign(Value);
   DefHighLightChange(nil);

@@ -15,6 +15,10 @@
 (* SYN_WIN32            : Compilation target is 32-bit Windows                *)
 (******************************************************************************)
 
+{$HINTS OFF}
+{$WARNINGS OFF}
+{$NOTES OFF}
+
 {$IFDEF FPC}
   {$MODE OBJFPC}
 {$ENDIF}

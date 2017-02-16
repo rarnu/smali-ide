@@ -15,7 +15,7 @@ type
   private
     FEditor: TSynEdit;
 
-    // TODO: highlighters
+    // highlighters
     FHighlightXml: TSynXMLSyn;
     FHighlightHtml: TSynHTMLSyn;
     FHighlightCss: TSynCssSyn;
@@ -76,6 +76,9 @@ type
     procedure Replace();
     procedure CancelReplace();
     procedure GotoLine(line: Integer);
+    procedure GotoPosition(apos: Integer);
+    procedure SetCodeTheme(AThemeFile: string);
+    procedure FocusEditor();
   published
     property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read GetFileName write SetFileName;
@@ -92,11 +95,22 @@ uses
 { TTextCodeView }
 
 procedure TTextCodeView.SetFileName(AValue: string);
+var
+  ext: string;
 begin
   FFileName:=AValue;
   FTitle:= ExtractFileName(FFileName);
   Caption:= FTitle;
   FEditor.Lines.LoadFromFile(FFileName);
+
+  ext := string(ExtractFileExt(FFileName)).Trim;
+  FEditor.Highlighter := nil;
+  if (ext = '.xml') then FEditor.Highlighter := FHighlightXml;
+  if (ext = '.htm') or (ext = '.html') then FEditor.Highlighter := FHighlightHtml;
+  if (ext = '.js') then FEditor.Highlighter := FHighlightJs;
+  if (ext = '.css') then FEditor.Highlighter := FHighlightCss;
+  if (ext = '.sh') then FEditor.Highlighter := FHighlightShell;
+
 end;
 
 procedure TTextCodeView.OnEditorChange(Sender: TObject);
@@ -166,6 +180,12 @@ var
 begin
   inherited Create(TheOwner);
   FEditor := TSynEdit.Create(Self);
+
+  FHighlightXml:= TSynXMLSyn.Create(Self);
+  FHighlightHtml:= TSynHTMLSyn.Create(Self);
+  FHighlightCss:= TSynCssSyn.Create(Self);
+  FHighlightJs:= TSynJScriptSyn.Create(Self);
+  FHighlightShell:= TSynUNIXShellScriptSyn.Create(Self);
 
   with FEditor do begin
     Parent := Self;
@@ -486,6 +506,28 @@ procedure TTextCodeView.GotoLine(line: Integer);
 begin
   FEditor.CaretY:= line;
   FEditor.SetFocus;
+end;
+
+procedure TTextCodeView.GotoPosition(apos: Integer);
+begin
+  FEditor.SelStart:= apos + 1;
+end;
+
+procedure TTextCodeView.SetCodeTheme(AThemeFile: string);
+begin
+  // TODO: set code theme
+end;
+
+procedure TTextCodeView.FocusEditor;
+var
+  f: TCustomForm;
+begin
+  f := GetParentForm(Self);
+  while f.ActiveControl <> FEditor do begin
+    Application.ProcessMessages;
+    f.ActiveControl := FEditor;
+    FEditor.SetFocus;
+  end;
 end;
 
 end.

@@ -26,7 +26,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="12">
+    <Units Count="15">
       <Unit0>
         <Filename Value="smaliide.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -48,7 +48,7 @@
       <Unit3>
         <Filename Value="form/frmAbout.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormBase1"/>
+        <ComponentName Value="FormAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit3>
@@ -84,6 +84,21 @@
         <Filename Value="view/imageView.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit11>
+      <Unit12>
+        <Filename Value="util/SearchInFileUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="util/CommandUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="form/frmDecompile.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormDecompile"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit14>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

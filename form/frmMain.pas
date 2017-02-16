@@ -6,16 +6,22 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType;
+  ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType, SearchInFileUtils, CommandUtils;
 
 type
   { TFormMain }
 
   TFormMain = class(TFormBase)
+    btnCancelsearch: TButton;
+    btnCleanConsole: TButton;
     edtFilterClass: TEdit;
     imgIndex: TImageList;
     imgLst: TImageList;
+    lblConsoleTitle: TLabel;
+    lblSearchState: TLabel;
+    lblSearchResult: TLabel;
     lstSearchResult: TListBox;
+    mmConsole: TMemo;
     miCloseAllOtherPages: TMenuItem;
     miCloseAllPages: TMenuItem;
     mm12: TMenuItem;
@@ -76,12 +82,16 @@ type
     mm1: TMenuItem;
     miExit: TMenuItem;
     mmMain: TMainMenu;
+    pnlConsole: TPanel;
+    pnlConsoleTitle: TPanel;
+    pnlSearchOper: TPanel;
     pnlSearch: TPanel;
     pnlClassIndex: TPanel;
     pgCode: TPageControl;
     pnlProjectFiles: TPanel;
     popCodeFiles: TPopupMenu;
     splBottom: TSplitter;
+    splConsole: TSplitter;
     splRight: TSplitter;
     splProjectFiles: TSplitter;
     sbMain: TStatusBar;
@@ -102,9 +112,12 @@ type
     tBtnRedo: TToolButton;
     tSp3: TToolButton;
     tvProjectFiles: TTreeView;
+
+    procedure btnCancelsearchClick(Sender: TObject);
+    procedure btnCleanConsoleClick(Sender: TObject);
     procedure edtFilterClassChange(Sender: TObject);
-    procedure lstSearchResultKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure lstSearchResultClick(Sender: TObject);
+    procedure lstSearchResultKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure miAboutClick(Sender: TObject);
     procedure miClassIndexClick(Sender: TObject);
     procedure miCloseAllOtherPagesClick(Sender: TObject);
@@ -145,16 +158,27 @@ type
     procedure pgCodeCloseTabClicked(Sender: TObject);
     procedure tvClassIndexClick(Sender: TObject);
     procedure tvProjectFilesClick(Sender: TObject);
-    procedure tvProjectFilesMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure tvProjectFilesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     FCurrentProjectName: string;
     FCurrentProjectPath: string;
-    procedure buildClassIndexCallback(sender: TObject; path: string;
-      count: Integer);
+    threadSearchInFile: TSearchInFileThread;
+    procedure buildClassIndexCallback(sender: TObject; path: string; count: Integer);
     procedure buildClassIndexCompleteCallback(sender: TObject);
     procedure codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);
+    procedure compileCallback(Sender: TObject; ACmdType: TCommandType;
+      AOutput: string);
+    procedure compileComplete(Sender: TObject; ACmdType: TCommandType;
+      AParam: array of string);
+    procedure decompileCallback(Sender: TObject; ACmdType: TCommandType; AOutput: string);
+    procedure decompileComplete(Sender: TObject; ACmdType: TCommandType; AParam: array of string);
+    procedure installFrameworkCallback(Sender: TObject; ACmdType: TCommandType;
+      AOutput: string);
+    procedure installFrameworkComplete(Sender: TObject; ACmdType: TCommandType;
+      AParam: array of string);
     function IsPageExists(path: string): Integer;
+    procedure onSearchInFileComplete(Sender: TObject);
+    procedure onSearchInFileFound(Sender: TObject; AFilePath: string; AIndex: Integer; AShortcut: string);
   protected
     procedure InitComponents; override;
     procedure InitEvents; override;
@@ -174,7 +198,8 @@ implementation
 {$R *.lfm}
 
 uses
-  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView;
+  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
+  frmDecompile;
 
 { TFormMain }
 
@@ -230,12 +255,10 @@ begin
         pgCode.TabIndex:= idx;
       end;
     end;
-
   end;
 end;
 
-procedure TFormMain.tvProjectFilesMouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TFormMain.tvProjectFilesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   node: TTreeNode;
   p: TPoint;
@@ -269,6 +292,23 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TFormMain.onSearchInFileComplete(Sender: TObject);
+begin
+  // search completed
+  lblSearchState.Caption:= 'Ready';
+  threadSearchInFile := nil;
+end;
+
+procedure TFormMain.onSearchInFileFound(Sender: TObject; AFilePath: string; AIndex: Integer; AShortcut: string);
+var
+  s: string;
+begin
+  // found
+  s := Format('[%d] %s  (%s)', [AIndex, AShortcut.Replace(#13, '').Replace(#10, '').Trim, AFilePath]);
+  lstSearchResult.Items.Add(s);
+  Application.ProcessMessages;
 end;
 
 procedure TFormMain.codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);
@@ -320,8 +360,50 @@ begin
   end;
 end;
 
-procedure TFormMain.buildClassIndexCallback(sender: TObject; path: string;
-  count: Integer);
+procedure TFormMain.compileCallback(Sender: TObject; ACmdType: TCommandType;
+  AOutput: string);
+begin
+  if (AOutput.Trim <> '') then mmConsole.Lines.Add(AOutput);
+end;
+
+procedure TFormMain.compileComplete(Sender: TObject; ACmdType: TCommandType;
+  AParam: array of string);
+begin
+  mmConsole.Lines.Add(#13#10'Completed.');
+  mmConsole.Lines.Add(Format('APK file is located in "%s"', [AParam[0]]));
+end;
+
+procedure TFormMain.decompileCallback(Sender: TObject; ACmdType: TCommandType; AOutput: string);
+begin
+  // decompile callback
+  if (AOutput.Trim <> '') then mmConsole.Lines.Add(AOutput);
+end;
+
+procedure TFormMain.decompileComplete(Sender: TObject; ACmdType: TCommandType;
+  AParam: array of string);
+begin
+  mmConsole.Lines.Add(#13#10'Completed.');
+
+  // open project after decompile
+  CurrentProjectPath:= AParam[0];
+  tvProjectFiles.Items.Clear;
+  ProjectUtils.LoadProject(CurrentProjectPath, tvProjectFiles.Items);
+  CodeUtils.ThreadBuildClassIndex(CurrentProjectPath, @buildClassIndexCallback, @buildClassIndexCompleteCallback);
+end;
+
+procedure TFormMain.installFrameworkCallback(Sender: TObject;
+  ACmdType: TCommandType; AOutput: string);
+begin
+  if (AOutput.Trim <> '') then mmConsole.Lines.Add(AOutput);
+end;
+
+procedure TFormMain.installFrameworkComplete(Sender: TObject;
+  ACmdType: TCommandType; AParam: array of string);
+begin
+  mmConsole.Lines.Add(#13#10'Completed.');
+end;
+
+procedure TFormMain.buildClassIndexCallback(sender: TObject; path: string; count: Integer);
 begin
   sbMain.Panels[0].Text:= Format('Indexing: [%d] %s', [count, path]);
   Application.ProcessMessages;
@@ -333,6 +415,7 @@ var
   list: TStringList;
   s: string;
 begin
+  tvClassIndex.Items.Clear;
   sbMain.Panels[0].Text:= 'Ready';
   indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(CurrentProjectPath) + '/index';
   if (FileExists(indexPath)) then begin
@@ -353,6 +436,7 @@ procedure TFormMain.miOpenProjClick(Sender: TObject);
 begin
   CurrentProjectPath:= ProjectUtils.OpenProject();
   if (CurrentProjectPath <> '') then begin
+    tvProjectFiles.Items.Clear;
     ProjectUtils.LoadProject(CurrentProjectPath, tvProjectFiles.Items);
     CodeUtils.ThreadBuildClassIndex(CurrentProjectPath, @buildClassIndexCallback, @buildClassIndexCompleteCallback);
   end;
@@ -373,8 +457,29 @@ begin
 end;
 
 procedure TFormMain.miDecompileClick(Sender: TObject);
+var
+  apkPath: string;
+  outputPath: string;
+  isNoRes: Boolean;
+  isNoSrc: Boolean;
 begin
-  // TODO: decompile package
+  with TFormDecompile.Create(nil) do begin
+    if ShowModal = mrOK then begin
+      apkPath:= edtApkPath.Text;
+      outputPath:= edtOutputPath.Text;
+      isNoRes:= chkNoRes.Checked;
+      isNoSrc:= chkNoSrc.Checked;
+      // decompile package
+
+      CodeUtils.DecompilePackage(apkPath, outputPath, isNoRes, isNoSrc, @decompileCallback, @decompileComplete);
+
+      pnlConsole.Visible:= True;
+      splConsole.Visible:= True;
+      miConsole.Checked:= True;
+
+    end;
+    Free;
+  end;
 end;
 
 procedure TFormMain.miDeleteClick(Sender: TObject);
@@ -419,7 +524,8 @@ end;
 
 procedure TFormMain.miExitClick(Sender: TObject);
 begin
-  // TODO: exit
+  // exit
+  Close;
 end;
 
 procedure TFormMain.miFindClick(Sender: TObject);
@@ -431,8 +537,27 @@ begin
 end;
 
 procedure TFormMain.miFindInFilesClick(Sender: TObject);
+var
+  key: string;
 begin
-  // TODO: file in files
+  // file in files
+  key := InputBox('Find in Files', 'Input keyword', '').Trim;
+  if (key = '') then Exit;
+  if (threadSearchInFile = nil) then begin
+    threadSearchInFile:= TSearchInFileThread.Create(ExtractFilePath(CurrentProjectPath), key);
+    threadSearchInFile.OnTerminate:= @onSearchInFileComplete;
+    threadSearchInFile.OnSearchInFileFound:= @onSearchInFileFound;
+    threadSearchInFile.Start;
+
+    pnlSearch.Visible:= True;
+    splBottom.Visible:= pnlSearch.Visible;
+    miSearchResult.Checked:= pnlSearch.Visible;
+    lstSearchResult.Items.Clear;
+    lblSearchState.Caption:= 'Searching';
+
+  end else begin
+    MessageDlg('Hint', 'Last search is not completed.', mtInformation, [mbOK], 0);
+  end;
 end;
 
 procedure TFormMain.miFindNextClick(Sender: TObject);
@@ -458,8 +583,21 @@ begin
 end;
 
 procedure TFormMain.miInstallFrameworkClick(Sender: TObject);
+var
+  frameworkPath: string;
 begin
-  // TODO: install framework
+  // install framework
+  with TOpenDialog.Create(nil) do begin
+    Filter:= 'jar files|*.jar|apk files|*.apk';
+    if Execute then begin
+      frameworkPath:= FileName;
+      pnlConsole.Visible:= True;
+      splConsole.Visible:= True;
+      miConsole.Visible:= True;
+      CodeUtils.InstallFramework(frameworkPath, @installFrameworkCallback, @installFrameworkComplete);
+    end;
+    Free;
+  end;
 end;
 
 procedure TFormMain.miNewAnnotationClick(Sender: TObject);
@@ -563,15 +701,24 @@ begin
 end;
 
 procedure TFormMain.miCompileClick(Sender: TObject);
+var
+  path: string;
 begin
-  // TODO: compile package
-
+  // compile package
+  path := ExtractFilePath(CurrentProjectPath);
+  if (path.Trim = '') then Exit;
+  pnlConsole.Visible:= True;
+  splConsole.Visible:= True;
+  miConsole.Checked:= True;
+  CodeUtils.CompilePackage(path, @compileCallback, @compileComplete);
 end;
 
 procedure TFormMain.miConsoleClick(Sender: TObject);
 begin
-  // TODO: show /hide console
-
+  // show /hide console
+  pnlConsole.Visible:= not pnlConsole.Visible;
+  splConsole.Visible:= pnlConsole.Visible;
+  miConsole.Checked:= pnlConsole.Visible;
 end;
 
 procedure TFormMain.lstSearchResultKeyDown(Sender: TObject; var Key: Word;
@@ -597,6 +744,58 @@ begin
       tvClassIndex.Items.Item[i].Visible := tvClassIndex.Items.Item[i].Text.Contains(filter);
     end;
   end;
+end;
+
+procedure TFormMain.lstSearchResultClick(Sender: TObject);
+var
+  idx: Integer;
+  s: string;
+  APath: string;
+  AStart: Integer;
+  pgIdx: Integer;
+  page: TSmaliCodeView;
+  pageText: TTextCodeView;
+begin
+  // click search result
+  idx := lstSearchResult.ItemIndex;
+  if (idx = -1) then Exit;
+  s := lstSearchResult.Items[idx];
+
+  APath:= s.Substring(s.LastIndexOf('(')).TrimLeft(['(']).TrimRight([')']);
+  AStart:= StrToInt(s.Substring(0, s.IndexOf(']')).TrimLeft('[').TrimRight(']'));
+  pgIdx:= IsPageExists(APath);
+  if pgIdx = -1 then begin
+    if (APath.EndsWith('.smali')) then begin
+      page := TSmaliCodeView.Create(pgCode);
+      page.Parent := pgCode;
+      page.ProjectPath:= CurrentProjectPath;
+      page.FileName:= APath;
+      page.OnCodeJump:=@codeJumpCallback;
+      pgCode.TabIndex:= pgCode.PageCount - 1;
+    end else begin
+      if (CodeUtils.IsTextFile(APath)) then begin
+        pageText := TTextCodeView.Create(pgCode);
+        pageText.Parent := pgCode;
+        pageText.ProjectPath:= CurrentProjectPath;
+        pageText.FileName:= APath;
+        pgCode.TabIndex:= pgCode.PageCount - 1;
+      end
+    end;
+  end else begin
+    pgCode.TabIndex:= pgIdx;
+  end;
+  (pgCode.ActivePage as ICodeViewIntf).GotoPosition(AStart);
+  (pgCode.ActivePage as ICodeViewIntf).FocusEditor();
+end;
+
+procedure TFormMain.btnCancelsearchClick(Sender: TObject);
+begin
+  threadSearchInFile.AbortSearch();
+end;
+
+procedure TFormMain.btnCleanConsoleClick(Sender: TObject);
+begin
+  mmConsole.Lines.Clear;
 end;
 
 procedure TFormMain.miRedoClick(Sender: TObject);

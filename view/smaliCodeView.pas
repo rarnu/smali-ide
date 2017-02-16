@@ -98,7 +98,10 @@ type
     procedure Replace();
     procedure CancelReplace();
     procedure GotoLine(line: Integer);
+    procedure GotoPosition(apos: Integer);
+    procedure FocusEditor();
     function FindMethodAndJump(methodSig: string): Boolean;
+    procedure SetCodeTheme(AThemeFile: string);
   published
     property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read GetFileName write SetFileName;
@@ -732,6 +735,23 @@ begin
   FEditor.SetFocus;
 end;
 
+procedure TSmaliCodeView.GotoPosition(apos: Integer);
+begin
+  FEditor.SelStart:= apos + 1;
+end;
+
+procedure TSmaliCodeView.FocusEditor;
+var
+  f: TCustomForm;
+begin
+  f := GetParentForm(Self);
+  while f.ActiveControl <> FEditor do begin
+    Application.ProcessMessages;
+    f.ActiveControl := FEditor;
+    FEditor.SetFocus;
+  end;
+end;
+
 function TSmaliCodeView.FindMethodAndJump(methodSig: string): Boolean;
 var
   r: Integer;
@@ -762,6 +782,11 @@ begin
       Break;
     end;
   end;
+end;
+
+procedure TSmaliCodeView.SetCodeTheme(AThemeFile: string);
+begin
+  // TODO: set code theme
 end;
 
 end.
