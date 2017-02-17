@@ -4,10 +4,7 @@ program smaliide;
 
 uses
   {$IFNDEF WINDOWS} cthreads, {$ENDIF}
-  Interfaces,
-  Forms, frmMain, smaliCodeView, TextUtils, CodeUtils,
-ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView, 
-SearchInFileUtils, CommandUtils, frmDecompile, baseData;
+  Interfaces, Forms, frmMain, config;
 
 {$R *.res}
 

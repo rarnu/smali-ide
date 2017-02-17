@@ -269,7 +269,6 @@ begin
   fnsAttributeValueAttri.Foreground:= clRed;
   fnsAttributeValueAttri.Style:= [fsBold];
 
-  fCommentAttri.Background:= clSilver;
   fCommentAttri.Foreground:= clGray;
   fCommentAttri.Style:= [fsbold, fsItalic];
 

@@ -1,25 +1,25 @@
 inherited FormMain: TFormMain
   Left = 589
-  Height = 630
+  Height = 600
   Top = 218
-  Width = 958
+  Width = 800
   Caption = 'Smali IDE'
-  ClientHeight = 630
-  ClientWidth = 958
+  ClientHeight = 600
+  ClientWidth = 800
   Menu = mmMain
   object pnlProjectFiles: TPanel[0]
     Left = 0
-    Height = 273
+    Height = 243
     Top = 36
     Width = 240
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 273
+    ClientHeight = 243
     ClientWidth = 240
     TabOrder = 0
     object tvProjectFiles: TTreeView
       Left = 0
-      Height = 273
+      Height = 243
       Top = 0
       Width = 240
       Align = alClient
@@ -38,15 +38,15 @@ inherited FormMain: TFormMain
   end
   object splProjectFiles: TSplitter[1]
     Left = 240
-    Height = 273
+    Height = 243
     Top = 36
     Width = 5
   end
   object pgCode: TPageControl[2]
     Left = 245
-    Height = 273
+    Height = 243
     Top = 36
-    Width = 489
+    Width = 331
     Align = alClient
     MultiLine = True
     TabOrder = 2
@@ -57,7 +57,7 @@ inherited FormMain: TFormMain
     Left = 0
     Height = 36
     Top = 0
-    Width = 958
+    Width = 800
     ButtonHeight = 32
     ButtonWidth = 32
     Caption = 'tbMain'
@@ -159,22 +159,21 @@ inherited FormMain: TFormMain
       Top = 2
       Caption = 'Java'
       ImageIndex = 13
-      OnClick = miToJavaClick
     end
   end
   object pnlClassIndex: TPanel[4]
-    Left = 739
-    Height = 273
+    Left = 581
+    Height = 243
     Top = 36
     Width = 219
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 273
+    ClientHeight = 243
     ClientWidth = 219
     TabOrder = 4
     object tvClassIndex: TTreeView
       Left = 0
-      Height = 246
+      Height = 216
       Top = 27
       Width = 219
       Align = alClient
@@ -197,8 +196,8 @@ inherited FormMain: TFormMain
     end
   end
   object splRight: TSplitter[5]
-    Left = 734
-    Height = 273
+    Left = 576
+    Height = 243
     Top = 36
     Width = 5
     Align = alRight
@@ -207,8 +206,8 @@ inherited FormMain: TFormMain
   object sbMain: TStatusBar[6]
     Left = 0
     Height = 21
-    Top = 609
-    Width = 958
+    Top = 579
+    Width = 800
     Panels = <    
       item
         Width = 300
@@ -221,23 +220,23 @@ inherited FormMain: TFormMain
   object pnlSearch: TPanel[7]
     Left = 0
     Height = 152
-    Top = 314
-    Width = 958
+    Top = 284
+    Width = 800
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 152
-    ClientWidth = 958
+    ClientWidth = 800
     TabOrder = 7
     object lstSearchResult: TListBox
       Left = 0
       Height = 131
       Top = 21
-      Width = 958
+      Width = 800
       Align = alClient
       ItemHeight = 0
       OnClick = lstSearchResultClick
       OnKeyDown = lstSearchResultKeyDown
-      ScrollWidth = 956
+      ScrollWidth = 798
       TabOrder = 0
       TopIndex = -1
     end
@@ -245,12 +244,12 @@ inherited FormMain: TFormMain
       Left = 4
       Height = 21
       Top = 0
-      Width = 954
+      Width = 796
       Align = alTop
       BorderSpacing.Left = 4
       BevelOuter = bvNone
       ClientHeight = 21
-      ClientWidth = 954
+      ClientWidth = 796
       TabOrder = 1
       object lblSearchResult: TLabel
         Left = 0
@@ -262,7 +261,7 @@ inherited FormMain: TFormMain
         ParentColor = False
       end
       object btnCancelsearch: TButton
-        Left = 929
+        Left = 771
         Height = 21
         Top = 0
         Width = 21
@@ -289,27 +288,27 @@ inherited FormMain: TFormMain
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 309
-    Width = 958
+    Top = 279
+    Width = 800
     Align = alBottom
     ResizeAnchor = akBottom
   end
   object pnlConsole: TPanel[9]
     Left = 0
     Height = 138
-    Top = 471
-    Width = 958
+    Top = 441
+    Width = 800
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 138
-    ClientWidth = 958
+    ClientWidth = 800
     TabOrder = 9
     Visible = False
     object mmConsole: TMemo
       Left = 0
       Height = 117
       Top = 21
-      Width = 958
+      Width = 800
       Align = alClient
       ReadOnly = True
       ScrollBars = ssAutoBoth
@@ -320,11 +319,11 @@ inherited FormMain: TFormMain
       Left = 0
       Height = 21
       Top = 0
-      Width = 958
+      Width = 800
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 21
-      ClientWidth = 958
+      ClientWidth = 800
       TabOrder = 1
       object lblConsoleTitle: TLabel
         Left = 4
@@ -337,7 +336,7 @@ inherited FormMain: TFormMain
         ParentColor = False
       end
       object btnCleanConsole: TButton
-        Left = 937
+        Left = 779
         Height = 21
         Top = 0
         Width = 21
@@ -353,8 +352,8 @@ inherited FormMain: TFormMain
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 466
-    Width = 958
+    Top = 436
+    Width = 800
     Align = alBottom
     ResizeAnchor = akBottom
     Visible = False
@@ -366,7 +365,7 @@ inherited FormMain: TFormMain
     object miFile: TMenuItem
       Caption = '&File'
       object miOpenProj: TMenuItem
-        Caption = '&Open Project'
+        Caption = 'Open Project'
         ShortCut = 16463
         OnClick = miOpenProjClick
       end
@@ -374,16 +373,17 @@ inherited FormMain: TFormMain
         Caption = '-'
       end
       object miSaveFile: TMenuItem
-        Caption = '&Save File'
+        Caption = 'Save File'
         ShortCut = 16467
         OnClick = miSaveFileClick
       end
       object miSaveAs: TMenuItem
         Caption = 'Save As'
+        ShortCut = 41043
         OnClick = miSaveAsClick
       end
       object miSaveAllFiles: TMenuItem
-        Caption = 'Save &All Files'
+        Caption = 'Save All Files'
         ShortCut = 49235
         OnClick = miSaveAllFilesClick
       end
@@ -391,7 +391,8 @@ inherited FormMain: TFormMain
         Caption = '-'
       end
       object miExit: TMenuItem
-        Caption = 'E&xit'
+        Caption = 'Exit'
+        ShortCut = 32883
         OnClick = miExitClick
       end
     end
@@ -521,26 +522,6 @@ inherited FormMain: TFormMain
       object miInstallFramework: TMenuItem
         Caption = 'Install Framework'
         OnClick = miInstallFrameworkClick
-      end
-    end
-    object miCode: TMenuItem
-      Caption = '&Code'
-      object miTemplate: TMenuItem
-        Caption = 'Template'
-        OnClick = miTemplateClick
-      end
-      object miToJava: TMenuItem
-        Caption = 'To Java'
-        OnClick = miToJavaClick
-      end
-      object mm6: TMenuItem
-        Caption = '-'
-      end
-      object miSyntxHighlight: TMenuItem
-        Caption = 'Syntax Highlight'
-        object miSyntaxDefault: TMenuItem
-          Caption = 'Default'
-        end
       end
     end
     object miHelp: TMenuItem

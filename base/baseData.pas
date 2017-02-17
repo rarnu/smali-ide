@@ -72,6 +72,31 @@ const
   KEY_EVENT_COLOR = 'event_color';
   KEY_EVENT_BOLD = 'event_bold';
 
+  SEC_CONFIG = 'config';
+  KEY_JAVA_BINARY_PATH = 'java_binary_path';
+  KEY_CURL_BINARY_PATH = 'curl_binary_path';
+  KEY_HINT_KEYWORD_SHORTCUT = 'hint_keyword_shortcut';
+  KEY_HINT_CLASSMETHOD_SHORTCUT = 'hint_classmethod_shortcut';
+  KEY_HINT_TEMPLATE_SHORTCUT = 'hint_template_shortcut';
+  KEY_JUMP_CLASS_METHOD_SHORTCUT = 'jump_class_method_shortcut';
+  KEY_JUMP_TO_JAVA_SHORTCUT = 'jump_to_java_shortcut';
+  KEY_NEW_CLASS_SHORTCUT = 'new_class_shortcut';
+  KEY_NEW_INTERFACE_SHORTCUT = 'new_interface_shortcut';
+  KEY_NEW_ENUM_SHORTCUT = 'new_enum_shortcut';
+  KEY_NEW_ANNOTATION_SHORTCUT = 'new_annotation_shortcut';
+  KEY_NEW_TEXTFILE_SHORTCUT = 'new_textfile_shortcut';
+  KEY_DELETE_FILE_SHORTCUT = 'delete_file_shortcut';
+  KEY_SHOW_CLASSINDEX_SHORTCUT = 'show_classindex_shortcut';
+  KEY_SHOW_SEARCHRESULT_SHORTCUT = 'show_searchresult_shortcut';
+  KEY_SHOW_CONSOLE_SHORTCUT = 'show_console_shortcut';
+  KEY_CLOSE_ALL_PAGES_SHORTCUT = 'close_all_pages_shortcut';
+  KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT = 'close_all_other_pages_shortcut';
+  KEY_DECOMPILE_SHORTCUT = 'decompile_shortcut';
+  KEY_COMPILE_SHORTCUT = 'compile_shortcut';
+  KEY_INSTALL_FRAMEWORK_SHORTCUT = 'install_framework_shortcut';
+  KEY_SETTINGS_SHORTCUT = 'settings_shortcut';
+
+
 implementation
 
 end.

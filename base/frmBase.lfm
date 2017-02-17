@@ -3,6 +3,7 @@ object FormBase: TFormBase
   Height = 240
   Top = 473
   Width = 320
+  Color = clWhite
   OnCreate = FormCreate
-  LCLVersion = '5.7'
+  LCLVersion = '6.0'
 end

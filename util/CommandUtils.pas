@@ -38,6 +38,9 @@ type
 
 implementation
 
+uses
+  config;
+
 { TCommandThread }
 
 function ExtractPureFileName(path: string): string;
@@ -80,7 +83,7 @@ begin
   case FCmdType of
   ctDecompile:
     begin
-      AProcess.Executable:= '/usr/bin/java';
+      AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
       AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
       AProcess.Parameters.Add('d');
@@ -97,7 +100,7 @@ begin
   ctCompile:
     begin
       // compile
-      AProcess.Executable:= '/usr/bin/java';
+      AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
       AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
       AProcess.Parameters.Add('b');
@@ -108,7 +111,7 @@ begin
     end;
   ctInstallFramework:
     begin
-      AProcess.Executable:= '/usr/bin/java';
+      AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
       AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
       AProcess.Parameters.Add('if');

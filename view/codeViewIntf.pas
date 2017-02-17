@@ -26,6 +26,7 @@ type
   function GetEditor(): TSynEdit;
   function GetFileName(): string;
   procedure FocusEditor();
+  procedure LoadShortcut();
   procedure SetCodeTheme(AThemeFile: string);
   procedure Free;   // hidden method from TObject
   end;

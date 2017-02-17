@@ -1,0 +1,224 @@
+inherited FormSettings: TFormSettings
+  Left = 567
+  Height = 600
+  Top = 231
+  Width = 800
+  Caption = 'Settings'
+  ClientHeight = 600
+  ClientWidth = 800
+  Position = poMainFormCenter
+  object pgSettings: TPageControl[0]
+    Left = 4
+    Height = 592
+    Top = 4
+    Width = 792
+    ActivePage = tsEnvironment
+    Align = alClient
+    BorderSpacing.Around = 4
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = tpLeft
+    object tsEnvironment: TTabSheet
+      Caption = 'Environment'
+      ClientHeight = 588
+      ClientWidth = 688
+      object gbJava: TGroupBox
+        Left = 8
+        Height = 103
+        Top = 8
+        Width = 672
+        Align = alTop
+        BorderSpacing.Around = 8
+        Caption = 'Java'
+        ClientHeight = 84
+        ClientWidth = 668
+        TabOrder = 0
+        object pnlJavaDefault: TPanel
+          Left = 0
+          Height = 40
+          Top = 0
+          Width = 668
+          Align = alTop
+          BevelColor = clNone
+          BevelOuter = bvSpace
+          ClientHeight = 40
+          ClientWidth = 668
+          TabOrder = 0
+          object lblDefaultJava: TLabel
+            Left = 9
+            Height = 38
+            Top = 1
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Default: /usr/bin/java'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblJavaStatus: TLabel
+            Left = 197
+            Height = 22
+            Top = 9
+            Width = 43
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = '(exist)'
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+        end
+        object pnlJavaChoose: TPanel
+          Left = 0
+          Height = 44
+          Top = 40
+          Width = 668
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 1
+          object lblchooseJava: TLabel
+            Left = 8
+            Height = 44
+            Top = 0
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Choose Java Binary Path'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object btnChooseJava: TButton
+            Left = 632
+            Height = 28
+            Top = 8
+            Width = 28
+            Align = alRight
+            BorderSpacing.Around = 8
+            Caption = '...'
+            OnClick = btnChooseJavaClick
+            TabOrder = 0
+          end
+          object edtJavaPath: TEdit
+            Left = 196
+            Height = 28
+            Top = 8
+            Width = 428
+            Align = alClient
+            BorderSpacing.Around = 8
+            TabOrder = 1
+          end
+        end
+      end
+      object gbCurl: TGroupBox
+        Left = 8
+        Height = 103
+        Top = 119
+        Width = 672
+        Align = alTop
+        BorderSpacing.Around = 8
+        Caption = 'Curl'
+        ClientHeight = 84
+        ClientWidth = 668
+        TabOrder = 1
+        object pnlCurlDefault: TPanel
+          Left = 0
+          Height = 40
+          Top = 0
+          Width = 668
+          Align = alTop
+          BevelColor = clNone
+          BevelOuter = bvSpace
+          ClientHeight = 40
+          ClientWidth = 668
+          TabOrder = 0
+          object lblDefaultCurl: TLabel
+            Left = 9
+            Height = 38
+            Top = 1
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Default: /usr/bin/curl'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblCurlStatus: TLabel
+            Left = 197
+            Height = 22
+            Top = 9
+            Width = 43
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = '(exist)'
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+        end
+        object pnlCurlChoose: TPanel
+          Left = 0
+          Height = 44
+          Top = 40
+          Width = 668
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 1
+          object lblChooseCurl: TLabel
+            Left = 8
+            Height = 44
+            Top = 0
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Choose Curl Binary Path'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object btnChooseCurl: TButton
+            Left = 632
+            Height = 28
+            Top = 8
+            Width = 28
+            Align = alRight
+            BorderSpacing.Around = 8
+            Caption = '...'
+            OnClick = btnChooseCurlClick
+            TabOrder = 0
+          end
+          object edtCurlPath: TEdit
+            Left = 196
+            Height = 28
+            Top = 8
+            Width = 428
+            Align = alClient
+            BorderSpacing.Around = 8
+            TabOrder = 1
+          end
+        end
+      end
+    end
+    object tsShortcut: TTabSheet
+      Caption = 'Shortcut'
+    end
+    object tsApktool: TTabSheet
+      Caption = 'Apktool'
+    end
+    object tsHighlight: TTabSheet
+      Caption = 'Highlight'
+    end
+    object tsFileType: TTabSheet
+      Caption = 'FileType'
+    end
+    object tsTemplate: TTabSheet
+      Caption = 'Template'
+    end
+  end
+end

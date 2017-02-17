@@ -79,6 +79,7 @@ type
     procedure GotoPosition(apos: Integer);
     procedure SetCodeTheme(AThemeFile: string);
     procedure FocusEditor();
+    procedure LoadShortcut();
   published
     property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read GetFileName write SetFileName;
@@ -90,7 +91,7 @@ type
 implementation
 
 uses
-  TextUtils, baseData;
+  TextUtils, baseData, config;
 
 { TTextCodeView }
 
@@ -423,6 +424,7 @@ begin
   FReplaceBtnReplaceAll.OnClick:= @btnClicked;
   FReplaceFindBtnClose.OnClick:= @btnClicked;
 
+  LoadShortcut();
 end;
 
 destructor TTextCodeView.Destroy;
@@ -513,16 +515,139 @@ begin
   FEditor.SelStart:= apos + 1;
 end;
 
-procedure TTextCodeView.SetCodeTheme(AThemeFile: string);
+function IfThen(b: Boolean; trueValue: TFontStyles; falseValue: TFontStyles): TFontStyles;
 begin
-  // TODO: set code theme
-  (*
-  FHighlightXml: TSynXMLSyn;
-      FHighlightHtml: TSynHTMLSyn;
-      FHighlightCss: TSynCssSyn;
-      FHighlightJs: TSynJScriptSyn;
-      FHighlightShell: TSynUNIXShellScriptSyn;
-  *)
+  if b then Result := trueValue else Result := falseValue;
+end;
+
+procedure TTextCodeView.SetCodeTheme(AThemeFile: string);
+var
+  path: string;
+begin
+  path := ExtractFilePath(ParamStr(0)) + 'style/' + AThemeFile;
+  with TIniFile.Create(path) do begin
+    if (FEditor.Highlighter = FHighlightXml) then begin
+      FEditor.Color:= ReadInteger(SEC_XML, KEY_BACKGROUND, clWhite);
+      with FHighlightXml do begin
+        ElementAttri.Foreground:= ReadInteger(SEC_XML, KEY_ELEMENT_COLOR, clMaroon);
+        ElementAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_ELEMENT_BOLD, 0) <> 0, [fsBold], []);
+        AttributeAttri.Foreground:= ReadInteger(SEC_XML, KEY_ATTR_COLOR, clMaroon);
+        AttributeAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_ATTR_BOLD, 0) <> 0, [fsBold], []);
+        NamespaceAttributeAttri.Foreground:= ReadInteger(SEC_XML, KEY_NAMESPACE_COLOR, clRed);
+        NamespaceAttributeAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_NAMESPACE_BOLD, 0) <> 0, [fsBold], []);
+        AttributeValueAttri.Foreground:= ReadInteger(SEC_XML, KEY_ATTRVALUE_COLOR, clNavy);
+        AttributeValueAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_ATTRVALUE_BOLD, 0) <> 0, [fsBold], []);
+        NamespaceAttributeValueAttri.Foreground:= ReadInteger(SEC_XML, KEY_NAMESPACEVALUE_COLOR, clRed);
+        NamespaceAttributeValueAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_NAMESPACEVALUE_BOLD, 0) <> 0, [fsBold], []);
+        TextAttri.Foreground:= ReadInteger(SEC_XML, KEY_TEXT_COLOR, clBlack);
+        TextAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_TEXT_BOLD, 0) <> 0, [fsBold], []);
+        CDATAAttri.Foreground:= ReadInteger(SEC_XML, KEY_CDATA_COLOR, clOlive);
+        CDATAAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_CDATA_BOLD, 0) <> 0, [fsBold], []);
+        EntityRefAttri.Foreground:= ReadInteger(SEC_XML, KEY_ENTITY_COLOR, clblue);
+        EntityRefAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_ENTITY_BOLD, 0) <> 0, [fsBold], []);
+        ProcessingInstructionAttri.Foreground:= ReadInteger(SEC_XML, KEY_PROCESSING_COLOR, clblue);
+        ProcessingInstructionAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_PROCESSING_BOLD, 0) <> 0, [fsBold], []);
+        CommentAttri.Foreground:= ReadInteger(SEC_XML, KEY_COMMENT_COLOR, clGray);
+        CommentAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+        DocTypeAttri.Foreground:= ReadInteger(SEC_XML, KEY_DOCTYPE_COLOR, clblue);
+        DocTypeAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_DOCTYPE_BOLD, 0) <> 0, [fsBold], []);
+        SpaceAttri.Foreground:= ReadInteger(SEC_XML, KEY_SPACE_COLOR, clWhite);
+        SymbolAttri.Foreground:= ReadInteger(SEC_XML, KEY_SYMBOL_COLOR, clGray);
+        SymbolAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
+      end;
+    end else if (FEditor.Highlighter = FHighlightHtml) then begin
+      FEditor.Color:= ReadInteger(SEC_HTML, KEY_BACKGROUND, clWhite);
+      with FHighlightHtml do begin
+        AndAttri.Foreground:= ReadInteger(SEC_HTML, KEY_AND_COLOR, $0000ff00);
+        AndAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_AND_BOLD, 0) <> 0, [fsBold], []);
+        ASPAttri.Foreground:= ReadInteger(SEC_HTML, KEY_ASP_COLOR, clBlack);
+        ASPAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_ASP_BOLD, 0) <> 0, [fsBold], []);
+        CDATAAttri.Foreground:= ReadInteger(SEC_HTML, KEY_CDATA_COLOR, clGreen);
+        CDATAAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_CDATA_BOLD, 0) <> 0, [fsBold], []);
+        DocTypeAttri.Foreground:= ReadInteger(SEC_HTML, KEY_DOCTYPE_COLOR, clBlack);
+        DocTypeAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_DOCTYPE_BOLD, 0) <> 0, [fsBold], []);
+        CommentAttri.Foreground:= ReadInteger(SEC_HTML, KEY_COMMENT_COLOR, clGray);
+        CommentAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+        IdentifierAttri.Foreground:= ReadInteger(SEC_HTML, KEY_IDENTIFIER_COLOR, clBlack);
+        IdentifierAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_IDENTIFIER_BOLD, 0) <> 0, [fsBold], []);
+        KeyAttri.Foreground:= ReadInteger(SEC_HTML, KEY_KEY_COLOR, $00ff0080);
+        KeyAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_KEY_BOLD, 0) <> 0, [fsBold], []);
+        SpaceAttri.Foreground:= ReadInteger(SEC_HTML, KEY_SPACE_COLOR, clWhite);
+        SymbolAttri.Foreground:= ReadInteger(SEC_HTML, KEY_SYMBOL_COLOR, clGray);
+        SymbolAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
+        TextAttri.Foreground:= ReadInteger(SEC_HTML, KEY_TEXT_COLOR, clBlack);
+        TextAttri.Style := IfThen(ReadInteger(SEC_HTML, KEY_TEXT_BOLD, 0) <> 0, [fsBold], []);
+        UndefKeyAttri.Foreground:= ReadInteger(SEC_HTML, KEY_UNDEF_KEY_COLOR, clRed);
+        UndefKeyAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_UNDEF_KEY_BOLD, 0) <> 0, [fsBold], []);
+        ValueAttri.Foreground:= ReadInteger(SEC_HTML, KEY_VALUE_COLOR, $00ff8000);
+        ValueAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_VALUE_BOLD, 0) <> 0, [fsBold], []);
+      end;
+    end else if (FEditor.Highlighter = FHighlightCss) then begin
+      FEditor.Color:= ReadInteger(SEC_CSS, KEY_BACKGROUND, clWhite);
+      with FHighlightCss do begin
+        CommentAttri.Foreground:= ReadInteger(SEC_CSS, KEY_COMMENT_COLOR, clGreen);
+        CommentAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+        IdentifierAttri.Foreground:= ReadInteger(SEC_CSS, KEY_IDENTIFIER_COLOR, clBlack);
+        IdentifierAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_IDENTIFIER_BOLD, 0) <> 0, [fsBold], []);
+        KeyAttri.Foreground:= ReadInteger(SEC_CSS, KEY_KEY_COLOR, clBlue);
+        KeyAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_KEY_BOLD, 0) <> 0, [fsBold], []);
+        NumberAttri.Foreground:= ReadInteger(SEC_CSS, KEY_NUMBER_COLOR, clBlack);
+        NumberAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_NUMBER_BOLD, 0) <> 0, [fsBold], []);
+        SpaceAttri.Foreground:= ReadInteger(SEC_CSS, KEY_SPACE_COLOR, clWhite);
+        StringAttri.Foreground:= ReadInteger(SEC_CSS, KEY_STRING_COLOR, clMaroon);
+        StringAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_STRING_BOLD, 0) <> 0, [fsBold], []);
+        SymbolAttri.Foreground:= ReadInteger(SEC_CSS, KEY_SYMBOL_COLOR, clGray);
+        SymbolAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
+        MeasurementUnitAttri.Foreground:= ReadInteger(SEC_CSS, KEY_MEASURE_COLOR, clBlack);
+        MeasurementUnitAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_MEASURE_BOLD, 0) <> 0, [fsBold], []);
+        SelectorAttri.Foreground:= ReadInteger(SEC_CSS, KEY_SELECTOR_COLOR, clBlack);
+        SelectorAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_SELECTOR_BOLD, 0) <> 0, [fsBold], []);
+      end;
+    end else if (FEditor.Highlighter = FHighlightJs) then begin
+      FEditor.Color:= ReadInteger(SEC_JS, KEY_BACKGROUND, clWhite);
+      with FHighlightJs do begin
+        CommentAttri.Foreground:= ReadInteger(SEC_JS, KEY_COMMENT_COLOR, clGreen);
+        CommentAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+        IdentifierAttri.Foreground:= ReadInteger(SEC_JS, KEY_IDENTIFIER_COLOR, clBlack);
+        IdentifierAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_IDENTIFIER_BOLD, 0) <> 0, [fsBold], []);
+        KeyAttri.Foreground:= ReadInteger(SEC_JS, KEY_KEY_COLOR, clBlue);
+        KeyAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_KEY_BOLD, 0) <> 0, [fsBold], []);
+        NonReservedKeyAttri.Foreground:= ReadInteger(SEC_JS, KEY_NON_RESERVED_KEY_COLOR, clNavy);
+        NonReservedKeyAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_NON_RESERVED_KEY_BOLD, 0) <> 0, [fsBold], []);
+        EventAttri.Foreground:= ReadInteger(SEC_JS, KEY_EVENT_COLOR, clBlack);
+        EventAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_ELEMENT_BOLD, 0) <> 0, [fsBold], []);
+        NumberAttri.Foreground:= ReadInteger(SEC_JS, KEY_NUMBER_COLOR, clBlack);
+        NumberAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_NUMBER_BOLD, 0) <> 0, [fsBold], []);
+        SpaceAttri.Foreground:= ReadInteger(SEC_JS, KEY_SPACE_COLOR, clWhite);
+        StringAttri.Foreground:= ReadInteger(SEC_JS, KEY_STRING_COLOR, clMaroon);
+        StringAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_STRING_BOLD, 0) <> 0, [fsBold], []);
+        SymbolAttri.Foreground:= ReadInteger(SEC_JS, KEY_SYMBOL_COLOR, clGray);
+        SymbolAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
+      end;
+    end else if (FEditor.Highlighter = FHighlightShell) then begin
+      FEditor.Color:= ReadInteger(SEC_SHELL, KEY_BACKGROUND, clWhite);
+      with FHighlightShell do begin
+        CommentAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_COMMENT_COLOR, clGreen);
+        CommentAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+        IdentifierAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_IDENTIFIER_COLOR, clBlack);
+        IdentifierAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_IDENTIFIER_BOLD, 0) <> 0, [fsBold], []);
+        KeyAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_KEY_COLOR, clBlue);
+        KeyAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_KEY_BOLD, 0) <> 0, [fsBold], []);
+        SecondKeyAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_SECOND_KEY_COLOR, clNavy);
+        SecondKeyAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_SECOND_KEY_BOLD, 0) <> 0, [fsBold], []);
+        NumberAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_NUMBER_COLOR, clBlack);
+        NumberAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_NUMBER_BOLD, 0) <> 0, [fsBold], []);
+        SpaceAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_SPACE_COLOR, clWhite);
+        StringAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_STRING_COLOR, clMaroon);
+        StringAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_STRING_BOLD, 0) <> 0, [fsBold], []);
+        SymbolAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_SYMBOL_COLOR, clGray);
+        SymbolAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
+        VarAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_VAR_COLOR, clOlive);
+        VarAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_VAR_BOLD, 0) <> 0, [fsBold], []);
+      end;
+    end;
+    Free;
+  end;
 end;
 
 procedure TTextCodeView.FocusEditor;
@@ -535,6 +660,11 @@ begin
     f.ActiveControl := FEditor;
     FEditor.SetFocus;
   end;
+end;
+
+procedure TTextCodeView.LoadShortcut;
+begin
+  // load shortcut
 end;
 
 end.

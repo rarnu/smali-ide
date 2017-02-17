@@ -50,12 +50,6 @@ type
     miUpdate: TMenuItem;
     miDocument: TMenuItem;
     miHelp: TMenuItem;
-    miSyntaxDefault: TMenuItem;
-    miSyntxHighlight: TMenuItem;
-    mm6: TMenuItem;
-    miToJava: TMenuItem;
-    miTemplate: TMenuItem;
-    miCode: TMenuItem;
     miGotoLine: TMenuItem;
     mm5: TMenuItem;
     miFindInFiles: TMenuItem;
@@ -151,8 +145,6 @@ type
     procedure miSearchResultClick(Sender: TObject);
     procedure miSelectAllClick(Sender: TObject);
     procedure miSettingsClick(Sender: TObject);
-    procedure miTemplateClick(Sender: TObject);
-    procedure miToJavaClick(Sender: TObject);
     procedure miUndoClick(Sender: TObject);
     procedure miUpdateClick(Sender: TObject);
     procedure pgCodeCloseTabClicked(Sender: TObject);
@@ -179,6 +171,10 @@ type
     function IsPageExists(path: string): Integer;
     procedure onSearchInFileComplete(Sender: TObject);
     procedure onSearchInFileFound(Sender: TObject; AFilePath: string; AIndex: Integer; AShortcut: string);
+
+    // config
+    procedure loadShortcut();
+
   protected
     procedure InitComponents; override;
     procedure InitEvents; override;
@@ -199,7 +195,7 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile;
+  frmDecompile, frmAbout, frmSettings, config;
 
 { TFormMain }
 
@@ -311,6 +307,30 @@ begin
   s := Format('[%d] %s  (%s)', [AIndex, AShortcut.Replace(#13, '').Replace(#10, '').Trim, AFilePath]);
   lstSearchResult.Items.Add(s);
   Application.ProcessMessages;
+end;
+
+procedure TFormMain.loadShortcut;
+var
+  i: Integer;
+begin
+  // load shortcut
+  miNewClass.ShortCut:= GlobalConfig.NewClass;
+  miNewInterfce.ShortCut:= GlobalConfig.NewInterface;
+  miNewEnum.ShortCut:= GlobalConfig.NewEnum;
+  miNewAnnotation.ShortCut:= GlobalConfig.NewAnnotation;
+  miNewTextFile.ShortCut:= GlobalConfig.NewTextFile;
+  miDeleteFile.ShortCut:= GlobalConfig.DeleteFile;
+  miClassIndex.ShortCut:= GlobalConfig.ShowClassIndex;
+  miSearchResult.ShortCut:= GlobalConfig.ShowSearchResult;
+  miConsole.ShortCut:= GlobalConfig.ShowConsole;
+  miCloseAllPages.ShortCut:= GlobalConfig.CloseAllPages;
+  miCloseAllOtherPages.ShortCut:= GlobalConfig.CloseAllOtherPages;
+  miDecompile.ShortCut:= GlobalConfig.Decompile;
+  miCompile.ShortCut:= GlobalConfig.Compile;
+  miInstallFramework.ShortCut:= GlobalConfig.InstallFramework;
+  miSettings.ShortCut:= GlobalConfig.Settings;
+
+  for i := 0 to pgCode.PageCount - 1 do if (pgCode.Pages[i] is ICodeViewIntf) then (pgCode.Page[i] as ICodeViewIntf).LoadShortcut();
 end;
 
 procedure TFormMain.codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);
@@ -667,7 +687,11 @@ end;
 
 procedure TFormMain.miAboutClick(Sender: TObject);
 begin
-  // TODO: about
+  // about
+  with TFormAbout.Create(nil) do begin
+    ShowModal;
+    Free;
+  end;
 end;
 
 procedure TFormMain.miClassIndexClick(Sender: TObject);
@@ -859,20 +883,12 @@ end;
 
 procedure TFormMain.miSettingsClick(Sender: TObject);
 begin
-  // TODO: settings
-
-end;
-
-procedure TFormMain.miTemplateClick(Sender: TObject);
-begin
-  // TODO: code template
-
-end;
-
-procedure TFormMain.miToJavaClick(Sender: TObject);
-begin
-  // TODO: smali to java
-
+  // settings
+  with TFormSettings.Create(nil) do begin
+    ShowModal;
+    Free;
+  end;
+  loadShortcut();
 end;
 
 procedure TFormMain.miUndoClick(Sender: TObject);
@@ -964,7 +980,7 @@ end;
 
 procedure TFormMain.InitLogic;
 begin
-  //
+  loadShortcut();
 end;
 
 end.

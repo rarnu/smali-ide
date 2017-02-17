@@ -21,6 +21,8 @@ type
     FHighlighter: TSynSmaliSyn;
     FCompleteSmali: TSynCompletion;
     FCompleteClass: TSynCompletion;
+    FCompleteTemplate: TSynCompletion;
+
     FFileName: string;
     FIsChanged: Boolean;
     FMenu: TPopupMenu;
@@ -102,6 +104,7 @@ type
     procedure FocusEditor();
     function FindMethodAndJump(methodSig: string): Boolean;
     procedure SetCodeTheme(AThemeFile: string);
+    procedure LoadShortcut();
   published
     property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read GetFileName write SetFileName;
@@ -114,7 +117,7 @@ type
 implementation
 
 uses
-  TextUtils, EncryptUtils, CodeUtils, baseData;
+  TextUtils, EncryptUtils, CodeUtils, baseData, config;
 
 { TSmaliCodeView }
 
@@ -363,6 +366,8 @@ begin
   FHighlighter := TSynSmaliSyn.Create(Self);
   FCompleteSmali:= TSynCompletion.Create(Self);
   FCompleteClass := TSynCompletion.Create(Self);
+  FCompleteTemplate:= TSynCompletion.Create(Self);
+
   with TStringList.Create do begin
     smaliCmdPath:= ExtractFilePath(ParamStr(0)) + 'template/smalicmd';
     if (FileExists(smaliCmdPath)) then begin
@@ -395,6 +400,12 @@ begin
     OnKeyPress:=@completeClassKeyPress;
     OnKeyDown:=@completeClassKeyDown;
   end;
+  with FCompleteTemplate do begin
+    ExecCommandID:= ecUserDefinedFirst + 2;
+    ShortCut:= Menus.ShortCut(VK_L, [ssCtrl]);
+    // TODO: template completion
+  end;
+
   with FEditor do begin
     Parent := Self;
     Align:= alClient;
@@ -649,6 +660,7 @@ begin
   FReplaceBtnReplaceAll.OnClick:= @btnClicked;
   FReplaceFindBtnClose.OnClick:= @btnClicked;
 
+  LoadShortcut();
 end;
 
 destructor TSmaliCodeView.Destroy;
@@ -820,6 +832,16 @@ begin
     end;
     Free;
   end;
+end;
+
+procedure TSmaliCodeView.LoadShortcut;
+begin
+  // load shortcut
+  FMiJump.ShortCut:= GlobalConfig.JumpClassMethod;
+  FMiToJava.ShortCut:= GlobalConfig.JumpToJava;
+  FCompleteSmali.ShortCut:= GlobalConfig.HintKeyword;
+  FCompleteClass.ShortCut:= GlobalConfig.HintClassMethod;
+  FCompleteTemplate.ShortCut:= GlobalConfig.HintTemplate;
 end;
 
 end.

@@ -2286,7 +2286,6 @@ begin
 
   fASPAttri := TSynHighlighterAttributes.Create(@SYNS_AttrASP, SYNS_XML_AttrASP);
   fASPAttri.Foreground := clBlack;
-  fASPAttri.Background := clYellow;
   AddAttribute(fASPAttri);
 
   fCDATAAttri := TSynHighlighterAttributes.Create(@SYNS_AttrCDATA, SYNS_XML_AttrCDATA);
@@ -2295,7 +2294,6 @@ begin
 
   fDOCTYPEAttri := TSynHighlighterAttributes.Create(@SYNS_AttrDOCTYPE, SYNS_XML_AttrDOCTYPE);
   fDOCTYPEAttri.Foreground := clBlack;
-  fDOCTYPEAttri.Background := clYellow;
   fDOCTYPEAttri.Style := [fsBold];
   AddAttribute(fDOCTYPEAttri);
 

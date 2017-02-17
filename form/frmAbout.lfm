@@ -1,4 +1,6 @@
 inherited FormAbout: TFormAbout
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
   Caption = 'About'
   Position = poMainFormCenter
 end

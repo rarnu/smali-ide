@@ -32,7 +32,7 @@ implementation
 
 procedure TFormAbout.InitComponents;
 begin
-  //
+  // TODO: about
 end;
 
 procedure TFormAbout.InitEvents;
