@@ -61,6 +61,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+    function GetShortcut(Akey: string): TShortCut;
+    procedure SetShortcut(Akey: string; Avalue: TShortCut);
   published
     // path
     property JavaBinaryPath: string read GetJavaBinaryPath write SetJavaBinaryPath;
@@ -334,6 +336,16 @@ destructor TSmaliIdeConfig.Destroy;
 begin
   FIni.Free;
   inherited Destroy;
+end;
+
+function TSmaliIdeConfig.GetShortcut(Akey: string): TShortCut;
+begin
+  Result := FIni.ReadInteger(SEC_CONFIG, Akey, 0);
+end;
+
+procedure TSmaliIdeConfig.SetShortcut(Akey: string; Avalue: TShortCut);
+begin
+  FIni.WriteInteger(SEC_CONFIG, Akey, Avalue);
 end;
 
 initialization

@@ -518,6 +518,7 @@ var
   path: string;
 begin
   node := tvProjectFiles.Selected;
+  if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   if (DirectoryExists(path)) then begin
     if MessageDlg('Hint', 'Delete whole folder? You cannot undo this operation.', mtConfirmation, mbOKCancel, 0) = mrOK then begin
@@ -630,6 +631,7 @@ var
 begin
   // new annotation
   node := tvProjectFiles.Selected;
+  if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   CodeUtils.NewAnnotation(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
@@ -641,6 +643,7 @@ var
 begin
   // new class
   node := tvProjectFiles.Selected;
+  if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   CodeUtils.NewClass(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
@@ -652,6 +655,7 @@ var
 begin
   // new enum
   node := tvProjectFiles.Selected;
+  if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   CodeUtils.NewEnum(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
@@ -663,6 +667,7 @@ var
 begin
   // new interface
   node := tvProjectFiles.Selected;
+  if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   CodeUtils.NewInterface(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode, @codeJumpCallback);
 end;
@@ -674,6 +679,7 @@ var
 begin
   // new text file
   node := tvProjectFiles.Selected;
+  if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   CodeUtils.NewTextFile(CurrentProjectPath, path, tvProjectFiles.Items, node, pgCode);
 end;

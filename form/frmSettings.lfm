@@ -1,7 +1,7 @@
 inherited FormSettings: TFormSettings
-  Left = 567
+  Left = 660
   Height = 600
-  Top = 231
+  Top = 240
   Width = 800
   Caption = 'Settings'
   ClientHeight = 600
@@ -12,10 +12,10 @@ inherited FormSettings: TFormSettings
     Height = 592
     Top = 4
     Width = 792
-    ActivePage = tsEnvironment
+    ActivePage = tsShortcut
     Align = alClient
     BorderSpacing.Around = 4
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     TabPosition = tpLeft
     object tsEnvironment: TTabSheet
@@ -207,6 +207,761 @@ inherited FormSettings: TFormSettings
     end
     object tsShortcut: TTabSheet
       Caption = 'Shortcut'
+      ClientHeight = 588
+      ClientWidth = 688
+      object ScrollBox1: TScrollBox
+        Left = 0
+        Height = 588
+        Top = 0
+        Width = 688
+        HorzScrollBar.Page = 236
+        VertScrollBar.Page = 588
+        Align = alClient
+        BorderStyle = bsNone
+        ClientHeight = 588
+        ClientWidth = 672
+        TabOrder = 0
+        object gbView: TGroupBox
+          Left = 8
+          Height = 224
+          Top = 8
+          Width = 656
+          Align = alTop
+          BorderSpacing.Around = 8
+          Caption = 'View'
+          ClientHeight = 205
+          ClientWidth = 652
+          TabOrder = 0
+          object pnlViewClassIndex: TPanel
+            Left = 0
+            Height = 40
+            Top = 0
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 0
+            object lblViewClassIndex: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 162
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Switch Class Index View'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnViewClassIndex: TButton
+              Left = 444
+              Height = 24
+              Hint = 'show_classindex_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlViewSearchResult: TPanel
+            Left = 0
+            Height = 40
+            Top = 40
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 1
+            object lblViewSearchResult: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 179
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Switch Class Search Result'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnViewSearchResult: TButton
+              Left = 444
+              Height = 24
+              Hint = 'show_searchresult_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlViewConsole: TPanel
+            Left = 0
+            Height = 40
+            Top = 80
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 2
+            object lblViewConsole: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 104
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Switch Console'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnViewConsole: TButton
+              Left = 444
+              Height = 24
+              Hint = 'show_console_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlViewCloseAllPages: TPanel
+            Left = 0
+            Height = 40
+            Top = 120
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 3
+            object lblViewCloseAllPages: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 102
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Close All Pages'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnViewCloseAllPages: TButton
+              Left = 444
+              Height = 24
+              Hint = 'close_all_pages_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlViewCloseAllOtherPages: TPanel
+            Left = 0
+            Height = 40
+            Top = 160
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 4
+            object lblViewCloseAllOtherPages: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 146
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Close All Other Pages'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnViewCloseAllOtherPages: TButton
+              Left = 444
+              Height = 24
+              Hint = 'close_all_other_pages_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+        end
+        object gbPackage: TGroupBox
+          Left = 8
+          Height = 144
+          Top = 240
+          Width = 656
+          Align = alTop
+          BorderSpacing.Around = 8
+          Caption = 'Package'
+          ClientHeight = 125
+          ClientWidth = 652
+          TabOrder = 1
+          object pnlPackageDecompile: TPanel
+            Left = 0
+            Height = 40
+            Top = 0
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 0
+            object lblPackageDecompile: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 73
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Decompile'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnPackageDecompile: TButton
+              Left = 444
+              Height = 24
+              Hint = 'decompile_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlPackageCompile: TPanel
+            Left = 0
+            Height = 40
+            Top = 40
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 1
+            object lblPackageCompile: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 56
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Compile'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnPackageCompile: TButton
+              Left = 444
+              Height = 24
+              Hint = 'compile_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlPackageInstallFramework: TPanel
+            Left = 0
+            Height = 40
+            Top = 80
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 2
+            object lblPackageInstallFramework: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 123
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Install Framework'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnPackageInstallFramework: TButton
+              Left = 444
+              Height = 24
+              Hint = 'install_framework_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+        end
+        object gbCodeTree: TGroupBox
+          Left = 8
+          Height = 264
+          Top = 392
+          Width = 656
+          Align = alTop
+          BorderSpacing.Around = 8
+          Caption = 'CodeTree'
+          ClientHeight = 245
+          ClientWidth = 652
+          TabOrder = 2
+          object pnlCodeTreeNewClass: TPanel
+            Left = 0
+            Height = 40
+            Top = 0
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 0
+            object lblCodeTreeNewClass: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 69
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'New Class'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeTreeNewClass: TButton
+              Left = 444
+              Height = 24
+              Hint = 'new_class_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodetreeNewInterface: TPanel
+            Left = 0
+            Height = 40
+            Top = 40
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 1
+            object lblCodeTreeNewInterface: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 96
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'New Interface'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeTreeNewInterface: TButton
+              Left = 444
+              Height = 24
+              Hint = 'new_interface_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeTreeNewEnum: TPanel
+            Left = 0
+            Height = 40
+            Top = 80
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 2
+            object lblCodeTreeNewEnum: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 74
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'New Enum'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeTreeNewEnum: TButton
+              Left = 444
+              Height = 24
+              Hint = 'new_enum_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeTreeDeleteFile: TPanel
+            Left = 0
+            Height = 40
+            Top = 200
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 3
+            object lblCodeTreeDeleteFile: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 72
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Delete File'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeTreeDeleteFile: TButton
+              Left = 444
+              Height = 24
+              Hint = 'delete_file_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeTreeNewTextFile: TPanel
+            Left = 0
+            Height = 40
+            Top = 160
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 4
+            object lblCodeTreeNewTextFile: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 90
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'New Text File'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeTreeNewTextFile: TButton
+              Left = 444
+              Height = 24
+              Hint = 'new_textfile_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeTreeNewAnnotation: TPanel
+            Left = 0
+            Height = 40
+            Top = 120
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 5
+            object lblCodeTreeNewAnnotation: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 113
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'New Annotation'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeTreeNewAnnotation: TButton
+              Left = 444
+              Height = 24
+              Hint = 'new_annotation_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+        end
+        object gbCodeEditor: TGroupBox
+          Left = 8
+          Height = 224
+          Top = 664
+          Width = 656
+          Align = alTop
+          BorderSpacing.Around = 8
+          Caption = 'CodeEditor'
+          ClientHeight = 205
+          ClientWidth = 652
+          TabOrder = 3
+          object pnlCodeEditorJumpClassMethod: TPanel
+            Left = 0
+            Height = 40
+            Top = 0
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 0
+            object lblCodeEditorJumpClassMethod: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 143
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Jump Class / Method'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeEditorJumpClassMethod: TButton
+              Left = 444
+              Height = 24
+              Hint = 'jump_class_method_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeEditorSmaliToJava: TPanel
+            Left = 0
+            Height = 40
+            Top = 40
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 1
+            object lblCodeEditorSmaliToJava: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 90
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Smali to Java'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeEditorSmaliToJava: TButton
+              Left = 444
+              Height = 24
+              Hint = 'jump_to_java_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeEditorKeywordsCompletion: TPanel
+            Left = 0
+            Height = 40
+            Top = 80
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 2
+            object lblCodeEditorKeywordsCompletion: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 150
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Keywords Completion'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeEditorKeywordsCompletion: TButton
+              Left = 444
+              Height = 24
+              Hint = 'hint_keyword_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeEditorTemplateCompletion: TPanel
+            Left = 0
+            Height = 40
+            Top = 160
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 3
+            object lblCodeEditorTemplateCompletion: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 146
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Template Completion'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeEditorTemplateCompletion: TButton
+              Left = 444
+              Height = 24
+              Hint = 'hint_template_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+          object pnlCodeEditorClassMethodCompletion: TPanel
+            Left = 0
+            Height = 40
+            Top = 120
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 4
+            object lblCodeEditorClassMethodCompletion: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 184
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Class / Method Completion'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnCodeEditorClassMethodCompletion: TButton
+              Left = 444
+              Height = 24
+              Hint = 'hint_classmethod_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+        end
+        object gbHelp: TGroupBox
+          Left = 8
+          Height = 64
+          Top = 896
+          Width = 656
+          Align = alTop
+          BorderSpacing.Around = 8
+          Caption = 'Help'
+          ClientHeight = 45
+          ClientWidth = 652
+          TabOrder = 4
+          object pnlHelpSettings: TPanel
+            Left = 0
+            Height = 40
+            Top = 0
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 0
+            object lblHelpSettings: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 57
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Settings'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnHelpSettings: TButton
+              Left = 444
+              Height = 24
+              Hint = 'settings_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
+        end
+      end
     end
     object tsApktool: TTabSheet
       Caption = 'Apktool'
