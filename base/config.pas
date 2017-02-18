@@ -16,6 +16,7 @@ type
     FIni: TIniFile;
     function GetCloseAllOtherPages: TShortCut;
     function GetCloseAllPages: TShortCut;
+    function GetCodeTheme: string;
     function GetCompile: TShortCut;
     function GetCurlBinaryPath: string;
     function GetDecompile: TShortCut;
@@ -38,6 +39,7 @@ type
     function GetShowSearchResult: TShortCut;
     procedure SetCloseAllOtherPages(AValue: TShortCut);
     procedure SetCloseAllPages(AValue: TShortCut);
+    procedure SetCodeTheme(AValue: string);
     procedure SetCompile(AValue: TShortCut);
     procedure SetCurlBinaryPath(AValue: string);
     procedure SetDecompile(AValue: TShortCut);
@@ -95,6 +97,9 @@ type
     property Compile: TShortCut read GetCompile write SetCompile;
     property InstallFramework: TShortCut read GetInstallFramework write SetInstallFramework;
     property Settings: TShortCut read GetSettings write SetSettings;
+
+    // theme
+    property CodeTheme: string read GetCodeTheme write SetCodeTheme;
   end;
 
 var
@@ -174,6 +179,11 @@ begin
   FIni.WriteInteger(SEC_CONFIG, KEY_CLOSE_ALL_PAGES_SHORTCUT, AValue);
 end;
 
+procedure TSmaliIdeConfig.SetCodeTheme(AValue: string);
+begin
+  FIni.WriteString(SEC_CONFIG, KEY_THEME, AValue);
+end;
+
 procedure TSmaliIdeConfig.SetCompile(AValue: TShortCut);
 begin
   FIni.WriteInteger(SEC_CONFIG, KEY_COMPILE_SHORTCUT, AValue);
@@ -197,6 +207,11 @@ end;
 function TSmaliIdeConfig.GetCloseAllPages: TShortCut;
 begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_CLOSE_ALL_PAGES_SHORTCUT, 0);
+end;
+
+function TSmaliIdeConfig.GetCodeTheme: string;
+begin
+  Result := FIni.ReadString(SEC_CONFIG, KEY_THEME, 'Default.style');
 end;
 
 function TSmaliIdeConfig.GetCompile: TShortCut;

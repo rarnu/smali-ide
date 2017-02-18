@@ -119,6 +119,7 @@ const
     KEY_SETTINGS_SHORTCUT
     );
 
+  KEY_THEME = 'theme';
 
 implementation
 

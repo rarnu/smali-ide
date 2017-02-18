@@ -977,6 +977,8 @@ begin
   pnlSearch.Visible:= False;
   splRight.Visible:= False;
   splBottom.Visible:= False;
+  pnlConsole.Visible:= False;
+  splConsole.Visible:= False;
 end;
 
 procedure TFormMain.InitEvents;
