@@ -40,8 +40,6 @@ type
     btnViewCloseAllOtherPages: TButton;
     btnPackageCompile: TButton;
     Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
     edtJavaPath: TEdit;
     edtCurlPath: TEdit;
     edtApktoolPath: TEdit;
@@ -54,7 +52,6 @@ type
     gbApkTool: TGroupBox;
     gbView: TGroupBox;
     gbPackage: TGroupBox;
-    Label1: TLabel;
     lblApktoolVersionValue: TLabel;
     lblApktoolVersion: TLabel;
     lblchooseJava: TLabel;
@@ -87,7 +84,6 @@ type
     lblViewCloseAllOtherPages: TLabel;
     lblPackageCompile: TLabel;
     lstStyles: TListBox;
-    Panel1: TPanel;
     pnlFileTypeBtn: TPanel;
     pgStyles: TPageControl;
     pnlApktoolVersion: TPanel;
@@ -174,7 +170,7 @@ var
 implementation
 
 uses
-  config, frmShortcutAccept, baseData;
+  config, frmShortcutAccept, baseData, fileTypeItemView;
 
 {$R *.lfm}
 

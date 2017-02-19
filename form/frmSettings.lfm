@@ -214,12 +214,12 @@ inherited FormSettings: TFormSettings
         Height = 588
         Top = 0
         Width = 688
-        HorzScrollBar.Page = 236
+        HorzScrollBar.Page = 240
         VertScrollBar.Page = 588
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 588
-        ClientWidth = 672
+        ClientWidth = 685
         TabOrder = 0
         object gbView: TGroupBox
           Left = 8
@@ -4194,51 +4194,11 @@ inherited FormSettings: TFormSettings
         Height = 548
         Top = 0
         Width = 688
-        HorzScrollBar.Page = 680
-        VertScrollBar.Page = 66
+        HorzScrollBar.Page = 1
+        VertScrollBar.Page = 1
         Align = alClient
         BorderStyle = bsNone
-        ClientHeight = 548
-        ClientWidth = 688
         TabOrder = 0
-        object Panel1: TPanel
-          Left = 8
-          Height = 50
-          Top = 8
-          Width = 672
-          Align = alTop
-          BorderSpacing.Around = 8
-          BevelInner = bvRaised
-          BevelOuter = bvLowered
-          Caption = 'Panel1'
-          ClientHeight = 50
-          ClientWidth = 672
-          TabOrder = 0
-          object Label1: TLabel
-            Left = 16
-            Height = 17
-            Top = 20
-            Width = 45
-            Caption = 'Label1'
-            ParentColor = False
-          end
-          object Button2: TButton
-            Left = 384
-            Height = 25
-            Top = 15
-            Width = 75
-            Caption = 'Button2'
-            TabOrder = 0
-          end
-          object Button3: TButton
-            Left = 587
-            Height = 25
-            Top = 7
-            Width = 75
-            Caption = 'Button3'
-            TabOrder = 1
-          end
-        end
       end
       object pnlFileTypeBtn: TPanel
         Left = 0

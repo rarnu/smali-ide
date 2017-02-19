@@ -4,7 +4,7 @@ program smaliide;
 
 uses
   {$IFNDEF WINDOWS} cthreads, {$ENDIF}
-  Interfaces, Forms, frmMain, config, frmShortcutAccept;
+  Interfaces, Forms, frmMain, config, frmShortcutAccept, fileTypeItemView;
 
 {$R *.res}
 
