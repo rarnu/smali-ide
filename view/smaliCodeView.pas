@@ -125,7 +125,7 @@ type
 implementation
 
 uses
-  TextUtils, EncryptUtils, CodeUtils, baseData, config;
+  TextUtils, EncryptUtils, CodeUtils, baseData, config, frmJava;
 
 { TSmaliCodeView }
 
@@ -263,6 +263,7 @@ procedure TSmaliCodeView.menuClicked(sender: TObject);
 var
   c: string;
   methodSig: string;
+  javaCode: string;
 begin
   if (sender = FMiJump) then begin
     c := FindClassToJump();
@@ -295,7 +296,15 @@ begin
   end else if (sender = FMiDelete) then begin
     TextUtils.Delete(FEditor);
   end else if (sender = FMiToJava) then begin
-    // TODO: to java
+    // to java
+    javaCode:= CodeUtils.ConvertSmaliToJava(FFileName);
+    if (javaCode.Trim <> '') then begin
+      with TFormJava.Create(nil) do begin
+        Code:= javaCode;
+        ShowModal;
+        Free;
+      end;
+    end;
   end;
 end;
 

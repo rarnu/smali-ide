@@ -299,7 +299,7 @@ end;
 function ConvertSmaliToJava(path: string): string;
 begin
   // TODO: smali to java
-  result := '';
+  result := '1';
 end;
 
 function NodeToPath(projectPath: string; node: TTreeNode): string;
