@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, process;
 
 type
-  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctCommand);
+  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctUpdate, ctCommand);
 
   TOnCommandOutput = procedure(Sender: TObject; ACmdType: TCommandType; AOutput: string) of object;
   TOnCommandComplete = procedure (Sender: TObject; ACmdType: TCommandType; AParam: array of string) of object;
@@ -25,6 +25,7 @@ type
     FTmpOutput: string;
     FTmpProjectPath: string;
     FTmpDistPath: string;
+    FTmpVersion: string;
     procedure commandComplete(Sender: TObject);
   protected
     procedure SendSync();
@@ -59,6 +60,8 @@ begin
     ctDecompile: FOnCommandComplete(Self, FCmdType, [FTmpProjectPath]);
     ctCompile: FOnCommandComplete(Self, FCmdType, [FTmpDistPath]);
     ctInstallFramework: FOnCommandComplete(Self, FCmdType, []);
+    ctVersion: FOnCommandComplete(Self, FCmdType, [FTmpVersion]);
+    ctUpdate: ; // TODO: update apk tool callback
     ctCommand: FOnCommandComplete(Self, FCmdType, []);
     end;
   end;
@@ -78,6 +81,7 @@ var
   buffer: array[0..BUF_SIZE - 1] of byte;
   i: Integer;
   outputPath: string;
+  lineCount: Integer = 0;
 begin
   AProcess := TProcess.Create(nil);
   case FCmdType of
@@ -117,6 +121,17 @@ begin
       AProcess.Parameters.Add('if');
       AProcess.Parameters.Add(FParam[0]);
     end;
+  ctVersion:
+    begin
+      AProcess.Executable:= GlobalConfig.JavaBinaryPath;
+      AProcess.Parameters.Add('-jar');
+      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
+      AProcess.Parameters.Add('-version');
+    end;
+  ctUpdate:
+    begin
+      // TODO: update apktool
+    end;
   ctCommand:
     begin
       // common command
@@ -127,13 +142,14 @@ begin
 
   AProcess.Options:= [poUsePipes];
   AProcess.Execute;
+
   repeat
     FillChar(buffer, BUF_SIZE, 0);
     bytesRead:= AProcess.Output.Read(buffer, BUF_SIZE);
-    if (Assigned(FOnCommandOutput)) then begin
-      FTmpOutput:= string(StringOf(buffer));
-      Synchronize(@SendSync);
-    end;
+    FTmpOutput:= string(StringOf(buffer));
+    if (FCmdType = ctVersion) and (lineCount = 0) then FTmpVersion:= FTmpOutput.Trim;
+    lineCount += 1;
+    if (Assigned(FOnCommandOutput)) then Synchronize(@SendSync);
   until bytesRead = 0;
   AProcess.Free;
 end;
@@ -155,6 +171,10 @@ begin
   //     ProjectPath
   // installFramework:
   //     <jar> path
+  // version
+  //     ['']
+  // update apktool
+  //     <url> <local file>
   // common:
   //     executable, param1, param2, ...
 

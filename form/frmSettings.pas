@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, frmBase, SynEdit, LCLType, LCLProc, Menus, synhighlightersmali,
   SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript,
-  synhighlighterunixshellscript, IniFiles;
+  synhighlighterunixshellscript, IniFiles, CommandUtils;
 
 type
 
@@ -39,7 +39,9 @@ type
     btnViewCloseAllPages: TButton;
     btnViewCloseAllOtherPages: TButton;
     btnPackageCompile: TButton;
-    Button1: TButton;
+    btnAddFileType: TButton;
+    btnAddTemplate: TButton;
+    btnDeleteTemplate: TButton;
     edtJavaPath: TEdit;
     edtCurlPath: TEdit;
     edtApktoolPath: TEdit;
@@ -83,7 +85,10 @@ type
     lblViewCloseAllPages: TLabel;
     lblViewCloseAllOtherPages: TLabel;
     lblPackageCompile: TLabel;
+    lstTemplate: TListBox;
     lstStyles: TListBox;
+    pnlTemplateOperation: TPanel;
+    pnlTemplateList: TPanel;
     pnlFileTypeBtn: TPanel;
     pgStyles: TPageControl;
     pnlApktoolVersion: TPanel;
@@ -116,7 +121,9 @@ type
     pnlPackageCompile: TPanel;
     sbxShortcut: TScrollBox;
     sbxFileType: TScrollBox;
+    splTemplateList: TSplitter;
     splStyle: TSplitter;
+    synTemplate: TSynEdit;
     synSmali: TSynEdit;
     synHTML: TSynEdit;
     synJs: TSynEdit;
@@ -135,12 +142,17 @@ type
     tsApktool: TTabSheet;
     tsEnvironment: TTabSheet;
     tsShortcut: TTabSheet;
+    procedure btnAddTemplateClick(Sender: TObject);
     procedure btnApktoolCheckUpdateClick(Sender: TObject);
     procedure btnChooseApktoolClick(Sender: TObject);
     procedure btnChooseCurlClick(Sender: TObject);
     procedure btnChooseJavaClick(Sender: TObject);
+    procedure btnDeleteTemplateClick(Sender: TObject);
     procedure btnViewClassIndexClick(Sender: TObject);
+    procedure btnAddFileTypeClick(Sender: TObject);
     procedure lstStylesClick(Sender: TObject);
+    procedure lstTemplateClick(Sender: TObject);
+    procedure synTemplateChange(Sender: TObject);
   private
 
     STATIC_SHORTCUTS: array of TShortCut;
@@ -153,9 +165,17 @@ type
     FHJs: TSynJScriptSyn;
     FHShell: TSynUNIXShellScriptSyn;
 
+    procedure apktoolVersionComplete(Sender: TObject; ACmdType: TCommandType;
+      AParam: array of string);
+    procedure filetypeDeleteClick(Sender: TObject; AType: string; AEditorPath: string);
+    function filetypeSelectClick(Sender: TObject; AType: string; ACurrentEditor: string
+      ): string;
     function IsCanSetShortcut(AKey: string; AShortcut: TShortCut): Boolean;
     procedure LoadShortcut();
     procedure LoadStyles();
+    procedure LoadApktoolVersion();
+    procedure LoadFileTypes();
+    procedure LoadTemplate();
   protected
     procedure InitComponents; override;
     procedure InitEvents; override;
@@ -189,6 +209,19 @@ begin
   GlobalConfig.JavaBinaryPath:= edtJavaPath.Text;
 end;
 
+procedure TFormSettings.btnDeleteTemplateClick(Sender: TObject);
+var
+  idx: Integer;
+  p: string;
+begin
+  // delete template
+  idx := lstTemplate.ItemIndex;
+  if (idx = -1) then Exit;
+  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + lstTemplate.Items[idx];
+  lstTemplate.Items.Delete(idx);
+  DeleteFile(p);
+end;
+
 procedure TFormSettings.btnViewClassIndexClick(Sender: TObject);
 var
   btn: TButton;
@@ -211,6 +244,22 @@ begin
     Free;
   end;
   LoadShortcut();
+end;
+
+procedure TFormSettings.btnAddFileTypeClick(Sender: TObject);
+var
+  tp: string;
+  view: TFileTypeItemView;
+begin
+  tp := InputBox('Add File Type', 'Input file extension', '').Trim;
+  if (tp = '') then Exit;
+  view := TFileTypeItemView.Create(sbxFileType);
+  view.Parent := sbxFileType;
+  view.FileType:= tp;
+  view.Editor:= '';
+  view.OnFileTypeDelete:=@filetypeDeleteClick;
+  view.OnFileTypeSelect:=@filetypeSelectClick;
+  GlobalConfig.AddFileType(tp, '');
 end;
 
 function IfThen(b: Boolean; trueValue: TFontStyles; falseValue: TFontStyles): TFontStyles;
@@ -377,6 +426,23 @@ begin
   GlobalConfig.CodeTheme:= lstStyles.Items[idx];
 end;
 
+procedure TFormSettings.lstTemplateClick(Sender: TObject);
+var
+  idx: Integer;
+  p: string;
+begin
+  idx := lstTemplate.ItemIndex;
+  if (idx = -1) then Exit;
+  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + lstTemplate.Items[idx];
+  synTemplate.Lines.LoadFromFile(p);
+  synTemplate.Hint:= p;
+end;
+
+procedure TFormSettings.synTemplateChange(Sender: TObject);
+begin
+  if (string(synTemplate.Hint).Trim <> '') then synTemplate.Lines.SaveToFile(synTemplate.Hint);
+end;
+
 function TFormSettings.IsCanSetShortcut(AKey: string; AShortcut: TShortCut
   ): Boolean;
 var
@@ -397,6 +463,34 @@ begin
         Break;
       end;
     end;
+  end;
+end;
+
+procedure TFormSettings.filetypeDeleteClick(Sender: TObject; AType: string;
+  AEditorPath: string);
+begin
+  // delete file type
+  TFileTypeItemView(Sender).Free;
+  GlobalConfig.RemoveFileType(AType);
+end;
+
+procedure TFormSettings.apktoolVersionComplete(Sender: TObject;
+  ACmdType: TCommandType; AParam: array of string);
+begin
+  // get apktool version
+  lblApktoolVersionValue.Caption:= AParam[0];
+end;
+
+function TFormSettings.filetypeSelectClick(Sender: TObject; AType: string;
+  ACurrentEditor: string): string;
+begin
+  // select file editor
+  Result := '';
+  with TOpenDialog.Create(nil) do begin
+    if Execute then begin
+      Result := FileName;
+    end;
+    Free;
   end;
 end;
 
@@ -465,6 +559,51 @@ begin
   end;
 end;
 
+procedure TFormSettings.LoadApktoolVersion;
+begin
+  // load apktool version
+  with TCommandThread.Create(ctVersion, ['']) do begin
+    OnCommandComplete:=@apktoolVersionComplete;
+    Start;
+  end;
+end;
+
+procedure TFormSettings.LoadFileTypes;
+var
+  list: TStringList;
+  view: TFileTypeItemView;
+  tp: string;
+  i: Integer;
+begin
+  // load file types
+  list := GlobalConfig.FileTypes;
+  for i := 0 to list.Count - 1 do begin
+    view := TFileTypeItemView.Create(sbxFileType);
+    view.Parent := sbxFileType;
+    tp := list[i];
+    tp := tp.Replace('filetype_', '', [rfIgnoreCase, rfReplaceAll]);
+    view.FileType:= tp;
+    view.Editor:= GlobalConfig.FileTypeEditor[tp];
+    view.OnFileTypeDelete:= @filetypeDeleteClick;
+    view.OnFileTypeSelect:= @filetypeSelectClick;
+  end;
+end;
+
+procedure TFormSettings.LoadTemplate;
+var
+  path: string;
+  src: TSearchRec;
+begin
+  path:= ExtractFilePath(ParamStr(0)) + 'template/custom/';
+  if (FindFirst(path + '*.template', faAnyFile, src) = 0) then begin
+    repeat
+      if (src.Name = '.') or (src.Name = '..') then Continue;
+      lstTemplate.Items.Add(src.Name);
+    until FindNext(src) <> 0;
+    FindClose(src);
+  end;
+end;
+
 procedure TFormSettings.btnChooseCurlClick(Sender: TObject);
 begin
   with TOpenDialog.Create(nil) do begin
@@ -497,9 +636,28 @@ begin
 
 end;
 
+procedure TFormSettings.btnAddTemplateClick(Sender: TObject);
+var
+  tn: string;
+  p: string;
+  idx: Integer;
+begin
+  // add template
+  tn := InputBox('Add Template', 'Unput Template Name', '').Trim;
+  if (tn = '') then Exit;
+  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + tn + '.template';
+  with TStringList.Create do begin
+    SaveToFile(p);
+    Free;
+  end;
+  synTemplate.Lines.LoadFromFile(p);
+  idx := lstTemplate.Items.Add(ExtractFileName(p));
+  lstTemplate.ItemIndex:= idx;
+end;
+
 procedure TFormSettings.InitComponents;
 begin
-  // TODO: settings
+  // settings
   SetLength(STATIC_SHORTCUTS, 23);
   STATIC_SHORTCUTS[0] := ShortCut(VK_X, [ssCtrl]);
   STATIC_SHORTCUTS[1] := ShortCut(VK_C, [ssCtrl]);
@@ -584,11 +742,13 @@ begin
     lblApktoolStatus.Font.Color:= clRed;
   end;
 
-  // TODO: get apktool version
-
+  LoadApktoolVersion();
   LoadStyles();
   lstStyles.ItemIndex:= lstStyles.Items.IndexOf(GlobalConfig.CodeTheme);
   lstStylesClick(lstStyles);
+  LoadFileTypes();
+  LoadTemplate();
+
 end;
 
 end.

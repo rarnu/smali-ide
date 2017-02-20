@@ -154,8 +154,13 @@ var
   n: string;
 begin
   // .field private static final TAG:Ljava/lang/String;=
-  n := str.Substring(0, str.LastIndexOf('=')).Trim;
-  Result := n.Substring(n.LastIndexOf(' ')).Trim;
+  // .field private static final TAG:Ljava/lang/String;
+  if (str.Contains('=')) then begin
+    n := str.Substring(0, str.LastIndexOf('=')).Trim;
+    Result := n.Substring(n.LastIndexOf(' ')).Trim;
+  end else begin
+    Result := str.Substring(str.LastIndexOf(' ')).Trim;
+  end;
 end;
 
 function ExtractMethod(str: string): string;
@@ -171,6 +176,7 @@ var
   i: Integer;
   list: TStringList;
   n: TTreeNode;
+  ex: string;
 begin
   // build method index
   savePath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
@@ -182,9 +188,11 @@ begin
       LoadFromFile(classPath);
       for i := 0 to Count - 1 do begin
         if (Strings[i].StartsWith('.field')) then begin
-          list.Add(ExtractField(Strings[i]));
+          ex := ExtractField(Strings[i]);
+          if (ex.Trim <> '') then list.Add(ex);
         end else if (Strings[i].StartsWith('.method')) then begin
-          list.Add(ExtractMethod(Strings[i]));
+          ex := ExtractMethod(Strings[i]);
+          if (ex.Trim <> '') then list.Add(ex);
         end;
       end;
       Free;

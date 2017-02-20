@@ -77,6 +77,14 @@ type
       var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char; Shift: TShiftState);
     procedure completeSmaliKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure completeSmaliKeyPress(Sender: TObject; var Key: char);
+    procedure completeTemplateCancel(Sender: TObject);
+    procedure completeTemplateCompletion(var Value: string;
+      SourceValue: string; var SourceStart, SourceEnd: TPoint;
+      KeyChar: TUTF8Char; Shift: TShiftState);
+    procedure completeTemplateExecute(Sender: TObject);
+    procedure completeTemplateKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure completeTemplateKeyPress(Sender: TObject; var Key: char);
     function GetEditor: TSynEdit;
     function GetFileName: string;
 
@@ -321,6 +329,62 @@ begin
   if (Ord(Key) = VK_ESCAPE) then FCompleteSmali.Deactivate;
 end;
 
+procedure TSmaliCodeView.completeTemplateCancel(Sender: TObject);
+var
+  f: TCustomForm;
+begin
+  f := GetParentForm(Self);
+  while f.ActiveControl <> FEditor do begin
+    Application.ProcessMessages;
+    f.ActiveControl := FEditor;
+    FEditor.SetFocus;
+  end;
+end;
+
+procedure TSmaliCodeView.completeTemplateCompletion(var Value: string;
+  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
+  Shift: TShiftState);
+var
+  p: string;
+begin
+  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + Value + '.template';
+  with TStringList.Create do begin
+    LoadFromFile(p);
+    Value:= Text;
+    Free;
+  end;
+  Value:= Value.Trim;
+  FCompleteTemplate.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeTemplateExecute(Sender: TObject);
+var
+  p: string;
+  src: TSearchRec;
+begin
+  FCompleteTemplate.ItemList.Clear;
+  p := ExtractFilePath(ParamStr(0)) + 'template/custom/';
+  if (FindFirst(p + '*.template', faAnyFile, src) = 0) then begin
+    repeat
+      if (src.Name = '.') or (src.Name = '..') then Continue;
+      FCompleteTemplate.ItemList.Add(string(src.Name).Replace('.template', '', [rfIgnoreCase, rfReplaceAll]));
+    until SysUtils.FindNext(src) <> 0;
+    FindClose(src);
+  end;
+end;
+
+procedure TSmaliCodeView.completeTemplateKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if (key = VK_ESCAPE) then FCompleteTemplate.Deactivate;
+end;
+
+procedure TSmaliCodeView.completeTemplateKeyPress(Sender: TObject; var Key: char
+  );
+begin
+  if (Ord(Key) = VK_ESCAPE) then FCompleteTemplate.Deactivate;
+end;
+
 function TSmaliCodeView.GetEditor: TSynEdit;
 begin
   Result := FEditor;
@@ -402,8 +466,15 @@ begin
   end;
   with FCompleteTemplate do begin
     ExecCommandID:= ecUserDefinedFirst + 2;
+    ShowSizeDrag:= True;
+    EndOfTokenChr:= ';';
+    Editor := FEditor;
     ShortCut:= Menus.ShortCut(VK_L, [ssCtrl]);
-    // TODO: template completion
+    OnExecute:=@completeTemplateExecute;
+    OnCancel:=@completeTemplateCancel;
+    OnKeyPress:=@completeTemplateKeyPress;
+    OnKeyDown:=@completeTemplateKeyDown;
+    OnCodeCompletion:=@completeTemplateCompletion;
   end;
 
   with FEditor do begin

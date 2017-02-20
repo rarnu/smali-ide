@@ -14,6 +14,7 @@ type
   TSmaliIdeConfig = class
   private
     FIni: TIniFile;
+    FFileTypes: TStringList;
     function GetCloseAllOtherPages: TShortCut;
     function GetCloseAllPages: TShortCut;
     function GetCodeTheme: string;
@@ -21,6 +22,8 @@ type
     function GetCurlBinaryPath: string;
     function GetDecompile: TShortCut;
     function GetDeleteFile: TShortCut;
+    function GetFileTypeEditor(Atype: string): string;
+    function GetFileTypes: TStringList;
     function GetHintClassMethod: TShortCut;
     function GetHintKeyword: TShortCut;
     function GetHintTemplate: TShortCut;
@@ -65,6 +68,10 @@ type
     destructor Destroy; override;
     function GetShortcut(Akey: string): TShortCut;
     procedure SetShortcut(Akey: string; Avalue: TShortCut);
+    procedure AddFileType(AType: string; APath: string);
+    procedure RemoveFileType(AType: string);
+
+    property FileTypeEditor[Atype: string]: string read GetFileTypeEditor;
   published
     // path
     property JavaBinaryPath: string read GetJavaBinaryPath write SetJavaBinaryPath;
@@ -100,6 +107,10 @@ type
 
     // theme
     property CodeTheme: string read GetCodeTheme write SetCodeTheme;
+
+    // file types
+    property FileTypes: TStringList read GetFileTypes;
+
   end;
 
 var
@@ -224,6 +235,24 @@ begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_DELETE_FILE_SHORTCUT, 0);
 end;
 
+function TSmaliIdeConfig.GetFileTypeEditor(Atype: string): string;
+begin
+  Result := FIni.ReadString(SEC_CONFIG, 'filetype_' + Atype, '');
+end;
+
+function TSmaliIdeConfig.GetFileTypes: TStringList;
+var
+  i: Integer;
+  secList: TStringList;
+begin
+  FFileTypes.Clear;
+  secList := TStringList.Create;
+  FIni.ReadSection(SEC_CONFIG, secList);
+  for i := 0 to secList.Count - 1 do if (secList[i].StartsWith('filetype_')) then FFileTypes.Add(secList[i]);
+  secList.Free;
+  Result := FFileTypes;
+end;
+
 function TSmaliIdeConfig.GetHintClassMethod: TShortCut;
 begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_CLASSMETHOD_SHORTCUT, ShortCut(VK_K, [ssCtrl]));
@@ -345,10 +374,12 @@ var
 begin
   path:= ChangeFileExt(ParamStr(0), '.ini');
   FIni := TIniFile.Create(path);
+  FFileTypes := TStringList.Create;
 end;
 
 destructor TSmaliIdeConfig.Destroy;
 begin
+  FFileTypes.Free;
   FIni.Free;
   inherited Destroy;
 end;
@@ -361,6 +392,18 @@ end;
 procedure TSmaliIdeConfig.SetShortcut(Akey: string; Avalue: TShortCut);
 begin
   FIni.WriteInteger(SEC_CONFIG, Akey, Avalue);
+end;
+
+procedure TSmaliIdeConfig.AddFileType(AType: string; APath: string);
+begin
+  // add type
+  FIni.WriteString(SEC_CONFIG, 'filetype_' + AType, APath);
+end;
+
+procedure TSmaliIdeConfig.RemoveFileType(AType: string);
+begin
+  // remove type
+  FIni.DeleteKey(SEC_CONFIG, 'filetype_' + AType);
 end;
 
 initialization

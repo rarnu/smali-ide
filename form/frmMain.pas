@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType, SearchInFileUtils, CommandUtils;
+  ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType, SearchInFileUtils, CommandUtils, LCLIntf, process;
 
 type
   { TFormMain }
@@ -174,6 +174,7 @@ type
 
     // config
     procedure loadShortcut();
+    procedure OpenFileWithExternalEditor(path: string);
 
   protected
     procedure InitComponents; override;
@@ -233,8 +234,8 @@ begin
           page.OnCodeJump:=@codeJumpCallback;
           pgCode.TabIndex:= pgCode.PageCount - 1;
         end else begin
-          // open other file
           if (CodeUtils.IsTextFile(path)) then begin
+            // open text file
             pageText := TTextCodeView.Create(pgCode);
             pageText.Parent := pgCode;
             pageText.ProjectPath:= CurrentProjectPath;
@@ -247,6 +248,9 @@ begin
             pageImage.Parent := pgCode;
             pageImage.FileName:= path;
             pgCode.TabIndex:= pgCode.PageCount - 1;
+          end else begin
+            // open other file
+            OpenFileWithExternalEditor(path);
           end;
         end;
       end else begin
@@ -331,6 +335,27 @@ begin
   miSettings.ShortCut:= GlobalConfig.Settings;
 
   for i := 0 to pgCode.PageCount - 1 do if (pgCode.Pages[i] is ICodeViewIntf) then (pgCode.Page[i] as ICodeViewIntf).LoadShortcut();
+end;
+
+procedure TFormMain.OpenFileWithExternalEditor(path: string);
+var
+  ext: string;
+  aeditor: string;
+begin
+  // open file with external editor
+  ext := ExtractFileExt(path);
+  ext := ext.Trim(['.']).ToLower;
+  aeditor:= GlobalConfig.FileTypeEditor[ext];
+  if (aeditor.Trim <> '') and (FileExists(aeditor)) then begin
+    with TProcess.Create(nil) do begin
+      Executable:= aeditor;
+      Parameters.Add(path);
+      Options:= [];
+      ShowWindow:= swoShow;
+      Execute;
+      Free;
+    end;
+  end;
 end;
 
 procedure TFormMain.codeJumpCallback(sender: TObject; path: string; method: string; typ: Integer);

@@ -8,8 +8,8 @@ uses
   Classes, SysUtils, StdCtrls, Controls, ExtCtrls, Graphics;
 
 type
-  TOnFileTypeDelete = procedure (Sender: TObject; AEditorPath: string) of object;
-  TOnFileTypeSelect = function (Sender: TObject; ACurrentEditor: string): string of object;
+  TOnFileTypeDelete = procedure (Sender: TObject; AType: string; AEditorPath: string) of object;
+  TOnFileTypeSelect = function (Sender: TObject; AType: string; ACurrentEditor: string): string of object;
 
   { TFileTypeItemView }
 
@@ -48,14 +48,14 @@ end;
 procedure TFileTypeItemView.innerDeleteClick(Sender: TObject);
 begin
   if (Assigned(FOnFileTypeDelete)) then begin
-    FOnFileTypeDelete(Self, FEditorPath);
+    FOnFileTypeDelete(Self, FFileTypeName.Caption, FEditorPath);
   end;
 end;
 
 procedure TFileTypeItemView.innerEditorClick(Sender: TObject);
 begin
   if (Assigned(FOnFileTypeSelect)) then begin
-    FEditorPath:= FOnFileTypeSelect(Self, FEditorPath);
+    FEditorPath:= FOnFileTypeSelect(Self, FFileTypeName.Caption, FEditorPath);
     if (FEditorPath.Trim = '') then begin
       FBtnEditor.Caption:= '(none)';
     end else begin
@@ -93,17 +93,20 @@ begin
   BorderSpacing.Around:= 8;
 
   FFileTypeName := TLabel.Create(Self);
+  FFileTypeName.Parent := Self;
   FFileTypeName.Align:= alLeft;
   FFileTypeName.Layout:= tlCenter;
   FFileTypeName.BorderSpacing.Around:= 8;
 
   FBtnDelete := TButton.Create(Self);
+  FBtnDelete.Parent := Self;
   FBtnDelete.Align:= alRight;
   FBtnDelete.BorderSpacing.Around:= 8;
   FBtnDelete.Caption:= 'X';
   FBtnDelete.Width:= 28;
 
   FBtnEditor := TButton.Create(Self);
+  FBtnEditor.Parent := Self;
   FBtnEditor.Align:= alRight;
   FBtnEditor.BorderSpacing.Around:= 8;
   FBtnEditor.Caption:= '(none)';
