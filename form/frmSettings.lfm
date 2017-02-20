@@ -967,6 +967,7 @@ inherited FormSettings: TFormSettings
       Caption = 'Apktool'
       ClientHeight = 588
       ClientWidth = 688
+      TabVisible = False
       object gbApkTool: TGroupBox
         Left = 8
         Height = 103

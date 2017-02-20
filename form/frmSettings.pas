@@ -632,7 +632,7 @@ end;
 
 procedure TFormSettings.btnApktoolCheckUpdateClick(Sender: TObject);
 begin
-  // TODO: apktool check update
+  // apktool check update
 
 end;
 
@@ -707,8 +707,6 @@ begin
 end;
 
 procedure TFormSettings.InitLogic;
-var
-  p: string;
 begin
   // java
   if (FileExists('/usr/bin/java')) then begin
@@ -733,16 +731,18 @@ begin
   LoadShortcut();
 
   // apktool
-  p := ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar';
-  if (FileExists(p)) then begin
-    lblApktoolStatus.Caption:= '(exists)';
-    lblApktoolStatus.Font.Color:= clDefault;
-  end else begin
-    lblApktoolStatus.Caption:= '(not exists)';
-    lblApktoolStatus.Font.Color:= clRed;
-  end;
 
-  LoadApktoolVersion();
+  //p := ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar';
+  //if (FileExists(p)) then begin
+  //  lblApktoolStatus.Caption:= '(exists)';
+  //  lblApktoolStatus.Font.Color:= clDefault;
+  //end else begin
+  //  lblApktoolStatus.Caption:= '(not exists)';
+  //  lblApktoolStatus.Font.Color:= clRed;
+  //end;
+
+  // LoadApktoolVersion();
+
   LoadStyles();
   lstStyles.ItemIndex:= lstStyles.Items.IndexOf(GlobalConfig.CodeTheme);
   lstStylesClick(lstStyles);

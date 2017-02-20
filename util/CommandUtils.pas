@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, process;
 
 type
-  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctUpdate, ctCommand);
+  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctCommand);
 
   TOnCommandOutput = procedure(Sender: TObject; ACmdType: TCommandType; AOutput: string) of object;
   TOnCommandComplete = procedure (Sender: TObject; ACmdType: TCommandType; AParam: array of string) of object;
@@ -61,7 +61,6 @@ begin
     ctCompile: FOnCommandComplete(Self, FCmdType, [FTmpDistPath]);
     ctInstallFramework: FOnCommandComplete(Self, FCmdType, []);
     ctVersion: FOnCommandComplete(Self, FCmdType, [FTmpVersion]);
-    ctUpdate: ; // TODO: update apk tool callback
     ctCommand: FOnCommandComplete(Self, FCmdType, []);
     end;
   end;
@@ -128,10 +127,6 @@ begin
       AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
       AProcess.Parameters.Add('-version');
     end;
-  ctUpdate:
-    begin
-      // TODO: update apktool
-    end;
   ctCommand:
     begin
       // common command
@@ -173,8 +168,6 @@ begin
   //     <jar> path
   // version
   //     ['']
-  // update apktool
-  //     <url> <local file>
   // common:
   //     executable, param1, param2, ...
 

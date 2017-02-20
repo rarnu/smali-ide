@@ -154,12 +154,6 @@ inherited FormMain: TFormMain
       Width = 8
       Style = tbsSeparator
     end
-    object tBtnJava: TToolButton
-      Left = 357
-      Top = 2
-      Caption = 'Java'
-      ImageIndex = 13
-    end
   end
   object pnlClassIndex: TPanel[4]
     Left = 581

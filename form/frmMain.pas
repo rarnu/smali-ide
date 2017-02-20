@@ -96,7 +96,6 @@ type
     tBtnDelete: TToolButton;
     tvClassIndex: TTreeView;
     tSp4: TToolButton;
-    tBtnJava: TToolButton;
     tBtnOpenProject: TToolButton;
     tSp1: TToolButton;
     tBtnSave: TToolButton;
