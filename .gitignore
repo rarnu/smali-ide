@@ -4,6 +4,7 @@
 *.ppu
 *.lps
 lib/
+build/
 
 # executables
 
