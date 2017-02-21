@@ -40,7 +40,7 @@ procedure BuildMethodIndex(projectPath: string; classPath: string; root: TTreeNo
 procedure BuildMethodIndex(projectPath: string; classPath: string);
 function LoadMethodIndex(projectPath: string; classPath: string): string;
 function ClassIndexToFilePath(projectPath: string; indexPkg: string): string;
-function ConvertSmaliToJava(path: string): string;
+function ConvertSmaliToJava(projectPath: string; path: string): string;
 function NodeToPath(projectPath: string; node: TTreeNode): string;
 
 function IsTextFile(path: string): Boolean;
@@ -77,10 +77,12 @@ begin
     if (i = 1) then begin
       if (path.Contains('/smali/')) then begin
         ret := path.Substring(path.IndexOf('/smali/') + 7);
+        break;
       end;
     end else begin
       if (path.Contains('/smali_classes' + IntToStr(i) + '/')) then begin
-        ret := path.Substring(path.IndexOf('/smali_classes' + IntToStr(i) + '/'), 16);
+        ret := path.Substring(path.IndexOf('/smali_classes' + IntToStr(i) + '/') + 16);
+        break;
       end;
     end;
   end;
@@ -98,6 +100,7 @@ procedure TBuildClassIndexThread.BuildClassIndex(projectPath: string);
 var
   basePath: string;
   src: TSearchRec;
+  fp: string;
 begin
   if (projectPath.EndsWith('.yml')) then begin
     basePath:= ExtractFilePath(projectPath);
@@ -113,11 +116,12 @@ begin
         BuildClassIndex(basePath + src.Name + '/');
       end else begin
         if (string(src.Name).EndsWith('.smali')) then begin
-          FClassList.Add(FullPathToClassPath(basePath + src.Name));
+          fp := FullPathToClassPath(basePath + src.Name);
+          if (fp.Trim <> '') then FClassList.Add(fp);
           if (Assigned(FOnBuildIndexCallback)) then begin
             Inc(FCount);
             FIndexFile:= src.Name;
-            Synchronize(@SendSyncCallback);
+            if ((FCount mod 1000) = 0) then Synchronize(@SendSyncCallback);
           end;
         end;
       end;
@@ -296,10 +300,39 @@ begin
   end;
 end;
 
-function ConvertSmaliToJava(path: string): string;
+function GetJavaFilePath(indexPath: string; classPath: string): string;
+var
+  p: string;
 begin
-  // TODO: smali to java
-  result := '1';
+  Result := '';
+  p := classPath;
+  while True do begin
+    Result := indexPath + p.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.java';
+    WriteLn(Result);
+    if FileExists(Result) then Break;
+    if (not p.Contains('$')) then Break;
+    p := p.Substring(0, p.LastIndexOf('$'));
+  end;
+end;
+
+function ConvertSmaliToJava(projectPath: string; path: string): string;
+var
+  p: string;
+  pclass: string;
+  javaFilePath: string;
+begin
+  Result := '';
+  // smali to java
+  p := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/proj/';
+  pclass := FullPathToClassPath(path);
+  javaFilePath:= GetJavaFilePath(p, pclass);
+  if (FileExists(javaFilePath)) then begin
+    with TStringList.Create do begin
+      LoadFromFile(javaFilePath);
+      Result := Text;
+      Free;
+    end;
+  end;
 end;
 
 function NodeToPath(projectPath: string; node: TTreeNode): string;
@@ -440,12 +473,33 @@ begin
   NewFile(projectPath, filePath, cn, '', root, node, pageControl, nil);
 end;
 
+function ExtractPureFileName(path: string): string;
+var
+  r: string;
+begin
+  r := ExtractFileName(path);
+  r := r.Replace('.apk', '', [rfIgnoreCase, rfReplaceAll]);
+  Result := r;
+end;
+
 procedure DecompilePackage(AAPkPath: string; AOutputPath: string;
   AIsNoRes: Boolean; AISNoSrc: Boolean; callback: TOnCommandOutput;
   complete: TOnCommandComplete);
+var
+  p: string;
 begin
   // decompile
   with TCommandThread.Create(ctDecompile, [AAPkPath, AOutputPath, IfThen(AIsNoRes, '1', '0'), IfThen(AISNoSrc, '1', '0')]) do begin
+    OnCommandOutput:= callback;
+    OnCommandComplete:= complete;
+    Start;
+  end;
+  if (not AOutputPath.EndsWith('/')) then AOutputPath += '/';
+  AOutputPath += ExtractPureFileName(AAPkPath) + '/';
+  AOutputPath += 'apktool.yml';
+  p := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(AOutputPath) + '/proj/';
+  if (not DirectoryExists(p)) then ForceDirectories(p);
+  with TCommandThread.Create(ctJadxDecompile, [AAPkPath, p]) do begin
     OnCommandOutput:= callback;
     OnCommandComplete:= complete;
     Start;

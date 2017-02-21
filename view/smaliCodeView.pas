@@ -297,7 +297,7 @@ begin
     TextUtils.Delete(FEditor);
   end else if (sender = FMiToJava) then begin
     // to java
-    javaCode:= CodeUtils.ConvertSmaliToJava(FFileName);
+    javaCode:= CodeUtils.ConvertSmaliToJava(ProjectPath, FileName);
     if (javaCode.Trim <> '') then begin
       with TFormJava.Create(nil) do begin
         Code:= javaCode;

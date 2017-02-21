@@ -429,13 +429,14 @@ end;
 procedure TFormMain.decompileComplete(Sender: TObject; ACmdType: TCommandType;
   AParam: array of string);
 begin
-  mmConsole.Lines.Add(#13#10'Completed.');
-
-  // open project after decompile
-  CurrentProjectPath:= AParam[0];
-  tvProjectFiles.Items.Clear;
-  ProjectUtils.LoadProject(CurrentProjectPath, tvProjectFiles.Items);
-  CodeUtils.ThreadBuildClassIndex(CurrentProjectPath, @buildClassIndexCallback, @buildClassIndexCompleteCallback);
+  if (ACmdType = ctDecompile) then begin
+    mmConsole.Lines.Add(#13#10'Completed.');
+    // open project after decompile
+    CurrentProjectPath:= AParam[0];
+    tvProjectFiles.Items.Clear;
+    ProjectUtils.LoadProject(CurrentProjectPath, tvProjectFiles.Items);
+    CodeUtils.ThreadBuildClassIndex(CurrentProjectPath, @buildClassIndexCallback, @buildClassIndexCompleteCallback);
+  end;
 end;
 
 procedure TFormMain.installFrameworkCallback(Sender: TObject;

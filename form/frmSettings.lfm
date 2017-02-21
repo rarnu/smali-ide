@@ -6,6 +6,8 @@ inherited FormSettings: TFormSettings
   Caption = 'Settings'
   ClientHeight = 600
   ClientWidth = 800
+  Constraints.MinHeight = 600
+  Constraints.MinWidth = 800
   Position = poMainFormCenter
   object pgSettings: TPageControl[0]
     Left = 4
@@ -201,6 +203,170 @@ inherited FormSettings: TFormSettings
             Align = alClient
             BorderSpacing.Around = 8
             TabOrder = 1
+          end
+        end
+      end
+      object gbApktool: TGroupBox
+        Left = 8
+        Height = 103
+        Top = 230
+        Width = 672
+        Align = alTop
+        BorderSpacing.Around = 8
+        Caption = 'Apktool'
+        ClientHeight = 84
+        ClientWidth = 668
+        TabOrder = 2
+        object pnlApktoolDefault: TPanel
+          Left = 0
+          Height = 40
+          Top = 0
+          Width = 668
+          Align = alTop
+          BevelColor = clNone
+          BevelOuter = bvSpace
+          ClientHeight = 40
+          ClientWidth = 668
+          TabOrder = 0
+          object lblDefaultApktool: TLabel
+            Left = 9
+            Height = 38
+            Top = 1
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Default: apktool.jar'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblApktoolStatus: TLabel
+            Left = 197
+            Height = 22
+            Top = 9
+            Width = 43
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = '(exist)'
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+        end
+        object pnlApktoolVersion: TPanel
+          Left = 0
+          Height = 44
+          Top = 40
+          Width = 668
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 1
+          object lblApktoolVersion: TLabel
+            Left = 8
+            Height = 44
+            Top = 0
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Version'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblApktoolVersionValue: TLabel
+            Left = 196
+            Height = 28
+            Top = 8
+            Width = 464
+            Align = alClient
+            BorderSpacing.Around = 8
+            Caption = '0.0.0'
+            Layout = tlCenter
+            ParentColor = False
+          end
+        end
+      end
+      object gbJadx: TGroupBox
+        Left = 8
+        Height = 103
+        Top = 341
+        Width = 672
+        Align = alTop
+        BorderSpacing.Around = 8
+        Caption = 'Jadx'
+        ClientHeight = 84
+        ClientWidth = 668
+        TabOrder = 3
+        object pnlJadxDefault: TPanel
+          Left = 0
+          Height = 40
+          Top = 0
+          Width = 668
+          Align = alTop
+          BevelColor = clNone
+          BevelOuter = bvSpace
+          ClientHeight = 40
+          ClientWidth = 668
+          TabOrder = 0
+          object lblJadxDefault: TLabel
+            Left = 9
+            Height = 38
+            Top = 1
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Default: jadx'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblJadxStatus: TLabel
+            Left = 197
+            Height = 22
+            Top = 9
+            Width = 43
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = '(exist)'
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+        end
+        object pnlJadxVersion: TPanel
+          Left = 0
+          Height = 44
+          Top = 40
+          Width = 668
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 1
+          object lblJadxlVersion: TLabel
+            Left = 8
+            Height = 44
+            Top = 0
+            Width = 180
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Left = 8
+            Caption = 'Version'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblJadxVersionValue: TLabel
+            Left = 196
+            Height = 28
+            Top = 8
+            Width = 464
+            Align = alClient
+            BorderSpacing.Around = 8
+            Caption = '0.0.0'
+            Layout = tlCenter
+            ParentColor = False
           end
         end
       end
@@ -959,160 +1125,6 @@ inherited FormSettings: TFormSettings
               OnClick = btnViewClassIndexClick
               TabOrder = 0
             end
-          end
-        end
-      end
-    end
-    object tsApktool: TTabSheet
-      Caption = 'Apktool'
-      ClientHeight = 588
-      ClientWidth = 688
-      TabVisible = False
-      object gbApkTool: TGroupBox
-        Left = 8
-        Height = 103
-        Top = 8
-        Width = 672
-        Align = alTop
-        BorderSpacing.Around = 8
-        Caption = 'ApkTool'
-        ClientHeight = 84
-        ClientWidth = 668
-        TabOrder = 0
-        object pnlApktoolDefault: TPanel
-          Left = 0
-          Height = 40
-          Top = 0
-          Width = 668
-          Align = alTop
-          BevelColor = clNone
-          BevelOuter = bvSpace
-          ClientHeight = 40
-          ClientWidth = 668
-          TabOrder = 0
-          object lblDefaultApkTool: TLabel
-            Left = 9
-            Height = 38
-            Top = 1
-            Width = 180
-            Align = alLeft
-            AutoSize = False
-            BorderSpacing.Left = 8
-            Caption = 'Default: apktool.jar'
-            Layout = tlCenter
-            ParentColor = False
-          end
-          object lblApktoolStatus: TLabel
-            Left = 197
-            Height = 22
-            Top = 9
-            Width = 43
-            Align = alLeft
-            BorderSpacing.Around = 8
-            Caption = '(exist)'
-            Layout = tlCenter
-            ParentColor = False
-            ParentFont = False
-          end
-        end
-        object pnlApktoolChoose: TPanel
-          Left = 0
-          Height = 44
-          Top = 40
-          Width = 668
-          Align = alClient
-          BevelOuter = bvNone
-          ClientHeight = 44
-          ClientWidth = 668
-          TabOrder = 1
-          object lblchooseApktool: TLabel
-            Left = 8
-            Height = 44
-            Top = 0
-            Width = 180
-            Align = alLeft
-            AutoSize = False
-            BorderSpacing.Left = 8
-            Caption = 'Choose ApkTool Path'
-            Layout = tlCenter
-            ParentColor = False
-          end
-          object btnChooseApktool: TButton
-            Left = 632
-            Height = 28
-            Top = 8
-            Width = 28
-            Align = alRight
-            BorderSpacing.Around = 8
-            Caption = '...'
-            OnClick = btnChooseApktoolClick
-            TabOrder = 0
-          end
-          object edtApktoolPath: TEdit
-            Left = 196
-            Height = 28
-            Top = 8
-            Width = 428
-            Align = alClient
-            BorderSpacing.Around = 8
-            TabOrder = 1
-          end
-        end
-      end
-      object gbApkToolUpdate: TGroupBox
-        Left = 8
-        Height = 65
-        Top = 119
-        Width = 672
-        Align = alTop
-        BorderSpacing.Around = 8
-        Caption = 'ApkTool Update'
-        ClientHeight = 46
-        ClientWidth = 668
-        TabOrder = 1
-        object pnlApktoolVersion: TPanel
-          Left = 0
-          Height = 44
-          Top = 0
-          Width = 668
-          Align = alTop
-          BevelOuter = bvNone
-          ClientHeight = 44
-          ClientWidth = 668
-          TabOrder = 0
-          object lblApktoolVersion: TLabel
-            Left = 8
-            Height = 44
-            Top = 0
-            Width = 180
-            Align = alLeft
-            AutoSize = False
-            BorderSpacing.Left = 8
-            Caption = 'ApkTool Version'
-            Layout = tlCenter
-            ParentColor = False
-          end
-          object btnApktoolCheckUpdate: TButton
-            Left = 540
-            Height = 28
-            Top = 8
-            Width = 120
-            Align = alRight
-            BorderSpacing.Around = 8
-            Caption = 'Check Update'
-            OnClick = btnApktoolCheckUpdateClick
-            TabOrder = 0
-          end
-          object lblApktoolVersionValue: TLabel
-            Left = 196
-            Height = 28
-            Top = 8
-            Width = 32
-            Align = alLeft
-            BorderSpacing.Around = 8
-            Caption = '0.0.0'
-            Layout = tlCenter
-            ParentColor = False
           end
         end
       end

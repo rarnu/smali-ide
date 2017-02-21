@@ -6,6 +6,8 @@ inherited FormMain: TFormMain
   Caption = 'Smali IDE'
   ClientHeight = 600
   ClientWidth = 800
+  Constraints.MinHeight = 600
+  Constraints.MinWidth = 800
   Menu = mmMain
   object pnlProjectFiles: TPanel[0]
     Left = 0

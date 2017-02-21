@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, process;
 
 type
-  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctCommand);
+  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctJadx, ctJadxDecompile, ctCommand);
 
   TOnCommandOutput = procedure(Sender: TObject; ACmdType: TCommandType; AOutput: string) of object;
   TOnCommandComplete = procedure (Sender: TObject; ACmdType: TCommandType; AParam: array of string) of object;
@@ -26,6 +26,7 @@ type
     FTmpProjectPath: string;
     FTmpDistPath: string;
     FTmpVersion: string;
+    FTmpJadxVersion: string;
     procedure commandComplete(Sender: TObject);
   protected
     procedure SendSync();
@@ -61,6 +62,8 @@ begin
     ctCompile: FOnCommandComplete(Self, FCmdType, [FTmpDistPath]);
     ctInstallFramework: FOnCommandComplete(Self, FCmdType, []);
     ctVersion: FOnCommandComplete(Self, FCmdType, [FTmpVersion]);
+    ctJadx: FOnCommandComplete(Self, FCmdType, [FTmpJadxVersion]);
+    ctJadxDecompile: FOnCommandComplete(Self, FCmdType, []);
     ctCommand: FOnCommandComplete(Self, FCmdType, []);
     end;
   end;
@@ -127,6 +130,20 @@ begin
       AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
       AProcess.Parameters.Add('-version');
     end;
+  ctJadx:
+    begin
+      AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin/jadx';
+      AProcess.Parameters.Add('-h');
+    end;
+  ctJadxDecompile:
+    begin
+      AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin/jadx';
+      AProcess.Parameters.Add('--show-bad-code');
+      AProcess.Parameters.Add('-r');
+      AProcess.Parameters.Add('-d');
+      AProcess.Parameters.Add(FParam[1]);
+      AProcess.Parameters.Add(FParam[0]);
+    end;
   ctCommand:
     begin
       // common command
@@ -143,6 +160,9 @@ begin
     bytesRead:= AProcess.Output.Read(buffer, BUF_SIZE);
     FTmpOutput:= string(StringOf(buffer));
     if (FCmdType = ctVersion) and (lineCount = 0) then FTmpVersion:= FTmpOutput.Trim;
+    if (FCmdType = ctJadx) and (FTmpOutput.Contains('version')) then begin
+      FTmpJadxVersion:= FTmpOutput.Substring(FTmpOutput.LastIndexOf(' ')).Trim;
+    end;
     lineCount += 1;
     if (Assigned(FOnCommandOutput)) then Synchronize(@SendSync);
   until bytesRead = 0;
@@ -168,6 +188,10 @@ begin
   //     <jar> path
   // version
   //     ['']
+  // jadx
+  //     ['']
+  // jadxDecompile
+  //     APKPath, OutputPath,
   // common:
   //     executable, param1, param2, ...
 

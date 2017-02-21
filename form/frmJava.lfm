@@ -5,6 +5,8 @@ inherited FormJava: TFormJava
   Caption = 'Java Code'
   ClientHeight = 600
   ClientWidth = 800
+  Constraints.MinHeight = 600
+  Constraints.MinWidth = 800
   Position = poMainFormCenter
   inline synJavaCode: TSynEdit[0]
     Left = 0

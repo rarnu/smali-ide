@@ -15,10 +15,8 @@ type
   { TFormSettings }
 
   TFormSettings = class(TFormBase)
-    btnApktoolCheckUpdate: TButton;
     btnChooseJava: TButton;
     btnChooseCurl: TButton;
-    btnChooseApktool: TButton;
     btnCodeEditorClassMethodCompletion: TButton;
     btnCodeEditorJumpClassMethod: TButton;
     btnHelpSettings: TButton;
@@ -44,24 +42,27 @@ type
     btnDeleteTemplate: TButton;
     edtJavaPath: TEdit;
     edtCurlPath: TEdit;
-    edtApktoolPath: TEdit;
-    gbApkToolUpdate: TGroupBox;
+    gbJadx: TGroupBox;
     gbCodeEditor: TGroupBox;
+    gbApktool: TGroupBox;
     gbHelp: TGroupBox;
     gbJava: TGroupBox;
     gbCurl: TGroupBox;
     gbCodeTree: TGroupBox;
-    gbApkTool: TGroupBox;
     gbView: TGroupBox;
     gbPackage: TGroupBox;
+    lblJadxStatus: TLabel;
+    lblJadxlVersion: TLabel;
     lblApktoolVersionValue: TLabel;
     lblApktoolVersion: TLabel;
+    lblJadxVersionValue: TLabel;
     lblchooseJava: TLabel;
     lblChooseCurl: TLabel;
-    lblchooseApktool: TLabel;
     lblCodeEditorClassMethodCompletion: TLabel;
     lblCodeEditorJumpClassMethod: TLabel;
-    lblDefaultApkTool: TLabel;
+    lblApktoolStatus: TLabel;
+    lblDefaultApktool: TLabel;
+    lblJadxDefault: TLabel;
     lblHelpSettings: TLabel;
     lblCodeEditorKeywordsCompletion: TLabel;
     lblCodeEditorSmaliToJava: TLabel;
@@ -76,7 +77,6 @@ type
     lblCodeTreeDeleteFile: TLabel;
     lblCodeTreeNewTextFile: TLabel;
     lblCodeTreeNewAnnotation: TLabel;
-    lblApktoolStatus: TLabel;
     lblViewClassIndex: TLabel;
     lblPackageDecompile: TLabel;
     lblPackageInstallFramework: TLabel;
@@ -87,11 +87,14 @@ type
     lblPackageCompile: TLabel;
     lstTemplate: TListBox;
     lstStyles: TListBox;
+    pnlApktoolVersion: TPanel;
+    pnlJadxVersion: TPanel;
+    pnlApktoolDefault: TPanel;
+    pnlJadxDefault: TPanel;
     pnlTemplateOperation: TPanel;
     pnlTemplateList: TPanel;
     pnlFileTypeBtn: TPanel;
     pgStyles: TPageControl;
-    pnlApktoolVersion: TPanel;
     pnlCodeEditorClassMethodCompletion: TPanel;
     pnlCodeEditorJumpClassMethod: TPanel;
     pnlHelpSettings: TPanel;
@@ -99,7 +102,6 @@ type
     pnlCodeEditorSmaliToJava: TPanel;
     pnlCodeEditorTemplateCompletion: TPanel;
     pnlCurlChoose: TPanel;
-    pnlApktoolChoose: TPanel;
     pnlJavaDefault: TPanel;
     pnlJavaChoose: TPanel;
     pgSettings: TPageControl;
@@ -110,7 +112,6 @@ type
     pnlCodeTreeDeleteFile: TPanel;
     pnlCodeTreeNewTextFile: TPanel;
     pnlCodeTreeNewAnnotation: TPanel;
-    pnlApktoolDefault: TPanel;
     pnlViewClassIndex: TPanel;
     pnlPackageDecompile: TPanel;
     pnlPackageInstallFramework: TPanel;
@@ -139,12 +140,9 @@ type
     tsTemplate: TTabSheet;
     tsFileType: TTabSheet;
     tsHighlight: TTabSheet;
-    tsApktool: TTabSheet;
     tsEnvironment: TTabSheet;
     tsShortcut: TTabSheet;
     procedure btnAddTemplateClick(Sender: TObject);
-    procedure btnApktoolCheckUpdateClick(Sender: TObject);
-    procedure btnChooseApktoolClick(Sender: TObject);
     procedure btnChooseCurlClick(Sender: TObject);
     procedure btnChooseJavaClick(Sender: TObject);
     procedure btnDeleteTemplateClick(Sender: TObject);
@@ -171,9 +169,12 @@ type
     function filetypeSelectClick(Sender: TObject; AType: string; ACurrentEditor: string
       ): string;
     function IsCanSetShortcut(AKey: string; AShortcut: TShortCut): Boolean;
+    procedure jadxVersionComplete(Sender: TObject; ACmdType: TCommandType;
+      AParam: array of string);
     procedure LoadShortcut();
     procedure LoadStyles();
     procedure LoadApktoolVersion();
+    procedure LoadJadxVersion();
     procedure LoadFileTypes();
     procedure LoadTemplate();
   protected
@@ -466,6 +467,13 @@ begin
   end;
 end;
 
+procedure TFormSettings.jadxVersionComplete(Sender: TObject;
+  ACmdType: TCommandType; AParam: array of string);
+begin
+  // get jadx version
+  lblJadxVersionValue.Caption:= AParam[0];
+end;
+
 procedure TFormSettings.filetypeDeleteClick(Sender: TObject; AType: string;
   AEditorPath: string);
 begin
@@ -568,6 +576,15 @@ begin
   end;
 end;
 
+procedure TFormSettings.LoadJadxVersion;
+begin
+  // load jadx version
+  with TCommandThread.Create(ctJadx, ['']) do begin
+    OnCommandComplete:=@jadxVersionComplete;
+    Start;
+  end;
+end;
+
 procedure TFormSettings.LoadFileTypes;
 var
   list: TStringList;
@@ -615,25 +632,6 @@ begin
     Free;
   end;
   GlobalConfig.CurlBinaryPath:= edtCurlPath.Text;
-end;
-
-procedure TFormSettings.btnChooseApktoolClick(Sender: TObject);
-begin
-  with TOpenDialog.Create(nil) do begin
-    Filter:= 'jar file|*.jar';
-    if Execute then begin
-      edtApktoolPath.Text := FileName;
-    end else begin
-      edtApktoolPath.Text:= ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar';
-    end;
-    Free;
-  end;
-end;
-
-procedure TFormSettings.btnApktoolCheckUpdateClick(Sender: TObject);
-begin
-  // apktool check update
-
 end;
 
 procedure TFormSettings.btnAddTemplateClick(Sender: TObject);
@@ -707,6 +705,8 @@ begin
 end;
 
 procedure TFormSettings.InitLogic;
+var
+  p: string;
 begin
   // java
   if (FileExists('/usr/bin/java')) then begin
@@ -732,16 +732,27 @@ begin
 
   // apktool
 
-  //p := ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar';
-  //if (FileExists(p)) then begin
-  //  lblApktoolStatus.Caption:= '(exists)';
-  //  lblApktoolStatus.Font.Color:= clDefault;
-  //end else begin
-  //  lblApktoolStatus.Caption:= '(not exists)';
-  //  lblApktoolStatus.Font.Color:= clRed;
-  //end;
+  p := ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar';
+  if (FileExists(p)) then begin
+    lblApktoolStatus.Caption:= '(exists)';
+    lblApktoolStatus.Font.Color:= clDefault;
+  end else begin
+    lblApktoolStatus.Caption:= '(not exists)';
+    lblApktoolStatus.Font.Color:= clRed;
+  end;
 
-  // LoadApktoolVersion();
+  // jadx
+  p := ExtractFilePath(ParamStr(0)) + 'bin/jadx';
+  if (FileExists(p)) then begin
+    lblJadxStatus.Caption:= '(exists)';
+    lblJadxStatus.Font.Color:= clDefault;
+  end else begin
+    lblJadxStatus.Caption:= '(not exists)';
+    lblJadxStatus.Font.Color:= clRed;
+  end;
+
+  LoadApktoolVersion();
+  LoadJadxVersion();
 
   LoadStyles();
   lstStyles.ItemIndex:= lstStyles.Items.IndexOf(GlobalConfig.CodeTheme);
