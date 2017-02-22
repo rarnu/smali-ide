@@ -48,7 +48,7 @@ end;
 
 procedure THistoryVersionView.downloadClick(Sender: TObject);
 begin
-  LCLIntf.OpenURL(BASE_URL + 'download/' + FDownloadUrl);
+  LCLIntf.OpenURL(BASE_URL + FDownloadUrl);
 end;
 
 procedure THistoryVersionView.SetVersion(AValue: string);

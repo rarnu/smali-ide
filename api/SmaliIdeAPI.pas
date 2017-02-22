@@ -10,6 +10,10 @@ uses
 const
   BASE_URL = 'http://rarnu.com/smaliide/';
 
+const
+  PLATFORM = {$IFDEF WINDOWS}'2'{$ELSE}{$IFDEF DARWIN}'1'{$ELSE}'0'{$ENDIF}{$ENDIF};
+  VERSION = '1';
+
 type
 
   { TUpdateHistory }
@@ -149,9 +153,6 @@ begin
 end;
 
 procedure TUpdateThread.Execute;
-const
-  PLATFORM = {$IFDEF WINDOWS}'2'{$ELSE}{$IFDEF DARWIN}'1'{$ELSE}'0'{$ENDIF}{$ENDIF};
-  VERSION = '1';
 var
   param: TParamMap;
   jsonStr: string;

@@ -22,18 +22,18 @@ inherited FormUpdate: TFormUpdate
     TabOrder = 0
     object pnlCurrentVersion: TPanel
       Left = 8
-      Height = 40
+      Height = 36
       Top = 8
       Width = 360
       Align = alTop
       BorderSpacing.Around = 8
       BevelOuter = bvNone
-      ClientHeight = 40
+      ClientHeight = 36
       ClientWidth = 360
       TabOrder = 0
       object lblCurrentVersion: TLabel
         Left = 0
-        Height = 40
+        Height = 36
         Top = 0
         Width = 120
         Align = alLeft
@@ -44,7 +44,7 @@ inherited FormUpdate: TFormUpdate
       end
       object lblCurrentVersionValue: TLabel
         Left = 120
-        Height = 40
+        Height = 36
         Top = 0
         Width = 240
         Align = alClient
@@ -55,18 +55,18 @@ inherited FormUpdate: TFormUpdate
     end
     object pnlLastVersion: TPanel
       Left = 8
-      Height = 40
-      Top = 56
+      Height = 36
+      Top = 52
       Width = 360
       Align = alTop
       BorderSpacing.Around = 8
       BevelOuter = bvNone
-      ClientHeight = 40
+      ClientHeight = 36
       ClientWidth = 360
       TabOrder = 1
       object lblLastVersion: TLabel
         Left = 0
-        Height = 40
+        Height = 36
         Top = 0
         Width = 120
         Align = alLeft
@@ -77,7 +77,7 @@ inherited FormUpdate: TFormUpdate
       end
       object lblLastVersionValue: TLabel
         Left = 120
-        Height = 40
+        Height = 36
         Top = 0
         Width = 240
         Align = alClient
@@ -92,6 +92,7 @@ inherited FormUpdate: TFormUpdate
       Top = 104
       Width = 360
       Align = alClient
+      BorderSpacing.Top = 8
       BorderSpacing.Around = 8
       BorderSpacing.InnerBorder = 8
       BorderStyle = bsNone

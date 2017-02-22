@@ -54,7 +54,7 @@ uses
 procedure TFormUpdate.btnUpdateClick(Sender: TObject);
 begin
   if (FUpdateInfo.DownloadURL.Trim <> '') then begin
-    LCLIntf.OpenURL(BASE_URL + 'download/' + FUpdateInfo.DownloadURL);
+    LCLIntf.OpenURL(BASE_URL + FUpdateInfo.DownloadURL);
   end;
 end;
 

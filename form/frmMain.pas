@@ -581,7 +581,8 @@ end;
 
 procedure TFormMain.miDocumentClick(Sender: TObject);
 begin
-  // TODO: documents
+  // documents
+  LCLIntf.OpenURL('https://github.com/rarnu/smali-ide/blob/master/README.md');
 end;
 
 procedure TFormMain.miExitClick(Sender: TObject);
