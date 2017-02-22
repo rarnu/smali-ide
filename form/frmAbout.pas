@@ -5,13 +5,21 @@ unit frmAbout;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, frmBase;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  StdCtrls, frmBase;
 
 type
 
   { TFormAbout }
 
   TFormAbout = class(TFormBase)
+    Bevel1: TBevel;
+    btnOK: TButton;
+    imgIcon: TImage;
+    lblAbout: TLabel;
+    pnlButton: TPanel;
+    pnlThanks: TPanel;
+    pnlAbout: TPanel;
   private
   protected
     procedure InitComponents; override;

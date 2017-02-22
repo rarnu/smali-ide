@@ -21,15 +21,12 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="2">
+    <RequiredPackages Count="1">
       <Item1>
-        <PackageName Value="bs_SynEdit"/>
-      </Item1>
-      <Item2>
         <PackageName Value="LCL"/>
-      </Item2>
+      </Item1>
     </RequiredPackages>
-    <Units Count="22">
+    <Units Count="24">
       <Unit0>
         <Filename Value="smaliide.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -139,6 +136,17 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit21>
+      <Unit22>
+        <Filename Value="form/frmUpdate.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormUpdate"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="view/updateHistoryView.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit23>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

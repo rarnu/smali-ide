@@ -118,7 +118,7 @@ var
   i: Integer;
 begin
   Result := nil;
-  if (Astr.Trim <> '') then Exit;
+  if (Astr.Trim = '') then Exit;
   parser := TJSONParser.Create(Astr, [joUTF8]);
   json := TJSONObject(parser.Parse);
   if (json.Integers['result'] = 0) then begin

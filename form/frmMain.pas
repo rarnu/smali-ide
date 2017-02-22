@@ -5,7 +5,7 @@ unit frmMain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, SmaliIdeAPI,
   ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType, SearchInFileUtils, CommandUtils, LCLIntf, process;
 
 type
@@ -174,6 +174,7 @@ type
     // config
     procedure loadShortcut();
     procedure OpenFileWithExternalEditor(path: string);
+    procedure updateCheckCallback(Sender: TObject; AInfo: TUpdateInfo);
 
   protected
     procedure InitComponents; override;
@@ -195,7 +196,7 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile, frmAbout, frmSettings, config;
+  frmDecompile, frmAbout, frmSettings, config, frmUpdate;
 
 { TFormMain }
 
@@ -352,6 +353,18 @@ begin
       Options:= [];
       ShowWindow:= swoShow;
       Execute;
+      Free;
+    end;
+  end;
+end;
+
+procedure TFormMain.updateCheckCallback(Sender: TObject; AInfo: TUpdateInfo);
+begin
+  // get update info
+  if (AInfo <> nil) then begin
+    with TFormUpdate.Create(nil) do begin
+      UpdateInfo := AInfo;
+      ShowModal;
       Free;
     end;
   end;
@@ -931,8 +944,8 @@ end;
 
 procedure TFormMain.miUpdateClick(Sender: TObject);
 begin
-  // TODO: check update
-
+  // check update
+  SmaliIdeAPI.UpdateCheck('main', @updateCheckCallback);
 end;
 
 procedure TFormMain.pgCodeCloseTabClicked(Sender: TObject);
