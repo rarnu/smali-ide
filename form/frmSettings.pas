@@ -8,7 +8,8 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, frmBase, SynEdit, LCLType, LCLProc, Menus, synhighlightersmali,
   SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript,
-  synhighlighterunixshellscript, IniFiles, CommandUtils;
+  synhighlighterunixshellscript, IniFiles, CommandUtils, SynHighlighterJava, SynGutter,
+  SynGutterBase, SynGutterLineNumber, SynGutterCodeFolding;
 
 type
 
@@ -125,12 +126,7 @@ type
     splTemplateList: TSplitter;
     splStyle: TSplitter;
     synTemplate: TSynEdit;
-    synSmali: TSynEdit;
-    synHTML: TSynEdit;
-    synJs: TSynEdit;
-    synCss: TSynEdit;
-    synShell: TSynEdit;
-    synXML: TSynEdit;
+    tsJava: TTabSheet;
     tsSmali: TTabSheet;
     tsXML: TTabSheet;
     tsHTML: TTabSheet;
@@ -155,6 +151,15 @@ type
 
     STATIC_SHORTCUTS: array of TShortCut;
 
+    // synedit
+    FSynSmali: TSynEdit;
+    FSynXML: TSynEdit;
+    FSynHTML: TSynEdit;
+    FSynCSS: TSynEdit;
+    FSynJS: TSynEdit;
+    FSynShell: TSynEdit;
+    FSynJava: TSynEdit;
+
     // highlighters
     FHSmali: TSynSmaliSyn;
     FHXML: TSynXMLSyn;
@@ -162,6 +167,7 @@ type
     FHCss: TSynCssSyn;
     FHJs: TSynJScriptSyn;
     FHShell: TSynUNIXShellScriptSyn;
+    FHJava: TSynJavaSyn;
 
     procedure apktoolVersionComplete(Sender: TObject; ACmdType: TCommandType;
       AParam: array of string);
@@ -178,6 +184,7 @@ type
     procedure LoadFileTypes();
     procedure LoadTemplate();
   protected
+    procedure InitSynEdit(AEditor: TSynEdit);
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
@@ -279,7 +286,7 @@ begin
 
   // load theme
   with TIniFile.Create(path) do begin
-    synSmali.Color:= ReadInteger(SEC_SMALI, KEY_BACKGROUND, clWhite);
+    FSynSmali.Color:= ReadInteger(SEC_SMALI, KEY_BACKGROUND, clWhite);
     with FHSmali do begin
       CommentAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_COMMENT_COLOR, clGreen);
       CommentAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
@@ -302,7 +309,7 @@ begin
       VarAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_VAR_BOLD, 0) <> 0, [fsBold], []);
     end;
 
-    synXML.Color:= ReadInteger(SEC_XML, KEY_BACKGROUND, clWhite);
+    FSynXML.Color:= ReadInteger(SEC_XML, KEY_BACKGROUND, clWhite);
     with FHXML do begin
       ElementAttri.Foreground:= ReadInteger(SEC_XML, KEY_ELEMENT_COLOR, clMaroon);
       ElementAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_ELEMENT_BOLD, 0) <> 0, [fsBold], []);
@@ -331,7 +338,7 @@ begin
       SymbolAttri.Style:= IfThen(ReadInteger(SEC_XML, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
     end;
 
-    synHTML.Color:= ReadInteger(SEC_HTML, KEY_BACKGROUND, clWhite);
+    FSynHTML.Color:= ReadInteger(SEC_HTML, KEY_BACKGROUND, clWhite);
     with FHHtml do begin
       AndAttri.Foreground:= ReadInteger(SEC_HTML, KEY_AND_COLOR, $0000ff00);
       AndAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_AND_BOLD, 0) <> 0, [fsBold], []);
@@ -358,7 +365,7 @@ begin
       ValueAttri.Style:= IfThen(ReadInteger(SEC_HTML, KEY_VALUE_BOLD, 0) <> 0, [fsBold], []);
     end;
 
-    synCss.Color:= ReadInteger(SEC_CSS, KEY_BACKGROUND, clWhite);
+    FSynCss.Color:= ReadInteger(SEC_CSS, KEY_BACKGROUND, clWhite);
     with FHCss do begin
       CommentAttri.Foreground:= ReadInteger(SEC_CSS, KEY_COMMENT_COLOR, clGreen);
       CommentAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
@@ -379,7 +386,7 @@ begin
       SelectorAttri.Style:= IfThen(ReadInteger(SEC_CSS, KEY_SELECTOR_BOLD, 0) <> 0, [fsBold], []);
     end;
 
-    synJs.Color:= ReadInteger(SEC_JS, KEY_BACKGROUND, clWhite);
+    FSynJs.Color:= ReadInteger(SEC_JS, KEY_BACKGROUND, clWhite);
     with FHJs do begin
       CommentAttri.Foreground:= ReadInteger(SEC_JS, KEY_COMMENT_COLOR, clGreen);
       CommentAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
@@ -400,7 +407,7 @@ begin
       SymbolAttri.Style:= IfThen(ReadInteger(SEC_JS, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
     end;
 
-    synShell.Color:= ReadInteger(SEC_SHELL, KEY_BACKGROUND, clWhite);
+    FSynShell.Color:= ReadInteger(SEC_SHELL, KEY_BACKGROUND, clWhite);
     with FHShell do begin
       CommentAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_COMMENT_COLOR, clGreen);
       CommentAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
@@ -419,6 +426,27 @@ begin
       SymbolAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
       VarAttri.Foreground:= ReadInteger(SEC_SHELL, KEY_VAR_COLOR, clOlive);
       VarAttri.Style:= IfThen(ReadInteger(SEC_SHELL, KEY_VAR_BOLD, 0) <> 0, [fsBold], []);
+    end;
+
+    FSynJava.Color:= ReadInteger(SEC_JAVA, KEY_BACKGROUND, clWhite);
+    with FHJava do begin
+      AnnotationAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_ANNOTATION_COLOR, clOlive);
+      AnnotationAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_ANNOTATION_BOLD, 0) <> 0, [fsBold], []);
+      CommentAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_COMMENT_COLOR, clGreen);
+      CommentAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
+      DocumentAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_DOCUMENT_COLOR, clGreen);
+      DocumentAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_DOCUMENT_BOLD, 0) <> 0, [fsBold], []);
+      IdentifierAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_IDENTIFIER_COLOR, clBlack);
+      IdentifierAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_IDENTIFIER_BOLD, 0) <> 0, [fsBold], []);
+      KeyAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_KEY_COLOR, clBlue);
+      KeyAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_KEY_BOLD, 0) <> 0, [fsBold], []);
+      NumberAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_NUMBER_COLOR, clBlack);
+      NumberAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_NUMBER_BOLD, 0) <> 0, [fsBold], []);
+      SpaceAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_SPACE_COLOR, clWhite);
+      StringAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_STRING_COLOR, clMaroon);
+      StringAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_STRING_BOLD, 0) <> 0, [fsBold], []);
+      SymbolAttri.Foreground:= ReadInteger(SEC_JAVA, KEY_SYMBOL_COLOR, clGray);
+      SymbolAttri.Style:= IfThen(ReadInteger(SEC_JAVA, KEY_SYMBOL_BOLD, 0) <> 0, [fsBold], []);
     end;
 
     Free;
@@ -621,6 +649,37 @@ begin
   end;
 end;
 
+procedure TFormSettings.InitSynEdit(AEditor: TSynEdit);
+var
+  i: integer;
+  part: TSynGutterPartBase;
+begin
+  // init synedit
+  with AEditor do begin
+    Align:= alClient;
+    Color:= clWhite;
+    Gutter.Color:= clWhite;
+    for i := 0 to Gutter.Parts.Count - 1 do begin
+      part := Gutter.Parts.Part[i];
+      if (part is TSynGutterLineNumber) then begin
+        TSynGutterLineNumber(part).MarkupInfo.Background:= clWhite;
+      end;
+      if (part is TSynGutterSeparator) then begin
+        TSynGutterSeparator(part).MarkupInfo.Foreground:= clSilver;
+      end;
+      if (part is TSynGutterCodeFolding) then begin
+        TSynGutterCodeFolding(part).MarkupInfo.Foreground:= clSilver;
+      end;
+    end;
+    Options:= Options + [eoKeepCaretX] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
+    RightEdgeColor:= clWhite;
+    RightGutter.Visible:= False;
+    ScrollBars:= ssAutoBoth;
+    TabWidth:= 4;
+    ReadOnly:= True;
+  end;
+end;
+
 procedure TFormSettings.btnChooseCurlClick(Sender: TObject);
 begin
   with TOpenDialog.Create(nil) do begin
@@ -684,18 +743,42 @@ begin
   STATIC_SHORTCUTS[21] := ShortCut(VK_P, [ssAlt]);
   STATIC_SHORTCUTS[22] := ShortCut(VK_H, [ssAlt]);
 
+  FSynSmali:= TSynEdit.Create(Self);
+  FSynSmali.Parent := tsSmali;
+  InitSynEdit(FSynSmali);
+  FSynXML:= TSynEdit.Create(Self);
+  FSynXML.Parent := tsXML;
+  InitSynEdit(FSynXML);
+  FSynHTML:= TSynEdit.Create(Self);
+  FSynHTML.Parent := tsHTML;
+  InitSynEdit(FSynHTML);
+  FSynCSS:= TSynEdit.Create(Self);
+  FSynCSS.Parent := tsCSS;
+  InitSynEdit(FSynCSS);
+  FSynJS:= TSynEdit.Create(Self);
+  FSynJS.Parent := tsJs;
+  InitSynEdit(FSynJS);
+  FSynShell:= TSynEdit.Create(Self);
+  FSynShell.Parent := tsShell;
+  InitSynEdit(FSynShell);
+  FSynJava:= TSynEdit.Create(Self);
+  FSynJava.Parent := tsJava;
+  InitSynEdit(FSynJava);
+
   FHSmali:= TSynSmaliSyn.Create(Self);
-  synSmali.Highlighter := FHSmali;
+  FSynSmali.Highlighter := FHSmali;
   FHXML:= TSynXMLSyn.Create(Self);
-  synXML.Highlighter := FHXML;
+  FSynXML.Highlighter := FHXML;
   FHHtml:= TSynHTMLSyn.Create(Self);
-  synHTML.Highlighter := FHHtml;
+  FSynHTML.Highlighter := FHHtml;
   FHCss:= TSynCssSyn.Create(Self);
-  synCss.Highlighter := FHCss;
+  FSynCSS.Highlighter := FHCss;
   FHJs:= TSynJScriptSyn.Create(Self);
-  synJs.Highlighter := FHJs;
+  FSynJS.Highlighter := FHJs;
   FHShell:= TSynUNIXShellScriptSyn.Create(Self);
-  synShell.Highlighter := FHShell;
+  FSynShell.Highlighter := FHShell;
+  FHJava := TSynJavaSyn.Create(Self);
+  FSynJava.Highlighter := FHJava;
 
 end;
 

@@ -230,7 +230,7 @@ begin
           page.Parent := pgCode;
           page.ProjectPath:= CurrentProjectPath;
           page.FileName:= path;
-          page.SetCodeTheme('Default.style');
+          page.SetCodeTheme(GlobalConfig.CodeTheme);
           page.OnCodeJump:=@codeJumpCallback;
           pgCode.TabIndex:= pgCode.PageCount - 1;
         end else begin
@@ -240,7 +240,7 @@ begin
             pageText.Parent := pgCode;
             pageText.ProjectPath:= CurrentProjectPath;
             pageText.FileName:= path;
-            pageText.SetCodeTheme('Default.style');
+            pageText.SetCodeTheme(GlobalConfig.CodeTheme);
             pgCode.TabIndex:= pgCode.PageCount - 1;
           end else if (CodeUtils.IsImageFile(path)) then begin
             // open image path
@@ -405,7 +405,7 @@ begin
       page.Parent := pgCode;
       page.ProjectPath:= CurrentProjectPath;
       page.FileName:= openPath;
-      page.SetCodeTheme('Default.style');
+      page.SetCodeTheme(GlobalConfig.CodeTheme);
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -842,7 +842,7 @@ begin
       page.Parent := pgCode;
       page.ProjectPath:= CurrentProjectPath;
       page.FileName:= APath;
-      page.SetCodeTheme('Default.style');
+      page.SetCodeTheme(GlobalConfig.CodeTheme);
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -851,7 +851,7 @@ begin
         pageText.Parent := pgCode;
         pageText.ProjectPath:= CurrentProjectPath;
         pageText.FileName:= APath;
-        pageText.SetCodeTheme('Default.style');
+        pageText.SetCodeTheme(GlobalConfig.CodeTheme);
         pgCode.TabIndex:= pgCode.PageCount - 1;
       end
     end;
@@ -983,7 +983,7 @@ var
       Result.Parent := pgCode;
       Result.ProjectPath:= CurrentProjectPath;
       Result.FileName:= p;
-      Result.SetCodeTheme('Default.style');
+      Result.SetCodeTheme(GlobalConfig.CodeTheme);
       Result.OnCodeJump:= @codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin

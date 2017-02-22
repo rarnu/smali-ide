@@ -14,6 +14,7 @@ const
   SEC_CSS = 'css';
   SEC_JS = 'js';
   SEC_SHELL = 'shell';
+  SEC_JAVA = 'java';
 
   KEY_BACKGROUND = 'background';
   KEY_COMMENT_COLOR = 'comment_color';
@@ -71,6 +72,12 @@ const
   KEY_NON_RESERVED_KEY_BOLD = 'non_reserved_key_bold';
   KEY_EVENT_COLOR = 'event_color';
   KEY_EVENT_BOLD = 'event_bold';
+  KEY_ANNOTATION_COLOR = 'annotation_color';
+  KEY_ANNOTATION_BOLD = 'annotation_bold';
+  KEY_DOCUMENT_COLOR = 'document_color';
+  KEY_DOCUMENT_BOLD = 'document_bold';
+
+
 
   SEC_CONFIG = 'config';
   KEY_JAVA_BINARY_PATH = 'java_binary_path';
