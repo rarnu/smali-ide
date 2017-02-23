@@ -32,8 +32,8 @@ inherited FormSettings: TFormSettings
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Java'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 81
+        ClientWidth = 664
         TabOrder = 0
         object pnlJavaDefault: TPanel
           Left = 0
@@ -123,8 +123,8 @@ inherited FormSettings: TFormSettings
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Curl'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 81
+        ClientWidth = 664
         TabOrder = 1
         object pnlCurlDefault: TPanel
           Left = 0
@@ -214,8 +214,8 @@ inherited FormSettings: TFormSettings
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Apktool'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 81
+        ClientWidth = 664
         TabOrder = 2
         object pnlApktoolDefault: TPanel
           Left = 0
@@ -296,8 +296,8 @@ inherited FormSettings: TFormSettings
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Jadx'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 81
+        ClientWidth = 664
         TabOrder = 3
         object pnlJadxDefault: TPanel
           Left = 0
@@ -384,8 +384,8 @@ inherited FormSettings: TFormSettings
         VertScrollBar.Page = 588
         Align = alClient
         BorderStyle = bsNone
-        ClientHeight = 588
-        ClientWidth = 685
+        ClientHeight = 573
+        ClientWidth = 673
         TabOrder = 0
         object gbView: TGroupBox
           Left = 8
@@ -395,8 +395,8 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'View'
-          ClientHeight = 205
-          ClientWidth = 652
+          ClientHeight = 202
+          ClientWidth = 648
           TabOrder = 0
           object pnlViewClassIndex: TPanel
             Left = 0
@@ -577,8 +577,8 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'Package'
-          ClientHeight = 125
-          ClientWidth = 652
+          ClientHeight = 122
+          ClientWidth = 648
           TabOrder = 1
           object pnlPackageDecompile: TPanel
             Left = 0
@@ -691,8 +691,8 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'CodeTree'
-          ClientHeight = 245
-          ClientWidth = 652
+          ClientHeight = 242
+          ClientWidth = 648
           TabOrder = 2
           object pnlCodeTreeNewClass: TPanel
             Left = 0
@@ -907,8 +907,8 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'CodeEditor'
-          ClientHeight = 205
-          ClientWidth = 652
+          ClientHeight = 202
+          ClientWidth = 648
           TabOrder = 3
           object pnlCodeEditorJumpClassMethod: TPanel
             Left = 0
@@ -1089,8 +1089,8 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'Help'
-          ClientHeight = 45
-          ClientWidth = 652
+          ClientHeight = 42
+          ClientWidth = 648
           TabOrder = 4
           object pnlHelpSettings: TPanel
             Left = 0
@@ -1144,9 +1144,7 @@ inherited FormSettings: TFormSettings
         BorderSpacing.Bottom = 8
         ItemHeight = 0
         OnClick = lstStylesClick
-        ScrollWidth = 190
         TabOrder = 0
-        TopIndex = -1
       end
       object splStyle: TSplitter
         Left = 200
@@ -1229,11 +1227,11 @@ inherited FormSettings: TFormSettings
     end
     object tsTemplate: TTabSheet
       Caption = 'Template'
-      ClientHeight = 588
-      ClientWidth = 688
+      ClientHeight = 586
+      ClientWidth = 753
       object pnlTemplateList: TPanel
         Left = 8
-        Height = 572
+        Height = 570
         Top = 8
         Width = 192
         Align = alLeft
@@ -1241,25 +1239,23 @@ inherited FormSettings: TFormSettings
         BorderSpacing.Top = 8
         BorderSpacing.Bottom = 8
         BevelOuter = bvNone
-        ClientHeight = 572
+        ClientHeight = 570
         ClientWidth = 192
         TabOrder = 0
         object lstTemplate: TListBox
           Left = 0
-          Height = 524
+          Height = 522
           Top = 0
           Width = 192
           Align = alClient
           ItemHeight = 0
           OnClick = lstTemplateClick
-          ScrollWidth = 190
           TabOrder = 0
-          TopIndex = -1
         end
         object pnlTemplateOperation: TPanel
           Left = 0
           Height = 48
-          Top = 524
+          Top = 522
           Width = 192
           Align = alBottom
           BevelOuter = bvNone
@@ -1292,7 +1288,7 @@ inherited FormSettings: TFormSettings
       end
       object splTemplateList: TSplitter
         Left = 200
-        Height = 588
+        Height = 586
         Top = 0
         Width = 5
       end
