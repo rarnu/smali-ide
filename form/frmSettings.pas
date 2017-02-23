@@ -125,7 +125,6 @@ type
     sbxFileType: TScrollBox;
     splTemplateList: TSplitter;
     splStyle: TSplitter;
-    synTemplate: TSynEdit;
     tsJava: TTabSheet;
     tsSmali: TTabSheet;
     tsXML: TTabSheet;
@@ -159,6 +158,8 @@ type
     FSynJS: TSynEdit;
     FSynShell: TSynEdit;
     FSynJava: TSynEdit;
+
+    synTemplate: TSynEdit;
 
     // highlighters
     FHSmali: TSynSmaliSyn;
@@ -779,6 +780,10 @@ begin
   FSynShell.Highlighter := FHShell;
   FHJava := TSynJavaSyn.Create(Self);
   FSynJava.Highlighter := FHJava;
+
+  synTemplate := TSynEdit.Create(Self);
+  synTemplate.Parent := tsTemplate;
+  InitSynEdit(synTemplate);
 
 end;
 
