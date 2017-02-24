@@ -714,6 +714,8 @@ begin
 end;
 
 procedure TFormSettings.InitComponents;
+var
+  p: string;
 begin
   // settings
   SetLength(STATIC_SHORTCUTS, 23);
@@ -784,6 +786,16 @@ begin
   synTemplate := TSynEdit.Create(Self);
   synTemplate.Parent := tsTemplate;
   InitSynEdit(synTemplate);
+
+  // load sample
+  p := ExtractFilePath(ParamStr(0)) + 'template/';
+  if (FileExists(p + 'sample_smali')) then FSynSmali.Lines.LoadFromFile(p + 'sample_smali');
+  if (FileExists(p + 'sample_xml')) then FSynXML.Lines.LoadFromFile(p + 'sample_xml');
+  if (FileExists(p + 'sample_html')) then FSynHTML.Lines.LoadFromFile(p + 'sample_html');
+  if (FileExists(p + 'sample_css')) then FSynCSS.Lines.LoadFromFile(p + 'sample_css');
+  if (FileExists(p + 'sample_js')) then FSynJS.Lines.LoadFromFile(p + 'sample_js');
+  if (FileExists(p + 'sample_shell')) then FSynShell.Lines.LoadFromFile(p + 'sample_shell');
+  if (FileExists(p + 'sample_java')) then FSynJava.Lines.LoadFromFile(p + 'sample_java');
 
 end;
 

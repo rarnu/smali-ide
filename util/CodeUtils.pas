@@ -414,7 +414,7 @@ begin
   ext := string(ExtractFileExt(path)).ToLower;
   Result := (ext = '.txt') or (ext = '.xml') or (ext = '.conf') or (ext = '.ini') or (ext = '.js')
     or (ext = '.css') or (ext = '.html') or (ext = '.htm') or (ext = '.aidl') or (ext = '.sh')
-    or (ext = '.properties') or (ext = '.gradle');
+    or (ext = '.properties') or (ext = '.gradle') or (ext = '.yml');
 end;
 
 function IsImageFile(path: string): Boolean;
@@ -422,7 +422,9 @@ var
   ext: string;
 begin
   ext := string(ExtractFileExt(path)).ToLower;
-  Result := (ext = '.png') or (ext = '.jpg') or (ext = '.jpeg') or (ext = '.bmp') or (ext = '.gif');
+  Result := (ext = '.png') or (ext = '.jpg') or (ext = '.jpeg') or (ext = '.bmp') or (ext = '.gif')
+    or (ext = '.ico') or (ext = '.cur') or (ext = '.xpm') or (ext = '.icns') or (ext = '.tif') or (ext = '.tiff')
+    or (ext = '.pbm') or (ext = '.pgm') or (ext = '.ppm') or (ext = '.tga');
 end;
 
 procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes; node: TTreeNode; pageControl: TPageControl; onCodeJump: TOnCodeJump);

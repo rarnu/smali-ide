@@ -1,0 +1,40 @@
+<html>
+<head><META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="template.css">
+
+<title>Template</title>
+
+</head>
+<body>
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%" height="100%">
+<form id="crmForm" name="crmForm" class="crm">
+<tr height="48">
+   <td>
+      <table cellspacing=0 cellpadding=0 class="mnubar" id="mnuBar1">
+      <tr>
+         <td class="icMenu" noWrap>
+            <span tabIndex=0 class="menu">Place text here.</span>
+         </td>
+         <td id="tdTitle" class="mnuTitle mnuRight" noWrap>Form type: Value</td>
+      </tr>
+      </table>
+
+      <table cellspacing=0 cellpadding=0 class="mnubar" id="mnuBar2">
+      <tr>
+         <td class="icMenu" style="padding-left:5px;" noWrap>
+            <input type="button" value="Button" class="formButton"/>&#160;
+            <input type="button" value="Button" class="formButton"/>
+         </td>
+      </tr>
+      </table>
+      
+      <div style="border-top:1px solid #969693;border-bottom:1px solid #C2C2BF;">
+      </div> 
+   </td>
+</tr>
+</form>
+</table>
+
+</body>
+</html>

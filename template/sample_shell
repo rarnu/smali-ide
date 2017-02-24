@@ -1,0 +1,16 @@
+#!/bin/bash
+
+filename=
+globalseqnums=
+savedseqnum=
+space=" "
+
+find_spec_line() {
+	if [ $# -ne 1 ]; then 
+		echo "usage:  find_spec_line  <num>"
+		exit 1
+	fi
+	local submark=$1
+	local string=`sed -n '/^'$submark' /p' $filename`
+	echo $string
+}

@@ -1,0 +1,10 @@
+header#topheader{
+  position: relative; /* change to "fixed" if desired */
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* space flex items evenly horizontally */
+  align-items: center; /* center flex items vertically */
+  background: lightyellow;
+  padding:10px 5px;
+	font: bold 16px 'Bitter', sans-serif; /* use google font */
+}
