@@ -251,9 +251,9 @@ begin
     end;
   end else begin
     FCompleteClass.Tag:= 0;
-    indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FProjectPath);
-    if (FileExists(indexPath + '/index')) then begin
-      FCompleteClass.ItemList.LoadFromFile(indexPath + '/index');
+    indexPath := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(FProjectPath);
+    if (FileExists(indexPath + SPLIT + 'index')) then begin
+      FCompleteClass.ItemList.LoadFromFile(indexPath + SPLIT + 'index');
       FCompleteClass.Position:= 0;
     end;
   end;
@@ -356,7 +356,7 @@ procedure TSmaliCodeView.completeTemplateCompletion(var Value: string;
 var
   p: string;
 begin
-  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + Value + '.template';
+  p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT + Value + '.template';
   with TStringList.Create do begin
     LoadFromFile(p);
     Value:= Text;
@@ -372,7 +372,7 @@ var
   src: TSearchRec;
 begin
   FCompleteTemplate.ItemList.Clear;
-  p := ExtractFilePath(ParamStr(0)) + 'template/custom/';
+  p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT;
   if (FindFirst(p + '*.template', faAnyFile, src) = 0) then begin
     repeat
       if (src.Name = '.') or (src.Name = '..') then Continue;
@@ -442,7 +442,7 @@ begin
   FCompleteTemplate:= TSynCompletion.Create(Self);
 
   with TStringList.Create do begin
-    smaliCmdPath:= ExtractFilePath(ParamStr(0)) + 'template/smalicmd';
+    smaliCmdPath:= ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'smalicmd';
     if (FileExists(smaliCmdPath)) then begin
       LoadFromFile(smaliCmdPath);
       smaliCmd:= Text;
@@ -886,7 +886,7 @@ var
   path: string;
 begin
   // set code theme
-  path := ExtractFilePath(ParamStr(0)) + 'style/' + AThemeFile;
+  path := ExtractFilePath(ParamStr(0)) + 'style' + SPLIT + AThemeFile;
   with TIniFile.Create(path) do begin
     FEditor.Color:= ReadInteger(SEC_SMALI, KEY_BACKGROUND, clWhite);
     with FHighlighter do begin

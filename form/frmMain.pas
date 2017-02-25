@@ -196,7 +196,7 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile, frmAbout, frmSettings, config, frmUpdate;
+  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData;
 
 { TFormMain }
 
@@ -218,7 +218,7 @@ begin
     end else begin
       path:= node.Text;
       while (node.Parent <> nil) do begin
-        path:= node.Parent.Text + '/' + path;
+        path:= node.Parent.Text + SPLIT + path;
         node := node.Parent;
       end;
       // open file
@@ -381,9 +381,9 @@ var
 begin
   while True do begin
     if (smaliIdx = 1) then begin
-      filePath:= ExtractFilePath(CurrentProjectPath) + 'smali/' + path;
+      filePath:= ExtractFilePath(CurrentProjectPath) + 'smali' + SPLIT + path;
     end else begin
-      filePath:= ExtractFilePath(CurrentProjectPath) + 'smali_classes' + IntToStr(smaliIdx) + '/' + path;
+      filePath:= ExtractFilePath(CurrentProjectPath) + 'smali_classes' + IntToStr(smaliIdx) + SPLIT + path;
     end;
 
     if (FileExists(filePath + '.smali')) then begin
@@ -478,7 +478,7 @@ var
 begin
   tvClassIndex.Items.Clear;
   sbMain.Panels[0].Text:= 'Ready';
-  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(CurrentProjectPath) + '/index';
+  indexPath := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(CurrentProjectPath) + SPLIT + 'index';
   if (FileExists(indexPath)) then begin
     tvClassIndex.BeginUpdate;
     list := TStringList.Create;

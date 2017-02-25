@@ -13,6 +13,9 @@ procedure ExpandProjectNode(path: string; root: TTreeNodes; node: TTreeNode);
 
 implementation
 
+uses
+  baseData;
+
 function OpenProject: String;
 begin
   Result := '';
@@ -69,10 +72,10 @@ begin
   basePath:= ExtractFilePath(path);
   filePath:= tmpNode.Text;
   while tmpNode.Parent <> nil do begin
-    filePath:= tmpNode.Parent.Text + '/' + filePath;
+    filePath:= tmpNode.Parent.Text + SPLIT + filePath;
     tmpNode := tmpNode.Parent;;
   end;
-  fullPath:= basePath + filePath + '/';
+  fullPath:= basePath + filePath + SPLIT;
   if (FindFirst(fullPath + '*', faAnyFile, src) = 0) then begin
     repeat
       if (src.Name = '.') or (src.Name = '..') then begin

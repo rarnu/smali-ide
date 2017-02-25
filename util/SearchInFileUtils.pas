@@ -41,6 +41,9 @@ type
 
 implementation
 
+uses
+  baseData;
+
 { TSearchInFileThread }
 
 
@@ -90,7 +93,7 @@ begin
       if (src.Name = '.') or (src.Name = '..') then Continue;
       p := basePath + src.Name;
       if (DirectoryExists(p)) then begin
-        p += '/';
+        p += SPLIT;
         SearchFile(p);
       end else begin
         if (IsFileForSearch(p)) then begin
@@ -113,7 +116,7 @@ begin
   FPath:= APath;
   FKey:= AKey;
   FIsAborted := False;
-  if (not FPath.EndsWith('/')) then FPath += '/';
+  if (not FPath.EndsWith(SPLIT)) then FPath += SPLIT;
   FreeOnTerminate:= True;
 end;
 

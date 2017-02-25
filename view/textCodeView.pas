@@ -524,7 +524,7 @@ procedure TTextCodeView.SetCodeTheme(AThemeFile: string);
 var
   path: string;
 begin
-  path := ExtractFilePath(ParamStr(0)) + 'style/' + AThemeFile;
+  path := ExtractFilePath(ParamStr(0)) + 'style' + SPLIT + AThemeFile;
   with TIniFile.Create(path) do begin
     if (FEditor.Highlighter = FHighlightXml) then begin
       FEditor.Color:= ReadInteger(SEC_XML, KEY_BACKGROUND, clWhite);

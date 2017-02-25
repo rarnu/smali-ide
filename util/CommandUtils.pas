@@ -5,7 +5,7 @@ unit CommandUtils;
 interface
 
 uses
-  Classes, SysUtils, process;
+  Classes, SysUtils, process, Dialogs;
 
 type
   TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctJadx, ctJadxDecompile, ctCommand);
@@ -41,7 +41,7 @@ type
 implementation
 
 uses
-  config;
+  config, baseData;
 
 { TCommandThread }
 
@@ -91,14 +91,14 @@ begin
     begin
       AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
-      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
+      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar');
       AProcess.Parameters.Add('d');
       if (FParam[2] = '1') then AProcess.Parameters.Add('-r');
       if (FParam[3] = '1') then AProcess.Parameters.Add('-s');
       AProcess.Parameters.Add('-o');
       outputPath:= FParam[1];
-      if (not outputPath.EndsWith('/')) then outputPath += '/';
-      outputPath += ExtractPureFileName(FParam[0]) + '/';
+      if (not outputPath.EndsWith(SPLIT)) then outputPath += SPLIT;
+      outputPath += ExtractPureFileName(FParam[0]) + SPLIT;
       FTmpProjectPath := outputPath + 'apktool.yml';
       AProcess.Parameters.Add(outputPath);
       AProcess.Parameters.Add(FParam[0]);
@@ -108,18 +108,18 @@ begin
       // compile
       AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
-      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
+      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar');
       AProcess.Parameters.Add('b');
       AProcess.Parameters.Add(FParam[0]);
       FTmpDistPath:= FParam[0];
-      if (not FTmpDistPath.EndsWith('/')) then FTmpDistPath += '/';
-      FTmpDistPath += 'dist/';
+      if (not FTmpDistPath.EndsWith(SPLIT)) then FTmpDistPath += SPLIT;
+      FTmpDistPath += 'dist' + SPLIT;
     end;
   ctInstallFramework:
     begin
       AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
-      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
+      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar');
       AProcess.Parameters.Add('if');
       AProcess.Parameters.Add(FParam[0]);
     end;
@@ -127,22 +127,33 @@ begin
     begin
       AProcess.Executable:= GlobalConfig.JavaBinaryPath;
       AProcess.Parameters.Add('-jar');
-      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar');
+      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar');
       AProcess.Parameters.Add('-version');
     end;
   ctJadx:
     begin
-      AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin/jadx';
+      {$IFNDEF WINDOWS}
+      AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'jadx';
       AProcess.Parameters.Add('-h');
+      {$ELSE}
+      AProcess.Executable:= 'C:\Windows\System32\cmd.exe';
+      AProcess.Parameters.Add('/c "' + ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'jadx.bat -h"');
+      {$ENDIF}
     end;
   ctJadxDecompile:
     begin
-      AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin/jadx';
+      {$IFNDEF WINDOWS}
+      AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'jadx';
       AProcess.Parameters.Add('--show-bad-code');
       AProcess.Parameters.Add('-r');
       AProcess.Parameters.Add('-d');
       AProcess.Parameters.Add(FParam[1]);
       AProcess.Parameters.Add(FParam[0]);
+      {$ELSE}
+      // TODO: decompile for windows
+      AProcess.Executable:= 'C:\Windows\System32\cmd.exe';
+      AProcess.Parameters.Add('/c "' + Format('%sbin%sjadx.bat --show-bad-code -r -d %s %s', [ExtractFilePath(ParamStr(0)), SPLIT, FParam[1], FParam[0]]) + '"');
+      {$ENDIF}
     end;
   ctCommand:
     begin
@@ -153,12 +164,19 @@ begin
   end;
 
   AProcess.Options:= [poUsePipes];
+  {$IFDEF WINDOWS}
+  AProcess.ShowWindow := swoHIDE;
+  {$ENDIF}
   AProcess.Execute;
 
   repeat
     FillChar(buffer, BUF_SIZE, 0);
-    bytesRead:= AProcess.Output.Read(buffer, BUF_SIZE);
-    FTmpOutput:= string(StringOf(buffer));
+    try
+      bytesRead:= AProcess.Output.Read(buffer, BUF_SIZE);
+      FTmpOutput:= string(StringOf(buffer));
+    except
+      bytesRead:= 0;
+    end;
     if (FCmdType = ctVersion) and (lineCount = 0) then FTmpVersion:= FTmpOutput.Trim;
     if (FCmdType = ctJadx) and (FTmpOutput.Contains('version')) then begin
       FTmpJadxVersion:= FTmpOutput.Substring(FTmpOutput.LastIndexOf(' ')).Trim;

@@ -118,11 +118,14 @@ var
 
 implementation
 
+uses
+  WindowsUtils;
+
 { TSmaliIdeConfig }
 
 function TSmaliIdeConfig.GetJavaBinaryPath: string;
 begin
-  Result := FIni.ReadString(SEC_CONFIG, KEY_JAVA_BINARY_PATH, '/usr/bin/java');
+  Result := FIni.ReadString(SEC_CONFIG, KEY_JAVA_BINARY_PATH, {$IFNDEF WINDOWS}'/usr/bin/java'{$ELSE}WindowsUtils.GetDefaultJavaPath(){$ENDIF});
 end;
 
 function TSmaliIdeConfig.GetJumpClassMethod: TShortCut;

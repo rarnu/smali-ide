@@ -71,7 +71,7 @@ procedure TFormJava.SetCodeTheme(AThemeFile: string);
 var
   path: string;
 begin
-  path := ExtractFilePath(ParamStr(0)) + 'style/' + AThemeFile;
+  path := ExtractFilePath(ParamStr(0)) + 'style' + SPLIT + AThemeFile;
   with TIniFile.Create(path) do begin
     FSynJava.Color:= ReadInteger(SEC_JAVA, KEY_BACKGROUND, clWhite);
     with FSynJavaSyn do begin

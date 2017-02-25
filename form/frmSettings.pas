@@ -199,7 +199,7 @@ var
 implementation
 
 uses
-  config, frmShortcutAccept, baseData, fileTypeItemView;
+  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils;
 
 {$R *.lfm}
 
@@ -211,7 +211,7 @@ begin
     if Execute then begin
       edtJavaPath.Text:= FileName;
     end else begin
-      edtJavaPath.Text:= '/usr/bin/java';
+      edtJavaPath.Text:= GlobalConfig.JavaBinaryPath;  // '/usr/bin/java';
     end;
     Free;
   end;
@@ -226,7 +226,7 @@ begin
   // delete template
   idx := lstTemplate.ItemIndex;
   if (idx = -1) then Exit;
-  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + lstTemplate.Items[idx];
+  p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT + lstTemplate.Items[idx];
   lstTemplate.Items.Delete(idx);
   DeleteFile(p);
 end;
@@ -283,7 +283,7 @@ var
 begin
   idx := lstStyles.ItemIndex;
   if (idx = -1) then Exit;
-  path := ExtractFilePath(ParamStr(0)) + 'style/' + lstStyles.Items[idx];
+  path := ExtractFilePath(ParamStr(0)) + 'style' + SPLIT + lstStyles.Items[idx];
 
   // load theme
   with TIniFile.Create(path) do begin
@@ -463,7 +463,7 @@ var
 begin
   idx := lstTemplate.ItemIndex;
   if (idx = -1) then Exit;
-  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + lstTemplate.Items[idx];
+  p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT + lstTemplate.Items[idx];
   synTemplate.Lines.LoadFromFile(p);
   synTemplate.Hint:= p;
 end;
@@ -587,7 +587,7 @@ var
   p: string;
 begin
   lstStyles.Items.Clear;
-  p := ExtractFilePath(ParamStr(0)) + 'style/';
+  p := ExtractFilePath(ParamStr(0)) + 'style' + SPLIT;
   if (FindFirst(p + '*.style', faAnyFile, src) = 0) then begin
     repeat
       lstStyles.Items.Add(src.Name);
@@ -640,7 +640,7 @@ var
   path: string;
   src: TSearchRec;
 begin
-  path:= ExtractFilePath(ParamStr(0)) + 'template/custom/';
+  path:= ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT;
   if (FindFirst(path + '*.template', faAnyFile, src) = 0) then begin
     repeat
       if (src.Name = '.') or (src.Name = '..') then Continue;
@@ -683,6 +683,7 @@ end;
 
 procedure TFormSettings.btnChooseCurlClick(Sender: TObject);
 begin
+  // this method will NOT work on Windows.
   with TOpenDialog.Create(nil) do begin
     if Execute then begin
       edtCurlPath.Text:= FileName;
@@ -703,7 +704,7 @@ begin
   // add template
   tn := InputBox('Add Template', 'Unput Template Name', '').Trim;
   if (tn = '') then Exit;
-  p := ExtractFilePath(ParamStr(0)) + 'template/custom/' + tn + '.template';
+  p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT + tn + '.template';
   with TStringList.Create do begin
     SaveToFile(p);
     Free;
@@ -788,7 +789,7 @@ begin
   InitSynEdit(synTemplate);
 
   // load sample
-  p := ExtractFilePath(ParamStr(0)) + 'template/';
+  p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT;
   if (FileExists(p + 'sample_smali')) then FSynSmali.Lines.LoadFromFile(p + 'sample_smali');
   if (FileExists(p + 'sample_xml')) then FSynXML.Lines.LoadFromFile(p + 'sample_xml');
   if (FileExists(p + 'sample_html')) then FSynHTML.Lines.LoadFromFile(p + 'sample_html');
@@ -809,6 +810,7 @@ var
   p: string;
 begin
   // java
+  {$IFNDEF WINDOWS}
   if (FileExists('/usr/bin/java')) then begin
     lblJavaStatus.Caption:= '(exists)';
     lblJavaStatus.Font.Color:= clDefault;
@@ -816,8 +818,20 @@ begin
     lblJavaStatus.Caption:= '(not exists)';
     lblJavaStatus.Font.Color:= clRed;
   end;
+  {$ELSE}
+  p := WindowsUtils.GetDefaultJavaPath();
+  if (FileExists(p)) then begin
+    lblJavaStatus.Caption:= '(exists)';
+    lblJavaStatus.Font.Color:= clDefault;
+  end else begin
+    lblJavaStatus.Caption:= '(not exists)';
+    lblJavaStatus.Font.Color:= clRed;
+  end;
+  {$ENDIF}
   edtJavaPath.Text:= GlobalConfig.JavaBinaryPath;
 
+  {$IFNDEF WINDOWS}
+  gbCurl.Visible := True;
   // curl
   if (FileExists('/usr/bin/curl')) then begin
     lblCurlStatus.Caption:= '(exists)';
@@ -827,12 +841,15 @@ begin
     lblCurlStatus.Font.Color:= clRed;
   end;
   edtCurlPath.Text := GlobalConfig.CurlBinaryPath;
+  {$ELSE}
+  gbCurl.Visible:= False;
+  {$ENDIF}
 
   LoadShortcut();
 
   // apktool
 
-  p := ExtractFilePath(ParamStr(0)) + 'bin/apktool.jar';
+  p := ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar';
   if (FileExists(p)) then begin
     lblApktoolStatus.Caption:= '(exists)';
     lblApktoolStatus.Font.Color:= clDefault;
@@ -842,7 +859,7 @@ begin
   end;
 
   // jadx
-  p := ExtractFilePath(ParamStr(0)) + 'bin/jadx';
+  p := ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'jadx';
   if (FileExists(p)) then begin
     lblJadxStatus.Caption:= '(exists)';
     lblJadxStatus.Font.Color:= clDefault;

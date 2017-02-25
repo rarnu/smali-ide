@@ -8,6 +8,9 @@ uses
   Classes, SysUtils;
 
 const
+
+  SPLIT = {$IFNDEF WINDOWS}'/'{$ELSE}'\'{$ENDIF};
+
   SEC_SMALI = 'smali';
   SEC_XML = 'xml';
   SEC_HTML = 'html';

@@ -59,7 +59,7 @@ procedure InstallFramework(AFrameworkPath: string; callback: TOnCommandOutput; c
 implementation
 
 uses
-  EncryptUtils;
+  EncryptUtils, baseData;
 
 procedure TBuildClassIndexThread.SendSyncCallback;
 begin
@@ -75,13 +75,13 @@ var
 begin
   for i := 1 to 9 do begin
     if (i = 1) then begin
-      if (path.Contains('/smali/')) then begin
-        ret := path.Substring(path.IndexOf('/smali/') + 7);
+      if (path.Contains(SPLIT + 'smali' + SPLIT)) then begin
+        ret := path.Substring(path.IndexOf(SPLIT + 'smali' + SPLIT) + 7);
         break;
       end;
     end else begin
-      if (path.Contains('/smali_classes' + IntToStr(i) + '/')) then begin
-        ret := path.Substring(path.IndexOf('/smali_classes' + IntToStr(i) + '/') + 16);
+      if (path.Contains(SPLIT + 'smali_classes' + IntToStr(i) + SPLIT)) then begin
+        ret := path.Substring(path.IndexOf(SPLIT + 'smali_classes' + IntToStr(i) + SPLIT) + 16);
         break;
       end;
     end;
@@ -92,7 +92,7 @@ begin
   if (ret.EndsWith('.1')) then begin
     ret := ret.Substring(0, ret.Length - 2);
   end;
-  ret := ret.Replace('/', '.', [rfReplaceAll, rfIgnoreCase]);
+  ret := ret.Replace(SPLIT, '.', [rfReplaceAll, rfIgnoreCase]);
   Result := ret;
 end;
 
@@ -113,7 +113,7 @@ begin
         Continue;
       end;
       if (DirectoryExists(basePath + src.Name)) then begin
-        BuildClassIndex(basePath + src.Name + '/');
+        BuildClassIndex(basePath + src.Name + SPLIT);
       end else begin
         if (string(src.Name).EndsWith('.smali')) then begin
           fp := FullPathToClassPath(basePath + src.Name);
@@ -134,10 +134,10 @@ procedure TBuildClassIndexThread.buildIndexTerminate(Sender: TObject);
 var
   indexPath: string;
 begin
-  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FPath);
+  indexPath := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(FPath);
   ForceDirectories(indexPath);
-  if (not FileExists(indexPath + '/index')) then begin
-    FClassList.SaveToFile(indexPath + '/index');
+  if (not FileExists(indexPath + SPLIT + 'index')) then begin
+    FClassList.SaveToFile(indexPath + SPLIT + 'index');
   end;
   if (Assigned(FOnBuildIndexCompleteCallback)) then begin
     FOnBuildIndexCompleteCallback(Self);
@@ -183,7 +183,7 @@ var
   ex: string;
 begin
   // build method index
-  savePath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
+  savePath:= ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(projectPath) + SPLIT + 'class' + SPLIT;
   ForceDirectories(savePath);
   savePath += md5EncryptString(classPath);
   list := TStringList.Create;
@@ -226,7 +226,7 @@ var
   list: TStringList;
   i: Integer;
 begin
-  savePath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
+  savePath:= ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(projectPath) + SPLIT + 'class' + SPLIT;
   ForceDirectories(savePath);
   savePath += md5EncryptString(classPath);
   list := TStringList.Create;
@@ -250,7 +250,7 @@ function LoadMethodIndex(projectPath: string; classPath: string): string;
 var
   idxPath: string;
 begin
-  idxPath:= ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/class/';
+  idxPath:= ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(projectPath) + SPLIT + 'class' + SPLIT;
   idxPath += md5EncryptString(classPath);
   Result := '';
   if (FileExists(idxPath)) then begin
@@ -273,24 +273,24 @@ begin
   basePath:= ExtractFilePath(projectPath);
   for i := 1 to 9 do begin
     if (i = 1) then begin
-      fullPath:= basePath + 'smali/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.smali';
+      fullPath:= basePath + 'smali' + SPLIT + indexPkg.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]) + '.smali';
       if (FileExists(fullPath)) then begin
         Result := fullPath;
         Break;
       end else begin
-        fullPath:= basePath + 'smali/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.1.smali';
+        fullPath:= basePath + 'smali' + SPLIT + indexPkg.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]) + '.1.smali';
         if (FileExists(fullPath)) then begin
           Result := fullPath;
           Break;
         end;
       end;
     end else begin
-      fullPath:= basePath + 'smali_classes' + IntToStr(i) + '/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.smali';
+      fullPath:= basePath + 'smali_classes' + IntToStr(i) + SPLIT + indexPkg.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]) + '.smali';
       if (FileExists(fullPath)) then begin
         Result := fullPath;
         Break;
       end else begin
-        fullPath:= basePath + 'smali_classes' + IntToStr(i) + '/' + indexPkg.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.1.smali';
+        fullPath:= basePath + 'smali_classes' + IntToStr(i) + SPLIT + indexPkg.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]) + '.1.smali';
         if (FileExists(fullPath)) then begin
           Result := fullPath;
           Break;
@@ -307,8 +307,7 @@ begin
   Result := '';
   p := classPath;
   while True do begin
-    Result := indexPath + p.Replace('.', '/', [rfIgnoreCase, rfReplaceAll]) + '.java';
-    WriteLn(Result);
+    Result := indexPath + p.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]) + '.java';
     if FileExists(Result) then Break;
     if (not p.Contains('$')) then Break;
     p := p.Substring(0, p.LastIndexOf('$'));
@@ -323,7 +322,7 @@ var
 begin
   Result := '';
   // smali to java
-  p := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/proj/';
+  p := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(projectPath) + SPLIT + 'proj' + SPLIT;
   pclass := FullPathToClassPath(path);
   javaFilePath:= GetJavaFilePath(p, pclass);
   if (FileExists(javaFilePath)) then begin
@@ -342,12 +341,12 @@ begin
   // node to path
   p := node.Text;
   while node.Parent <> nil do begin
-    p := node.Parent.Text + '/' + p;
+    p := node.Parent.Text + SPLIT + p;
     node := node.Parent;
   end;
   p := ExtractFilePath(projectPath) + p;
   if (DirectoryExists(p)) then begin
-    p += '/';
+    p += SPLIT;
   end;
   Result := p;
 end;
@@ -363,10 +362,10 @@ var
   n: TTreeNode;
 begin
   if (template <> '') and (onCodeJump <> nil) then begin
-    indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(projectPath) + '/index';
+    indexPath := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(projectPath) + SPLIT + 'index';
     ForceDirectories(indexPath);
     smaliFilePath:= filePath + name + '.smali';
-    tmpPath:= ExtractFilePath(ParamStr(0)) + 'template/' + template;
+    tmpPath:= ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + template;
     classPath:= FullPathToClassPath(smaliFilePath);
     with TStringList.Create do begin
       LoadFromFile(tmpPath);
@@ -496,10 +495,10 @@ begin
     OnCommandComplete:= complete;
     Start;
   end;
-  if (not AOutputPath.EndsWith('/')) then AOutputPath += '/';
-  AOutputPath += ExtractPureFileName(AAPkPath) + '/';
+  if (not AOutputPath.EndsWith(SPLIT)) then AOutputPath += SPLIT;
+  AOutputPath += ExtractPureFileName(AAPkPath) + SPLIT;
   AOutputPath += 'apktool.yml';
-  p := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(AOutputPath) + '/proj/';
+  p := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(AOutputPath) + SPLIT + 'proj' + SPLIT;
   if (not DirectoryExists(p)) then ForceDirectories(p);
   with TCommandThread.Create(ctJadxDecompile, [AAPkPath, p]) do begin
     OnCommandOutput:= callback;
@@ -536,9 +535,9 @@ procedure TBuildClassIndexThread.Execute;
 var
   indexPath: string;
 begin
-  indexPath := ExtractFilePath(ParamStr(0)) + 'index/' + md5EncryptString(FPath);
+  indexPath := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(FPath);
   ForceDirectories(indexPath);
-  if (not FileExists(indexPath + '/index')) then begin
+  if (not FileExists(indexPath + SPLIT + 'index')) then begin
     BuildClassIndex(FPath);
   end;
 end;

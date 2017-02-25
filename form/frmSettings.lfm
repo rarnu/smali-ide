@@ -22,29 +22,29 @@ inherited FormSettings: TFormSettings
     TabPosition = tpLeft
     object tsEnvironment: TTabSheet
       Caption = 'Environment'
-      ClientHeight = 588
-      ClientWidth = 688
+      ClientHeight = 584
+      ClientWidth = 762
       object gbJava: TGroupBox
         Left = 8
         Height = 103
         Top = 8
-        Width = 672
+        Width = 746
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Java'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 86
+        ClientWidth = 742
         TabOrder = 0
         object pnlJavaDefault: TPanel
           Left = 0
           Height = 40
           Top = 0
-          Width = 668
+          Width = 742
           Align = alTop
           BevelColor = clNone
           BevelOuter = bvSpace
           ClientHeight = 40
-          ClientWidth = 668
+          ClientWidth = 742
           TabOrder = 0
           object lblDefaultJava: TLabel
             Left = 9
@@ -62,7 +62,7 @@ inherited FormSettings: TFormSettings
             Left = 197
             Height = 22
             Top = 9
-            Width = 43
+            Width = 42
             Align = alLeft
             BorderSpacing.Around = 8
             Caption = '(exist)'
@@ -73,17 +73,17 @@ inherited FormSettings: TFormSettings
         end
         object pnlJavaChoose: TPanel
           Left = 0
-          Height = 44
+          Height = 46
           Top = 40
-          Width = 668
+          Width = 742
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 44
-          ClientWidth = 668
+          ClientHeight = 46
+          ClientWidth = 742
           TabOrder = 1
           object lblchooseJava: TLabel
             Left = 8
-            Height = 44
+            Height = 46
             Top = 0
             Width = 180
             Align = alLeft
@@ -94,8 +94,8 @@ inherited FormSettings: TFormSettings
             ParentColor = False
           end
           object btnChooseJava: TButton
-            Left = 632
-            Height = 28
+            Left = 706
+            Height = 30
             Top = 8
             Width = 28
             Align = alRight
@@ -106,9 +106,9 @@ inherited FormSettings: TFormSettings
           end
           object edtJavaPath: TEdit
             Left = 196
-            Height = 28
+            Height = 30
             Top = 8
-            Width = 428
+            Width = 502
             Align = alClient
             BorderSpacing.Around = 8
             TabOrder = 1
@@ -119,23 +119,23 @@ inherited FormSettings: TFormSettings
         Left = 8
         Height = 103
         Top = 119
-        Width = 672
+        Width = 746
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Curl'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 86
+        ClientWidth = 742
         TabOrder = 1
         object pnlCurlDefault: TPanel
           Left = 0
           Height = 40
           Top = 0
-          Width = 668
+          Width = 742
           Align = alTop
           BevelColor = clNone
           BevelOuter = bvSpace
           ClientHeight = 40
-          ClientWidth = 668
+          ClientWidth = 742
           TabOrder = 0
           object lblDefaultCurl: TLabel
             Left = 9
@@ -153,7 +153,7 @@ inherited FormSettings: TFormSettings
             Left = 197
             Height = 22
             Top = 9
-            Width = 43
+            Width = 42
             Align = alLeft
             BorderSpacing.Around = 8
             Caption = '(exist)'
@@ -164,17 +164,17 @@ inherited FormSettings: TFormSettings
         end
         object pnlCurlChoose: TPanel
           Left = 0
-          Height = 44
+          Height = 46
           Top = 40
-          Width = 668
+          Width = 742
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 44
-          ClientWidth = 668
+          ClientHeight = 46
+          ClientWidth = 742
           TabOrder = 1
           object lblChooseCurl: TLabel
             Left = 8
-            Height = 44
+            Height = 46
             Top = 0
             Width = 180
             Align = alLeft
@@ -185,8 +185,8 @@ inherited FormSettings: TFormSettings
             ParentColor = False
           end
           object btnChooseCurl: TButton
-            Left = 632
-            Height = 28
+            Left = 706
+            Height = 30
             Top = 8
             Width = 28
             Align = alRight
@@ -197,9 +197,9 @@ inherited FormSettings: TFormSettings
           end
           object edtCurlPath: TEdit
             Left = 196
-            Height = 28
+            Height = 30
             Top = 8
-            Width = 428
+            Width = 502
             Align = alClient
             BorderSpacing.Around = 8
             TabOrder = 1
@@ -210,23 +210,23 @@ inherited FormSettings: TFormSettings
         Left = 8
         Height = 103
         Top = 230
-        Width = 672
+        Width = 746
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Apktool'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 86
+        ClientWidth = 742
         TabOrder = 2
         object pnlApktoolDefault: TPanel
           Left = 0
           Height = 40
           Top = 0
-          Width = 668
+          Width = 742
           Align = alTop
           BevelColor = clNone
           BevelOuter = bvSpace
           ClientHeight = 40
-          ClientWidth = 668
+          ClientWidth = 742
           TabOrder = 0
           object lblDefaultApktool: TLabel
             Left = 9
@@ -244,7 +244,7 @@ inherited FormSettings: TFormSettings
             Left = 197
             Height = 22
             Top = 9
-            Width = 43
+            Width = 42
             Align = alLeft
             BorderSpacing.Around = 8
             Caption = '(exist)'
@@ -255,17 +255,17 @@ inherited FormSettings: TFormSettings
         end
         object pnlApktoolVersion: TPanel
           Left = 0
-          Height = 44
+          Height = 46
           Top = 40
-          Width = 668
+          Width = 742
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 44
-          ClientWidth = 668
+          ClientHeight = 46
+          ClientWidth = 742
           TabOrder = 1
           object lblApktoolVersion: TLabel
             Left = 8
-            Height = 44
+            Height = 46
             Top = 0
             Width = 180
             Align = alLeft
@@ -277,9 +277,9 @@ inherited FormSettings: TFormSettings
           end
           object lblApktoolVersionValue: TLabel
             Left = 196
-            Height = 28
+            Height = 30
             Top = 8
-            Width = 464
+            Width = 538
             Align = alClient
             BorderSpacing.Around = 8
             Caption = '0.0.0'
@@ -292,23 +292,23 @@ inherited FormSettings: TFormSettings
         Left = 8
         Height = 103
         Top = 341
-        Width = 672
+        Width = 746
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'Jadx'
-        ClientHeight = 84
-        ClientWidth = 668
+        ClientHeight = 86
+        ClientWidth = 742
         TabOrder = 3
         object pnlJadxDefault: TPanel
           Left = 0
           Height = 40
           Top = 0
-          Width = 668
+          Width = 742
           Align = alTop
           BevelColor = clNone
           BevelOuter = bvSpace
           ClientHeight = 40
-          ClientWidth = 668
+          ClientWidth = 742
           TabOrder = 0
           object lblJadxDefault: TLabel
             Left = 9
@@ -326,7 +326,7 @@ inherited FormSettings: TFormSettings
             Left = 197
             Height = 22
             Top = 9
-            Width = 43
+            Width = 42
             Align = alLeft
             BorderSpacing.Around = 8
             Caption = '(exist)'
@@ -337,17 +337,17 @@ inherited FormSettings: TFormSettings
         end
         object pnlJadxVersion: TPanel
           Left = 0
-          Height = 44
+          Height = 46
           Top = 40
-          Width = 668
+          Width = 742
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 44
-          ClientWidth = 668
+          ClientHeight = 46
+          ClientWidth = 742
           TabOrder = 1
           object lblJadxlVersion: TLabel
             Left = 8
-            Height = 44
+            Height = 46
             Top = 0
             Width = 180
             Align = alLeft
@@ -359,9 +359,9 @@ inherited FormSettings: TFormSettings
           end
           object lblJadxVersionValue: TLabel
             Left = 196
-            Height = 28
+            Height = 30
             Top = 8
-            Width = 464
+            Width = 538
             Align = alClient
             BorderSpacing.Around = 8
             Caption = '0.0.0'
@@ -380,12 +380,12 @@ inherited FormSettings: TFormSettings
         Height = 588
         Top = 0
         Width = 688
-        HorzScrollBar.Page = 240
+        HorzScrollBar.Page = 236
         VertScrollBar.Page = 588
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 588
-        ClientWidth = 685
+        ClientWidth = 671
         TabOrder = 0
         object gbView: TGroupBox
           Left = 8
@@ -395,7 +395,7 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'View'
-          ClientHeight = 205
+          ClientHeight = 207
           ClientWidth = 652
           TabOrder = 0
           object pnlViewClassIndex: TPanel
@@ -577,7 +577,7 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'Package'
-          ClientHeight = 125
+          ClientHeight = 127
           ClientWidth = 652
           TabOrder = 1
           object pnlPackageDecompile: TPanel
@@ -691,7 +691,7 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'CodeTree'
-          ClientHeight = 245
+          ClientHeight = 247
           ClientWidth = 652
           TabOrder = 2
           object pnlCodeTreeNewClass: TPanel
@@ -907,7 +907,7 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'CodeEditor'
-          ClientHeight = 205
+          ClientHeight = 207
           ClientWidth = 652
           TabOrder = 3
           object pnlCodeEditorJumpClassMethod: TPanel
@@ -1089,7 +1089,7 @@ inherited FormSettings: TFormSettings
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'Help'
-          ClientHeight = 45
+          ClientHeight = 47
           ClientWidth = 652
           TabOrder = 4
           object pnlHelpSettings: TPanel
@@ -1146,7 +1146,6 @@ inherited FormSettings: TFormSettings
         OnClick = lstStylesClick
         ScrollWidth = 190
         TabOrder = 0
-        TopIndex = -1
       end
       object splStyle: TSplitter
         Left = 200
@@ -1254,7 +1253,6 @@ inherited FormSettings: TFormSettings
           OnClick = lstTemplateClick
           ScrollWidth = 190
           TabOrder = 0
-          TopIndex = -1
         end
         object pnlTemplateOperation: TPanel
           Left = 0
