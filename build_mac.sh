@@ -36,5 +36,5 @@ cp -r lib smaliide.app/Contents/MacOS/
 cp -r style  smaliide.app/Contents/MacOS/
 cp -r template smaliide.app/Contents/MacOS/
 cp -r image smaliide.app/Contents/MacOS/
-
+cp smaliide.icns smaliide.app/Contents/Resources/
 
