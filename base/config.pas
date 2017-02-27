@@ -15,6 +15,8 @@ type
   private
     FIni: TIniFile;
     FFileTypes: TStringList;
+    function GetAndroidSDKPath: string;
+    function GetAndroidSDKVersion: string;
     function GetCloseAllOtherPages: TShortCut;
     function GetCloseAllPages: TShortCut;
     function GetCodeTheme: string;
@@ -40,6 +42,8 @@ type
     function GetShowClassIndex: TShortCut;
     function GetShowConsole: TShortCut;
     function GetShowSearchResult: TShortCut;
+    procedure SetAndroidSDKPath(AValue: string);
+    procedure SetAndroidSDKVersion(AValue: string);
     procedure SetCloseAllOtherPages(AValue: TShortCut);
     procedure SetCloseAllPages(AValue: TShortCut);
     procedure SetCodeTheme(AValue: string);
@@ -76,6 +80,8 @@ type
     // path
     property JavaBinaryPath: string read GetJavaBinaryPath write SetJavaBinaryPath;
     property CurlBinaryPath: string read GetCurlBinaryPath write SetCurlBinaryPath;
+    property AndroidSDKPath: string read GetAndroidSDKPath write SetAndroidSDKPath;
+    property AndroidSDKVersion: string read GetAndroidSDKVersion write SetAndroidSDKVersion;
 
     // shortcut
     property HintKeyword: TShortCut read GetHintKeyword write SetHintKeyword;
@@ -183,6 +189,16 @@ begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, 0);
 end;
 
+procedure TSmaliIdeConfig.SetAndroidSDKPath(AValue: string);
+begin
+  FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetAndroidSDKVersion(AValue: string);
+begin
+  FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, AValue);
+end;
+
 procedure TSmaliIdeConfig.SetCloseAllOtherPages(AValue: TShortCut);
 begin
   FIni.WriteInteger(SEC_CONFIG, KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT, AValue);
@@ -216,6 +232,16 @@ end;
 function TSmaliIdeConfig.GetCloseAllOtherPages: TShortCut;
 begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT, 0);
+end;
+
+function TSmaliIdeConfig.GetAndroidSDKPath: string;
+begin
+  Result := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, '');
+end;
+
+function TSmaliIdeConfig.GetAndroidSDKVersion: string;
+begin
+  Result := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, '');
 end;
 
 function TSmaliIdeConfig.GetCloseAllPages: TShortCut;

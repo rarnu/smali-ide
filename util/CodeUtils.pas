@@ -5,7 +5,7 @@ unit CodeUtils;
 interface
 
 uses
-  Classes, SysUtils, ComCtrls, lockbox, Dialogs, smaliCodeView, textCodeView, CommandUtils, strutils;
+  Classes, SysUtils, ComCtrls, lockbox, Dialogs, codeViewIntf, CommandUtils, strutils;
 
 type
 
@@ -56,10 +56,12 @@ procedure DecompilePackage(AAPkPath: string; AOutputPath: string; AIsNoRes: Bool
 procedure CompilePackage(AProjectPath: string; callback: TOnCommandOutput; complete: TOnCommandComplete);
 procedure InstallFramework(AFrameworkPath: string; callback: TOnCommandOutput; complete: TOnCommandComplete);
 
+function FindFileInAndroidSDK(APath: string): string;
+
 implementation
 
 uses
-  EncryptUtils, baseData;
+  EncryptUtils, baseData,smaliCodeView, textCodeView, config;
 
 procedure TBuildClassIndexThread.SendSyncCallback;
 begin
@@ -527,6 +529,23 @@ begin
     OnCommandComplete:= complete;
     Start;
   end;
+end;
+
+function FindFileInAndroidSDK(APath: string): string;
+var
+  p: string;
+begin
+  // find file in android sdk
+  p := GlobalConfig.AndroidSDKPath;
+  if (not p.EndsWith(SPLIT)) then p += SPLIT;
+  p += 'sources';
+  p += SPLIT;
+  p += GlobalConfig.AndroidSDKVersion;
+  p += SPLIT;
+  p += APath;
+  p += '.java';
+  Result := p;
+  if (not FileExists(p)) then Result := '';
 end;
 
 { TBuildClassIndexThread }

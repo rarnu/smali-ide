@@ -85,6 +85,8 @@ const
   SEC_CONFIG = 'config';
   KEY_JAVA_BINARY_PATH = 'java_binary_path';
   KEY_CURL_BINARY_PATH = 'curl_binary_path';
+  KEY_ANDROID_SDK_PATH = 'android_sdk_path';
+  KEY_ANDROID_SDK_VERSION = 'android_sdk_version';
   KEY_HINT_KEYWORD_SHORTCUT = 'hint_keyword_shortcut';
   KEY_HINT_CLASSMETHOD_SHORTCUT = 'hint_classmethod_shortcut';
   KEY_HINT_TEMPLATE_SHORTCUT = 'hint_template_shortcut';

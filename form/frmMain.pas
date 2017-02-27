@@ -196,7 +196,7 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData;
+  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView;
 
 { TFormMain }
 
@@ -375,6 +375,7 @@ var
   filePath: string;
   openPath: string;
   page: TSmaliCodeView;
+  javaPage: TSDKJavaCodeView;
   idx: Integer;
   ret: Boolean;
   smaliIdx: Integer = 1;
@@ -412,7 +413,22 @@ begin
       pgCode.TabIndex:= idx;
     end;
   end else begin
-    if (typ = 0) then MessageDlg('Hint', Format('Class "%s" is not included in the project.', [path]), mtInformation, [mbOK], 0);
+    openPath:= CodeUtils.FindFileInAndroidSDK(path);
+    if (FileExists(openPath)) then begin
+      typ := 3; // avoid find method
+      idx := IsPageExists(openPath);
+      if (idx = -1) then begin
+        javaPage:= TSDKJavaCodeView.Create(pgCode);
+        javaPage.Parent := pgCode;
+        javaPage.FileName:= openPath;
+        javaPage.SetCodeTheme(GlobalConfig.CodeTheme);
+        pgCode.TabIndex:= pgCode.PageCount - 1;
+      end else begin
+        pgCode.TabIndex:= idx;
+      end;
+    end else begin
+      if (typ = 0) then MessageDlg('Hint', Format('Class "%s" is not included in the project.', [path]), mtInformation, [mbOK], 0);
+    end;
   end;
   if (typ = 1) then begin
     ret := TSmaliCodeView(pgCode.ActivePage).FindMethodAndJump(method);

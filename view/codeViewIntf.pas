@@ -9,6 +9,9 @@ uses
 
 type
 
+  TCharSet = set of Char;
+  TOnCodeJump = procedure (sender: TObject; path: string; method: string; typ: Integer) of object;
+
   { ICodeViewIntf }
 
   ICodeViewIntf = interface

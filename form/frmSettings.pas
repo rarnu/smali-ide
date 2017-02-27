@@ -18,6 +18,7 @@ type
   TFormSettings = class(TFormBase)
     btnChooseJava: TButton;
     btnChooseCurl: TButton;
+    btnChooseSDKPath: TButton;
     btnCodeEditorClassMethodCompletion: TButton;
     btnCodeEditorJumpClassMethod: TButton;
     btnHelpSettings: TButton;
@@ -41,8 +42,10 @@ type
     btnAddFileType: TButton;
     btnAddTemplate: TButton;
     btnDeleteTemplate: TButton;
+    cbAndroidVersion: TComboBox;
     edtJavaPath: TEdit;
     edtCurlPath: TEdit;
+    edtAndroidSDKPath: TEdit;
     gbJadx: TGroupBox;
     gbCodeEditor: TGroupBox;
     gbApktool: TGroupBox;
@@ -50,8 +53,11 @@ type
     gbJava: TGroupBox;
     gbCurl: TGroupBox;
     gbCodeTree: TGroupBox;
+    gbAndroidSDK: TGroupBox;
     gbView: TGroupBox;
     gbPackage: TGroupBox;
+    lblChooseSDKPath: TLabel;
+    lblChooseAndroidVersion: TLabel;
     lblJadxStatus: TLabel;
     lblJadxlVersion: TLabel;
     lblApktoolVersionValue: TLabel;
@@ -92,6 +98,8 @@ type
     pnlJadxVersion: TPanel;
     pnlApktoolDefault: TPanel;
     pnlJadxDefault: TPanel;
+    pnlAndroidSDKPath: TPanel;
+    pnlAndroidVersion: TPanel;
     pnlTemplateOperation: TPanel;
     pnlTemplateList: TPanel;
     pnlFileTypeBtn: TPanel;
@@ -140,9 +148,11 @@ type
     procedure btnAddTemplateClick(Sender: TObject);
     procedure btnChooseCurlClick(Sender: TObject);
     procedure btnChooseJavaClick(Sender: TObject);
+    procedure btnChooseSDKPathClick(Sender: TObject);
     procedure btnDeleteTemplateClick(Sender: TObject);
     procedure btnViewClassIndexClick(Sender: TObject);
     procedure btnAddFileTypeClick(Sender: TObject);
+    procedure cbAndroidVersionChange(Sender: TObject);
     procedure lstStylesClick(Sender: TObject);
     procedure lstTemplateClick(Sender: TObject);
     procedure synTemplateChange(Sender: TObject);
@@ -179,6 +189,7 @@ type
     procedure jadxVersionComplete(Sender: TObject; ACmdType: TCommandType;
       AParam: array of string);
     procedure LoadShortcut();
+    procedure LoadAndroidSDKVersions();
     procedure LoadStyles();
     procedure LoadApktoolVersion();
     procedure LoadJadxVersion();
@@ -216,6 +227,21 @@ begin
     Free;
   end;
   GlobalConfig.JavaBinaryPath:= edtJavaPath.Text;
+end;
+
+procedure TFormSettings.btnChooseSDKPathClick(Sender: TObject);
+begin
+  // choose sdk path
+  with TSelectDirectoryDialog.Create(nil) do begin
+    if Execute then begin
+      edtAndroidSDKPath.Text:= FileName + SPLIT;
+      GlobalConfig.AndroidSDKPath:= edtAndroidSDKPath.Text;
+      LoadAndroidSDKVersions();
+      cbAndroidVersion.ItemIndex:= 0;
+      GlobalConfig.AndroidSDKVersion:= cbAndroidVersion.Text;
+    end;
+    Free;
+  end;
 end;
 
 procedure TFormSettings.btnDeleteTemplateClick(Sender: TObject);
@@ -269,6 +295,12 @@ begin
   view.OnFileTypeDelete:=@filetypeDeleteClick;
   view.OnFileTypeSelect:=@filetypeSelectClick;
   GlobalConfig.AddFileType(tp, '');
+end;
+
+procedure TFormSettings.cbAndroidVersionChange(Sender: TObject);
+begin
+  // choose android version
+  GlobalConfig.AndroidSDKVersion:= cbAndroidVersion.Text;
 end;
 
 function IfThen(b: Boolean; trueValue: TFontStyles; falseValue: TFontStyles): TFontStyles;
@@ -581,6 +613,27 @@ begin
 
 end;
 
+procedure TFormSettings.LoadAndroidSDKVersions;
+var
+  p: string;
+  src: TSearchRec;
+begin
+  cbAndroidVersion.Items.Clear;
+  // load android sdk versions
+  p := GlobalConfig.AndroidSDKPath;
+  if (not p.EndsWith(SPLIT)) then p += SPLIT;
+  p += 'sources' + SPLIT;
+  if (FindFirst(p + '*', faAnyFile, src) = 0) then begin
+    repeat
+      if (src.Name = '.') or (src.Name = '..') then Continue;
+      if (DirectoryExists(p + src.Name)) then begin
+        cbAndroidVersion.Items.Add(src.Name);
+      end;
+    until FindNext(src) <> 0;
+    FindClose(src);
+  end;
+end;
+
 procedure TFormSettings.LoadStyles;
 var
   src: TSearchRec;
@@ -845,10 +898,14 @@ begin
   gbCurl.Visible:= False;
   {$ENDIF}
 
+  edtAndroidSDKPath.Text:= GlobalConfig.AndroidSDKPath;
+  LoadAndroidSDKVersions();
+  cbAndroidVersion.ItemIndex:= cbAndroidVersion.Items.IndexOf(GlobalConfig.AndroidSDKVersion);
+  if (cbAndroidVersion.Items.Count > 0) and (cbAndroidVersion.ItemIndex = -1) then cbAndroidVersion.ItemIndex:= 0;
+
   LoadShortcut();
 
   // apktool
-
   p := ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar';
   if (FileExists(p)) then begin
     lblApktoolStatus.Caption:= '(exists)';

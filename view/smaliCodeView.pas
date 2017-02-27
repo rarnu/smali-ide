@@ -9,10 +9,6 @@ uses
   SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf, IniFiles;
 
 type
-
-  TCharSet = set of Char;
-  TOnCodeJump = procedure (sender: TObject; path: string; method: string; typ: Integer) of object;
-
   { TSmaliCodeView }
 
   TSmaliCodeView = class(TTabSheet, ICodeViewIntf)

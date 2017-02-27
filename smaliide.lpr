@@ -4,7 +4,7 @@ program smaliide;
 
 uses
   {$IFNDEF WINDOWS} cthreads, {$ENDIF}
-  Interfaces, Forms, frmMain, config, WindowsUtils;
+  Interfaces, Forms, frmMain, config, WindowsUtils, sdkCodeView;
 
 {$R *.res}
 
