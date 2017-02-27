@@ -14,6 +14,9 @@ type
   TSmaliCodeView = class(TTabSheet, ICodeViewIntf)
   private
     FEditor: TSynEdit;
+    FEditorSSmali: TSynEdit;
+    FSplitSsmali: TSplitter;
+
     FHighlighter: TSynSmaliSyn;
     FCompleteSmali: TSynCompletion;
     FCompleteClass: TSynCompletion;
@@ -109,6 +112,7 @@ type
     function FindMethodAndJump(methodSig: string): Boolean;
     procedure SetCodeTheme(AThemeFile: string);
     procedure LoadShortcut();
+    procedure ShowSSmali(AShow: Boolean);
   published
     property ProjectPath: string read FProjectPath write FProjectPath;
     property FileName: string read GetFileName write SetFileName;
@@ -126,11 +130,17 @@ uses
 { TSmaliCodeView }
 
 procedure TSmaliCodeView.SetFileName(AValue: string);
+var
+  p: string;
 begin
   FFileName:=AValue;
   FTitle:= ExtractFileName(FFileName);
   Caption:= FTitle;
   FEditor.Lines.LoadFromFile(FFileName);
+  // load ssmali
+  p := CodeUtils.FullPathToClassPath(FFileName);
+  p := CodeUtils.FindSsmaliFile(ProjectPath, p);
+  if (FileExists(p)) then FEditorSSmali.Lines.LoadFromFile(p);
 end;
 
 function TSmaliCodeView.FindSmaliString(aset: TCharSet): string;
@@ -508,6 +518,40 @@ begin
     Highlighter := FHighlighter;
   end;
 
+  FEditorSSmali:= TSynEdit.Create(Self);
+  with FEditorSSmali do begin
+    Parent := Self;
+    Align:= alRight;
+    Color:= clWhite;
+    Gutter.Color:= clWhite;
+    for i := 0 to Gutter.Parts.Count - 1 do begin
+      part := Gutter.Parts.Part[i];
+      if (part is TSynGutterLineNumber) then begin
+        TSynGutterLineNumber(part).MarkupInfo.Background:= clWhite;
+      end;
+      if (part is TSynGutterSeparator) then begin
+        TSynGutterSeparator(part).MarkupInfo.Foreground:= clSilver;
+      end;
+      if (part is TSynGutterCodeFolding) then begin
+        TSynGutterCodeFolding(part).MarkupInfo.Foreground:= clSilver;
+      end;
+    end;
+    Options:= Options + [eoKeepCaretX] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
+    RightEdgeColor:= clWhite;
+    RightGutter.Visible:= False;
+    ScrollBars:= ssAutoBoth;
+    TabWidth:= 4;
+    ReadOnly:= True;
+    // TODO: ssmali highlighter
+  end;
+
+  FSplitSsmali:= TSplitter.Create(Self);
+  with FSplitSsmali do begin
+    Parent := Self;
+    Align:= alRight;
+    Left:= FEditorSSmali.Left - Width;
+  end;
+
   FMenu := TPopupMenu.Create(Self);
   FMenu.Parent := Self;
   FEditor.PopupMenu := FMenu;
@@ -737,6 +781,7 @@ begin
   FReplaceFindBtnClose.OnClick:= @btnClicked;
 
   LoadShortcut();
+  ShowSSmali(GlobalConfig.ShowSSmali);
 end;
 
 destructor TSmaliCodeView.Destroy;
@@ -918,6 +963,12 @@ begin
   FCompleteSmali.ShortCut:= GlobalConfig.HintKeyword;
   FCompleteClass.ShortCut:= GlobalConfig.HintClassMethod;
   FCompleteTemplate.ShortCut:= GlobalConfig.HintTemplate;
+end;
+
+procedure TSmaliCodeView.ShowSSmali(AShow: Boolean);
+begin
+  FEditorSSmali.Visible:= Ashow;
+  FSplitSsmali.Visible:= AShow;
 end;
 
 end.

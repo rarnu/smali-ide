@@ -21,6 +21,7 @@ type
     lblSearchState: TLabel;
     lblSearchResult: TLabel;
     lstSearchResult: TListBox;
+    miSSmali: TMenuItem;
     mmConsole: TMemo;
     miCloseAllOtherPages: TMenuItem;
     miCloseAllPages: TMenuItem;
@@ -144,6 +145,7 @@ type
     procedure miSearchResultClick(Sender: TObject);
     procedure miSelectAllClick(Sender: TObject);
     procedure miSettingsClick(Sender: TObject);
+    procedure miSSmaliClick(Sender: TObject);
     procedure miUndoClick(Sender: TObject);
     procedure miUpdateClick(Sender: TObject);
     procedure pgCodeCloseTabClicked(Sender: TObject);
@@ -326,6 +328,7 @@ begin
   miDeleteFile.ShortCut:= GlobalConfig.DeleteFile;
   miClassIndex.ShortCut:= GlobalConfig.ShowClassIndex;
   miSearchResult.ShortCut:= GlobalConfig.ShowSearchResult;
+  miSSmali.ShortCut:= GlobalConfig.ShowSsmaliShortcut;
   miConsole.ShortCut:= GlobalConfig.ShowConsole;
   miCloseAllPages.ShortCut:= GlobalConfig.CloseAllPages;
   miCloseAllOtherPages.ShortCut:= GlobalConfig.CloseAllOtherPages;
@@ -952,6 +955,15 @@ begin
   loadShortcut();
 end;
 
+procedure TFormMain.miSSmaliClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  miSSmali.Checked:= not miSSmali.Checked;
+  GlobalConfig.ShowSSmali:= miSSmali.Checked;
+  for i := 0 to pgCode.PageCount - 1 do if (pgCode.Pages[i] is TSmaliCodeView) then TSmaliCodeView(pgCode.Pages[i]).ShowSSmali(miSSmali.Checked);
+end;
+
 procedure TFormMain.miUndoClick(Sender: TObject);
 begin
   if (pgCode.ActivePage is ICodeViewIntf) then begin
@@ -1044,6 +1056,7 @@ end;
 procedure TFormMain.InitLogic;
 begin
   loadShortcut();
+  miSSmali.Checked:= GlobalConfig.ShowSSmali;
 end;
 
 end.

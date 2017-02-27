@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, process, Dialogs;
 
 type
-  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctJadx, ctJadxDecompile, ctCommand);
+  TCommandType = (ctDecompile, ctCompile, ctInstallFramework, ctVersion, ctJadx, ctJadxDecompile, ctSsmaliDecompile, ctCommand);
 
   TOnCommandOutput = procedure(Sender: TObject; ACmdType: TCommandType; AOutput: string) of object;
   TOnCommandComplete = procedure (Sender: TObject; ACmdType: TCommandType; AParam: array of string) of object;
@@ -155,6 +155,17 @@ begin
       AProcess.Parameters.Add('/c "' + Format('%sbin%sjadx.bat --show-bad-code -r -d %s %s', [ExtractFilePath(ParamStr(0)), SPLIT, FParam[1], FParam[0]]) + '"');
       {$ENDIF}
     end;
+  ctSsmaliDecompile:
+    begin
+      // java -jar ssmali.jar d class.dex -o ./output
+      AProcess.Executable:= GlobalConfig.JavaBinaryPath;
+      AProcess.Parameters.Add('-jar');
+      AProcess.Parameters.Add(ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'ssmali.jar');
+      AProcess.Parameters.Add('d');
+      AProcess.Parameters.Add(FParam[0]);
+      AProcess.Parameters.Add('-o');
+      AProcess.Parameters.Add(FParam[1]);
+    end;
   ctCommand:
     begin
       // common command
@@ -209,7 +220,9 @@ begin
   // jadx
   //     ['']
   // jadxDecompile
-  //     APKPath, OutputPath,
+  //     APKPath, OutputPath
+  // ssmaliDecompile
+  //     APKPath, OutputPath
   // common:
   //     executable, param1, param2, ...
 

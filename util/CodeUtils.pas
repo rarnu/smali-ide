@@ -35,6 +35,7 @@ type
     property OnBuildIndexCompleteCallback: TOnBuildIndexCompleteCallback read FOnBuildIndexCompleteCallback write FOnBuildIndexCompleteCallback;
   end;
 
+function FullPathToClassPath(path: string): string;
 procedure ThreadBuildClassIndex(projectPath: string; callback: TOnBuildIndexCallback; complete: TOnBuildIndexCompleteCallback);
 procedure BuildMethodIndex(projectPath: string; classPath: string; root: TTreeNodes; parent: TTreeNode);
 procedure BuildMethodIndex(projectPath: string; classPath: string);
@@ -57,6 +58,7 @@ procedure CompilePackage(AProjectPath: string; callback: TOnCommandOutput; compl
 procedure InstallFramework(AFrameworkPath: string; callback: TOnCommandOutput; complete: TOnCommandComplete);
 
 function FindFileInAndroidSDK(APath: string): string;
+function FindSsmaliFile(AProjectPath: string; classPath: string): string;
 
 implementation
 
@@ -507,6 +509,12 @@ begin
     OnCommandComplete:= complete;
     Start;
   end;
+  p := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(AOutputPath) + SPLIT + 'ssmali' + SPLIT;
+  with TCommandThread.Create(ctSsmaliDecompile, [AAPkPath, p]) do begin
+    OnCommandOutput:= callback;
+    OnCommandComplete:= complete;
+    Start;
+  end;
 end;
 
 procedure CompilePackage(AProjectPath: string; callback: TOnCommandOutput;
@@ -546,6 +554,17 @@ begin
   p += '.java';
   Result := p;
   if (not FileExists(p)) then Result := '';
+end;
+
+function FindSsmaliFile(AProjectPath: string; classPath: string): string;
+var
+  p: string;
+begin
+  Result := '';
+  p := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(AProjectPath) + SPLIT + 'ssmali' + SPLIT;
+  p += classPath.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]);
+  if (FileExists(p + '.smali')) then Result := p + '.smali'
+  else if (FileExists(p + '.1.smali')) then Result := p + '.1.smali';
 end;
 
 { TBuildClassIndexThread }

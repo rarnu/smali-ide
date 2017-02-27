@@ -101,12 +101,14 @@ const
   KEY_SHOW_CLASSINDEX_SHORTCUT = 'show_classindex_shortcut';
   KEY_SHOW_SEARCHRESULT_SHORTCUT = 'show_searchresult_shortcut';
   KEY_SHOW_CONSOLE_SHORTCUT = 'show_console_shortcut';
+  KEY_SHOW_SSMALI_SHORTCUT = 'show_ssmali_shortcut';
   KEY_CLOSE_ALL_PAGES_SHORTCUT = 'close_all_pages_shortcut';
   KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT = 'close_all_other_pages_shortcut';
   KEY_DECOMPILE_SHORTCUT = 'decompile_shortcut';
   KEY_COMPILE_SHORTCUT = 'compile_shortcut';
   KEY_INSTALL_FRAMEWORK_SHORTCUT = 'install_framework_shortcut';
   KEY_SETTINGS_SHORTCUT = 'settings_shortcut';
+  KEY_SHOW_SSMALI = 'show_ssmali';
 
   KEY_SHORTCUTS: array[0..19] of string = (
     KEY_HINT_KEYWORD_SHORTCUT,

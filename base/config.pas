@@ -42,6 +42,8 @@ type
     function GetShowClassIndex: TShortCut;
     function GetShowConsole: TShortCut;
     function GetShowSearchResult: TShortCut;
+    function GetShowSSmali: Boolean;
+    function GetShowSsmaliShortcut: TShortCut;
     procedure SetAndroidSDKPath(AValue: string);
     procedure SetAndroidSDKVersion(AValue: string);
     procedure SetCloseAllOtherPages(AValue: TShortCut);
@@ -67,6 +69,8 @@ type
     procedure SetShowClassIndex(AValue: TShortCut);
     procedure SetShowConsole(AValue: TShortCut);
     procedure SetShowSearchResult(AValue: TShortCut);
+    procedure SetShowSSmali(AValue: Boolean);
+    procedure SetShowSsmaliShortcut(AValue: TShortCut);
   public
     constructor Create;
     destructor Destroy; override;
@@ -102,6 +106,7 @@ type
     property ShowClassIndex: TShortCut read GetShowClassIndex write SetShowClassIndex;
     property ShowSearchResult: TShortCut read GetShowSearchResult write SetShowSearchResult;
     property ShowConsole: TShortCut read GetShowConsole write SetShowConsole;
+    property ShowSsmaliShortcut: TShortCut read GetShowSsmaliShortcut write SetShowSsmaliShortcut;
     property CloseAllPages: TShortCut read GetCloseAllPages write SetCloseAllPages;
     property CloseAllOtherPages: TShortCut read GetCloseAllOtherPages write SetCloseAllOtherPages;
 
@@ -116,6 +121,9 @@ type
 
     // file types
     property FileTypes: TStringList read GetFileTypes;
+
+    // visibility
+    property ShowSSmali: Boolean read GetShowSSmali write SetShowSSmali;
 
   end;
 
@@ -187,6 +195,16 @@ end;
 function TSmaliIdeConfig.GetShowSearchResult: TShortCut;
 begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, 0);
+end;
+
+function TSmaliIdeConfig.GetShowSSmali: Boolean;
+begin
+  Result := FIni.ReadBool(SEC_CONFIG, KEY_SHOW_SSMALI, False);
+end;
+
+function TSmaliIdeConfig.GetShowSsmaliShortcut: TShortCut;
+begin
+  Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, 0);
 end;
 
 procedure TSmaliIdeConfig.SetAndroidSDKPath(AValue: string);
@@ -395,6 +413,16 @@ end;
 procedure TSmaliIdeConfig.SetShowSearchResult(AValue: TShortCut);
 begin
   FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetShowSSmali(AValue: Boolean);
+begin
+  FIni.WriteBool(SEC_CONFIG, KEY_SHOW_SSMALI, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetShowSsmaliShortcut(AValue: TShortCut);
+begin
+  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, AValue);
 end;
 
 constructor TSmaliIdeConfig.Create;

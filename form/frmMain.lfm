@@ -448,6 +448,11 @@ inherited FormMain: TFormMain
         ShowAlwaysCheckable = True
         OnClick = miSearchResultClick
       end
+      object miSSmali: TMenuItem
+        Caption = 'Ssmali'
+        ShowAlwaysCheckable = True
+        OnClick = miSSmaliClick
+      end
       object mm10: TMenuItem
         Caption = '-'
       end

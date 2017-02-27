@@ -470,22 +470,22 @@ inherited FormSettings: TFormSettings
         Height = 588
         Top = 0
         Width = 688
-        HorzScrollBar.Page = 240
+        HorzScrollBar.Page = 236
         VertScrollBar.Page = 588
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 588
-        ClientWidth = 685
+        ClientWidth = 672
         TabOrder = 0
         object gbView: TGroupBox
           Left = 8
-          Height = 224
+          Height = 264
           Top = 8
           Width = 656
           Align = alTop
           BorderSpacing.Around = 8
           Caption = 'View'
-          ClientHeight = 205
+          ClientHeight = 245
           ClientWidth = 652
           TabOrder = 0
           object pnlViewClassIndex: TPanel
@@ -593,7 +593,7 @@ inherited FormSettings: TFormSettings
           object pnlViewCloseAllPages: TPanel
             Left = 0
             Height = 40
-            Top = 120
+            Top = 160
             Width = 652
             Align = alTop
             BevelOuter = bvNone
@@ -627,7 +627,7 @@ inherited FormSettings: TFormSettings
           object pnlViewCloseAllOtherPages: TPanel
             Left = 0
             Height = 40
-            Top = 160
+            Top = 200
             Width = 652
             Align = alTop
             BevelOuter = bvNone
@@ -658,11 +658,45 @@ inherited FormSettings: TFormSettings
               TabOrder = 0
             end
           end
+          object pnlViewSsmali: TPanel
+            Left = 0
+            Height = 40
+            Top = 120
+            Width = 652
+            Align = alTop
+            BevelOuter = bvNone
+            ClientHeight = 40
+            ClientWidth = 652
+            TabOrder = 5
+            object lblViewSsmali: TLabel
+              Left = 8
+              Height = 24
+              Top = 8
+              Width = 93
+              Align = alLeft
+              BorderSpacing.Around = 8
+              Caption = 'Switch Ssmali'
+              Layout = tlCenter
+              ParentColor = False
+            end
+            object btnViewSsmali: TButton
+              Left = 444
+              Height = 24
+              Hint = 'show_ssmali_shortcut'
+              Top = 8
+              Width = 200
+              Align = alRight
+              BorderSpacing.Around = 8
+              Caption = '(none)'
+              OnClick = btnViewClassIndexClick
+              TabOrder = 0
+            end
+          end
         end
         object gbPackage: TGroupBox
           Left = 8
           Height = 144
-          Top = 240
+          Top = 280
           Width = 656
           Align = alTop
           BorderSpacing.Around = 8
@@ -776,7 +810,7 @@ inherited FormSettings: TFormSettings
         object gbCodeTree: TGroupBox
           Left = 8
           Height = 264
-          Top = 392
+          Top = 432
           Width = 656
           Align = alTop
           BorderSpacing.Around = 8
@@ -992,7 +1026,7 @@ inherited FormSettings: TFormSettings
         object gbCodeEditor: TGroupBox
           Left = 8
           Height = 224
-          Top = 664
+          Top = 704
           Width = 656
           Align = alTop
           BorderSpacing.Around = 8
@@ -1174,7 +1208,7 @@ inherited FormSettings: TFormSettings
         object gbHelp: TGroupBox
           Left = 8
           Height = 64
-          Top = 896
+          Top = 936
           Width = 656
           Align = alTop
           BorderSpacing.Around = 8

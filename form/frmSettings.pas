@@ -34,6 +34,7 @@ type
     btnViewClassIndex: TButton;
     btnPackageDecompile: TButton;
     btnPackageInstallFramework: TButton;
+    btnViewSsmali: TButton;
     btnViewSearchResult: TButton;
     btnViewConsole: TButton;
     btnViewCloseAllPages: TButton;
@@ -87,6 +88,7 @@ type
     lblViewClassIndex: TLabel;
     lblPackageDecompile: TLabel;
     lblPackageInstallFramework: TLabel;
+    lblViewSsmali: TLabel;
     lblViewSearchResult: TLabel;
     lblViewConsole: TLabel;
     lblViewCloseAllPages: TLabel;
@@ -124,6 +126,7 @@ type
     pnlViewClassIndex: TPanel;
     pnlPackageDecompile: TPanel;
     pnlPackageInstallFramework: TPanel;
+    pnlViewSsmali: TPanel;
     pnlViewSearchResult: TPanel;
     pnlViewConsole: TPanel;
     pnlViewCloseAllPages: TPanel;
@@ -576,6 +579,8 @@ begin
   if (string(btnViewCloseAllPages.Caption).Trim = '') then btnViewCloseAllPages.Caption:= '(none)';
   btnViewCloseAllOtherPages.Caption:= ShortCutToText(GlobalConfig.CloseAllOtherPages);
   if (string(btnViewCloseAllOtherPages.Caption).Trim = '') then btnViewCloseAllOtherPages.Caption:= '(none)';
+  btnViewSsmali.Caption:= ShortCutToText(GlobalConfig.ShowSsmaliShortcut);
+  if (string(btnViewSsmali.Caption).Trim = '') then btnViewSsmali.Caption:= '(none)';
 
   btnPackageDecompile.Caption:= ShortCutToText(GlobalConfig.Decompile);
   if (string(btnPackageDecompile.Caption).Trim = '') then btnPackageDecompile.Caption:= '(none)';
