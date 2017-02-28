@@ -542,7 +542,10 @@ begin
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
     ReadOnly:= True;
+    Width:= 300;
     // TODO: ssmali highlighter
+
+
   end;
 
   FSplitSsmali:= TSplitter.Create(Self);
