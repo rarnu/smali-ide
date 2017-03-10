@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf, IniFiles;
+  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf, IniFiles, synhighlighterdodolasmali;
 
 type
   { TSmaliCodeView }
@@ -18,6 +18,7 @@ type
     FSplitSsmali: TSplitter;
 
     FHighlighter: TSynSmaliSyn;
+    FhighlighterSSmali: TSynDodolaSmaliSyn;
     FCompleteSmali: TSynCompletion;
     FCompleteClass: TSynCompletion;
     FCompleteTemplate: TSynCompletion;
@@ -443,6 +444,7 @@ begin
   inherited Create(TheOwner);
   FEditor := TSynEdit.Create(Self);
   FHighlighter := TSynSmaliSyn.Create(Self);
+  FhighlighterSSmali := TSynDodolaSmaliSyn.Create(Self);
   FCompleteSmali:= TSynCompletion.Create(Self);
   FCompleteClass := TSynCompletion.Create(Self);
   FCompleteTemplate:= TSynCompletion.Create(Self);
@@ -543,9 +545,7 @@ begin
     TabWidth:= 4;
     ReadOnly:= True;
     Width:= 300;
-    // TODO: ssmali highlighter
-
-
+    Highlighter := FhighlighterSSmali;
   end;
 
   FSplitSsmali:= TSplitter.Create(Self);
@@ -933,7 +933,7 @@ begin
   path := ExtractFilePath(ParamStr(0)) + 'style' + SPLIT + AThemeFile;
   with TIniFile.Create(path) do begin
     FEditor.Color:= ReadInteger(SEC_SMALI, KEY_BACKGROUND, clWhite);
-    with FHighlighter do begin
+    with FHighlighter, FhighlighterSSmali do begin
       CommentAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_COMMENT_COLOR, clGreen);
       CommentAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_COMMENT_BOLD, 0) <> 0, [fsBold], []);
       IdentifierAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_IDENTIFIER_COLOR, clBlack);
@@ -954,6 +954,7 @@ begin
       VarAttri.Foreground:= ReadInteger(SEC_SMALI, KEY_VAR_COLOR, clBlack);
       VarAttri.Style:= IfThen(ReadInteger(SEC_SMALI, KEY_VAR_BOLD, 0) <> 0, [fsBold], []);
     end;
+
     Free;
   end;
 end;
