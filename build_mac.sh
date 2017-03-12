@@ -9,6 +9,7 @@ ARCH=i386-darwin
 # clean
 rm -fr smaliide.app
 
+mkdir -p build/i386-darwin
 # compile
 ${FPC} -MObjFPC -Scghi -O1 -gw -gl -l -vewnhibq  \
 	-k-framework -kCarbon -k-framework -kOpenGL \

@@ -197,7 +197,7 @@ implementation
 {$R *.lfm}
 
 uses
-  smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
+  smaliCodeView, TextUtils, CodeUtils, projectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
   frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView;
 
 { TFormMain }
