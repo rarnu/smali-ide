@@ -33,6 +33,8 @@ implementation
 
 procedure TFormBase.FormCreate(Sender: TObject);
 begin
+  AlphaBlend:= True;
+  AlphaBlendValue:= 216;
   InitComponents;
   InitEvents;
   InitLogic;

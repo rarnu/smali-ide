@@ -26,7 +26,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="26">
+    <Units Count="25">
       <Unit0>
         <Filename Value="smaliide.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -65,8 +65,9 @@
         <IsPartOfProject Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="util/ProjectUtils.pas"/>
+        <Filename Value="util/projectutils.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="projectUtils"/>
       </Unit7>
       <Unit8>
         <Filename Value="util/EncryptUtils.pas"/>
@@ -151,10 +152,6 @@
         <Filename Value="util/WindowsUtils.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit24>
-      <Unit25>
-        <Filename Value="view/sdkCodeView.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit25>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
