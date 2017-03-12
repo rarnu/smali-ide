@@ -43,7 +43,11 @@ type
     btnAddFileType: TButton;
     btnAddTemplate: TButton;
     btnDeleteTemplate: TButton;
+    btnFontName: TButton;
+    btnUIColor: TButton;
     cbAndroidVersion: TComboBox;
+    chkUITrans: TCheckBox;
+    chkFontAntiAliasing: TCheckBox;
     edtJavaPath: TEdit;
     edtCurlPath: TEdit;
     edtAndroidSDKPath: TEdit;
@@ -57,6 +61,13 @@ type
     gbAndroidSDK: TGroupBox;
     gbView: TGroupBox;
     gbPackage: TGroupBox;
+    gbFont: TGroupBox;
+    gbUI: TGroupBox;
+    lblUIColor: TLabel;
+    lblFontInc: TLabel;
+    lblFontSize: TLabel;
+    lblFontName: TLabel;
+    Label2: TLabel;
     lblChooseSDKPath: TLabel;
     lblChooseAndroidVersion: TLabel;
     lblJadxStatus: TLabel;
@@ -96,6 +107,11 @@ type
     lblPackageCompile: TLabel;
     lstTemplate: TListBox;
     lstStyles: TListBox;
+    pnlColorValue: TPanel;
+    pnlIColor: TPanel;
+    pnlTrans: TPanel;
+    pnlFontAntiAlias: TPanel;
+    pnlFont: TPanel;
     pnlApktoolVersion: TPanel;
     pnlJadxVersion: TPanel;
     pnlApktoolDefault: TPanel;
@@ -136,6 +152,8 @@ type
     sbxFileType: TScrollBox;
     splTemplateList: TSplitter;
     splStyle: TSplitter;
+    trackTrans: TTrackBar;
+    tsStyle: TTabSheet;
     tsJava: TTabSheet;
     tsSmali: TTabSheet;
     tsXML: TTabSheet;

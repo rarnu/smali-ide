@@ -1253,6 +1253,205 @@ inherited FormSettings: TFormSettings
         end
       end
     end
+    object tsStyle: TTabSheet
+      Caption = 'Style'
+      ClientHeight = 588
+      ClientWidth = 688
+      object gbFont: TGroupBox
+        Left = 8
+        Height = 113
+        Top = 8
+        Width = 672
+        Align = alTop
+        BorderSpacing.Around = 8
+        Caption = 'Font'
+        ClientHeight = 94
+        ClientWidth = 668
+        TabOrder = 0
+        object pnlFont: TPanel
+          Left = 0
+          Height = 44
+          Top = 0
+          Width = 668
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 0
+          object btnFontName: TButton
+            Left = 632
+            Height = 28
+            Top = 8
+            Width = 28
+            Align = alRight
+            BorderSpacing.Around = 8
+            Caption = '...'
+            TabOrder = 0
+          end
+          object lblFontName: TLabel
+            Left = 8
+            Height = 28
+            Top = 8
+            Width = 40
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = 'Name'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object Label2: TLabel
+            Left = 56
+            Height = 28
+            Top = 8
+            Width = 52
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = 'Default'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblFontSize: TLabel
+            Left = 132
+            Height = 28
+            Top = 8
+            Width = 27
+            Align = alLeft
+            BorderSpacing.Left = 16
+            BorderSpacing.Around = 8
+            Caption = 'Size'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object lblFontInc: TLabel
+            Left = 167
+            Height = 28
+            Top = 8
+            Width = 16
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = '10'
+            Layout = tlCenter
+            ParentColor = False
+          end
+        end
+        object pnlFontAntiAlias: TPanel
+          Left = 0
+          Height = 44
+          Top = 44
+          Width = 668
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 1
+          object chkFontAntiAliasing: TCheckBox
+            Left = 8
+            Height = 28
+            Top = 8
+            Width = 114
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = 'Anti-Aliasing'
+            Font.Quality = fqAntialiased
+            ParentFont = False
+            TabOrder = 0
+          end
+        end
+      end
+      object gbUI: TGroupBox
+        Left = 8
+        Height = 111
+        Top = 129
+        Width = 672
+        Align = alTop
+        BorderSpacing.Around = 8
+        Caption = 'UI'
+        ClientHeight = 92
+        ClientWidth = 668
+        TabOrder = 1
+        object pnlTrans: TPanel
+          Left = 0
+          Height = 44
+          Top = 0
+          Width = 668
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 0
+          object chkUITrans: TCheckBox
+            Left = 8
+            Height = 28
+            Top = 8
+            Width = 109
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = 'Transparent'
+            TabOrder = 0
+          end
+          object trackTrans: TTrackBar
+            Left = 125
+            Height = 46
+            Top = 0
+            Width = 535
+            Max = 255
+            PageSize = 1
+            Position = 255
+            ScalePos = trRight
+            ShowSelRange = False
+            TickStyle = tsManual
+            Align = alClient
+            BorderSpacing.Left = 8
+            BorderSpacing.Right = 8
+            TabOrder = 1
+          end
+        end
+        object pnlIColor: TPanel
+          Left = 0
+          Height = 44
+          Top = 44
+          Width = 668
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 1
+          object lblUIColor: TLabel
+            Left = 8
+            Height = 28
+            Top = 8
+            Width = 37
+            Align = alLeft
+            BorderSpacing.Around = 8
+            Caption = 'Color'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object pnlColorValue: TPanel
+            Left = 69
+            Height = 28
+            Top = 8
+            Width = 170
+            Align = alLeft
+            BorderSpacing.Left = 16
+            BorderSpacing.Around = 8
+            BevelInner = bvRaised
+            BevelOuter = bvLowered
+            TabOrder = 0
+          end
+          object btnUIColor: TButton
+            Left = 632
+            Height = 28
+            Top = 8
+            Width = 28
+            Align = alRight
+            BorderSpacing.Around = 8
+            Caption = '...'
+            TabOrder = 1
+          end
+        end
+      end
+    end
     object tsHighlight: TTabSheet
       Caption = 'Highlight'
       ClientHeight = 588

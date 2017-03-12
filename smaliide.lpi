@@ -65,7 +65,7 @@
         <IsPartOfProject Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="util/projectutils.pas"/>
+        <Filename Value="util/ProjectUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="projectUtils"/>
       </Unit7>
