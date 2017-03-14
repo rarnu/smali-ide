@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, Controls, ComCtrls, ExtCtrls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType,
-  SynEditTypes, Dialogs, Forms, codeViewIntf, SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript, synhighlighterunixshellscript, IniFiles;
+  SynEditTypes, Dialogs, Forms, codeViewIntf, SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript, synhighlighterunixshellscript, IniFiles,
+  Buttons;
 
 type
   { TTextCodeView }
@@ -42,10 +43,10 @@ type
     FFindTitle1: TLabel;
     FFindEdit: TEdit;
     FFindMatchCase: TCheckBox;
-    FFindBtn: TButton;
-    FFindBtnNext: TButton;
-    FFindBtnPrior: TButton;
-    FFindBtnClose: TButton;
+    FFindBtn: TBitBtn;
+    FFindBtnNext: TBitBtn;
+    FFindBtnPrior: TBitBtn;
+    FFindBtnClose: TBitBtn;
 
     FPnlReplace: TPanel;
     FPnlReplace1: TPanel;
@@ -53,11 +54,11 @@ type
     FReplaceFindTitle: TLabel;
     FReplaceFindEdit: TEdit;
     FReplaceFindMatchCase: TCheckBox;
-    FReplaceFindBtnClose: TButton;
+    FReplaceFindBtnClose: TBitBtn;
     FReplaceTitle: TLabel;
     FReplaceEdit: TEdit;
-    FReplaceBtnReplace: TButton;
-    FReplaceBtnReplaceAll: TButton;
+    FReplaceBtnReplace: TBitBtn;
+    FReplaceBtnReplaceAll: TBitBtn;
     procedure btnClicked(Sender: TObject);
     function GetEditor: TSynEdit;
     function GetFileName: string;
@@ -78,6 +79,7 @@ type
     procedure GotoLine(line: Integer);
     procedure GotoPosition(apos: Integer);
     procedure SetCodeTheme(AThemeFile: string);
+    procedure SetStyleTheme;
     procedure FocusEditor();
     procedure LoadShortcut();
   published
@@ -91,7 +93,7 @@ type
 implementation
 
 uses
-  TextUtils, baseData, config;
+  TextUtils, baseData, config, ThemeUtils;
 
 { TTextCodeView }
 
@@ -192,21 +194,7 @@ begin
     Parent := Self;
     Align:= alClient;
     Color:= clWhite;
-    Gutter.Color:= clWhite;
-    for i := 0 to Gutter.Parts.Count - 1 do begin
-      part := Gutter.Parts.Part[i];
-      if (part is TSynGutterLineNumber) then begin
-        TSynGutterLineNumber(part).MarkupInfo.Background:= clWhite;
-      end;
-      if (part is TSynGutterSeparator) then begin
-        TSynGutterSeparator(part).MarkupInfo.Foreground:= clSilver;
-      end;
-      if (part is TSynGutterCodeFolding) then begin
-        TSynGutterCodeFolding(part).MarkupInfo.Foreground:= clSilver;
-      end;
-    end;
     Options:= Options + [eoKeepCaretX] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
-    RightEdgeColor:= clWhite;
     RightGutter.Visible:= False;
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
@@ -287,7 +275,7 @@ begin
   FFindMatchCase.BorderSpacing.Bottom:=4;
   FFindMatchCase.Caption:= 'Match case';
 
-  FFindBtn:= TButton.Create(FPnlFind);
+  FFindBtn:= TBitBtn.Create(FPnlFind);
   FFindBtn.Parent := FPnlFind;
   FFindBtn.Align:= alLeft;
   FFindBtn.Width:= 60;
@@ -296,7 +284,7 @@ begin
   FFindBtn.BorderSpacing.Bottom:= 4;
   FFindBtn.Caption:= 'Find';
 
-  FFindBtnNext:= TButton.Create(FPnlFind);
+  FFindBtnNext:= TBitBtn.Create(FPnlFind);
   FFindBtnNext.Parent := FPnlFind;
   FFindBtnNext.Align:= alLeft;
   FFindBtnNext.Width:= 60;
@@ -305,7 +293,7 @@ begin
   FFindBtnNext.BorderSpacing.Bottom:= 4;
   FFindBtnNext.Caption:= 'Next';
 
-  FFindBtnPrior:= TButton.Create(FPnlFind);
+  FFindBtnPrior:= TBitBtn.Create(FPnlFind);
   FFindBtnPrior.Parent := FPnlFind;
   FFindBtnPrior.Align:= alLeft;
   FFindBtnPrior.Width:= 60;
@@ -314,7 +302,7 @@ begin
   FFindBtnPrior.BorderSpacing.Bottom:= 4;
   FFindBtnPrior.Caption:= 'Prior';
 
-  FFindBtnClose:= TButton.Create(FPnlFind);
+  FFindBtnClose:= TBitBtn.Create(FPnlFind);
   FFindBtnClose.Parent := FPnlFind;
   FFindBtnClose.Align:= alRight;
   FFindBtnClose.Width:= 32;
@@ -372,7 +360,7 @@ begin
   FReplaceFindMatchCase.BorderSpacing.Bottom:=4;
   FReplaceFindMatchCase.Caption:= 'Match case';
 
-  FReplaceFindBtnClose:= TButton.Create(FPnlReplace1);
+  FReplaceFindBtnClose:= TBitBtn.Create(FPnlReplace1);
   FReplaceFindBtnClose.Parent := FPnlReplace1;
   FReplaceFindBtnClose.Align:= alRight;
   FReplaceFindBtnClose.Width:= 32;
@@ -396,7 +384,7 @@ begin
   FReplaceEdit.BorderSpacing.Top:= 4;
   FReplaceEdit.BorderSpacing.Bottom:= 4;
 
-  FReplaceBtnReplace := TButton.Create(FPnlReplace2);
+  FReplaceBtnReplace := TBitBtn.Create(FPnlReplace2);
   FReplaceBtnReplace.Parent := FPnlReplace2;
   FReplaceBtnReplace.Align:= alLeft;
   FReplaceBtnReplace.Width:= 60;
@@ -405,7 +393,7 @@ begin
   FReplaceBtnReplace.BorderSpacing.Bottom:= 4;
   FReplaceBtnReplace.Caption:= 'Replace';
 
-  FReplaceBtnReplaceAll := TButton.Create(FPnlReplace2);
+  FReplaceBtnReplaceAll := TBitBtn.Create(FPnlReplace2);
   FReplaceBtnReplaceAll.Parent := FPnlReplace2;
   FReplaceBtnReplaceAll.Align:= alLeft;
   FReplaceBtnReplaceAll.Width:= 60;
@@ -648,6 +636,24 @@ begin
     end;
     Free;
   end;
+end;
+
+procedure TTextCodeView.SetStyleTheme;
+begin
+  ThemeUtils.RecolorButton(FFindBtn);
+  ThemeUtils.RecolorButton(FFindBtnNext);
+  ThemeUtils.RecolorButton(FFindBtnPrior);
+  ThemeUtils.RecolorButton(FFindBtnClose);
+  ThemeUtils.RecolorEdit(FFindEdit);
+
+  ThemeUtils.RecolorButton(FReplaceFindBtnClose);
+  ThemeUtils.RecolorButton(FReplaceBtnReplace);
+  ThemeUtils.RecolorButton(FReplaceBtnReplaceAll);
+  ThemeUtils.RecolorEdit(FReplaceFindEdit);
+  ThemeUtils.RecolorEdit(FReplaceEdit);
+
+  ThemeUtils.RecolorSynEdit(FEditor);
+
 end;
 
 procedure TTextCodeView.FocusEditor;

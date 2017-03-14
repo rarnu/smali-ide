@@ -5,7 +5,7 @@ unit updateHistoryView;
 interface
 
 uses
-  Classes, SysUtils, StdCtrls, ExtCtrls, Controls, Graphics, Dialogs, LCLIntf, SmaliIdeAPI;
+  Classes, SysUtils, StdCtrls, ExtCtrls, Controls, Graphics, Dialogs, LCLIntf, SmaliIdeAPI, Buttons;
 
 type
 
@@ -15,8 +15,8 @@ type
   private
     FDownloadUrl: string;
     FVersion: TLabel;
-    FChangeLog: TButton;
-    FDownload: TButton;
+    FChangeLog: TBitBtn;
+    FDownload: TBitBtn;
     FVersionDesc: string;
     procedure changelogClick(Sender: TObject);
     procedure downloadClick(Sender: TObject);
@@ -70,14 +70,14 @@ begin
   FVersion.BorderSpacing.Around:= 8;
   FVersion.Layout:= tlCenter;
 
-  FDownload := TButton.Create(Self);
+  FDownload := TBitBtn.Create(Self);
   FDownload.Parent := Self;
   FDownload.Align:= alRight;
   FDownload.BorderSpacing.Around:= 8;
   FDownload.Width:= 90;
   FDownload.Caption:= 'Download';
 
-  FChangeLog := TButton.Create(Self);
+  FChangeLog := TBitBtn.Create(Self);
   FChangeLog.Parent := Self;
   FChangeLog.Align:= alRight;
   FChangeLog.BorderSpacing.Around:= 8;

@@ -5,7 +5,7 @@ unit fileTypeItemView;
 interface
 
 uses
-  Classes, SysUtils, StdCtrls, Controls, ExtCtrls, Graphics;
+  Classes, SysUtils, StdCtrls, Controls, ExtCtrls, Graphics, Buttons;
 
 type
   TOnFileTypeDelete = procedure (Sender: TObject; AType: string; AEditorPath: string) of object;
@@ -16,8 +16,8 @@ type
   TFileTypeItemView = class(TPanel)
   private
     FFileTypeName: TLabel;
-    FBtnEditor: TButton;
-    FBtnDelete: TButton;
+    FBtnEditor: TBitBtn;
+    FBtnDelete: TBitBtn;
     FEditorPath: string;
     FOnFileTypeDelete: TOnFileTypeDelete;
     FOnFileTypeSelect: TOnFileTypeSelect;
@@ -37,6 +37,9 @@ type
   end;
 
 implementation
+
+uses
+  config;
 
 { TFileTypeItemView }
 
@@ -98,14 +101,14 @@ begin
   FFileTypeName.Layout:= tlCenter;
   FFileTypeName.BorderSpacing.Around:= 8;
 
-  FBtnDelete := TButton.Create(Self);
+  FBtnDelete := TBitBtn.Create(Self);
   FBtnDelete.Parent := Self;
   FBtnDelete.Align:= alRight;
   FBtnDelete.BorderSpacing.Around:= 8;
   FBtnDelete.Caption:= 'X';
   FBtnDelete.Width:= 28;
 
-  FBtnEditor := TButton.Create(Self);
+  FBtnEditor := TBitBtn.Create(Self);
   FBtnEditor.Parent := Self;
   FBtnEditor.Align:= alRight;
   FBtnEditor.BorderSpacing.Around:= 8;
@@ -115,6 +118,11 @@ begin
 
   FBtnEditor.OnClick:=@innerEditorClick;
   FBtnDelete.OnClick:=@innerDeleteClick;
+
+  FBtnEditor.Color:= GlobalConfig.Color;
+  FBtnDelete.Color:= GlobalConfig.Color;
+  FBtnEditor.Font.Color:= GlobalConfig.FontColor;
+  FBtnDelete.Font.Color:= GlobalConfig.FontColor;
 end;
 
 end.

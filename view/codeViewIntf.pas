@@ -31,6 +31,7 @@ type
   procedure FocusEditor();
   procedure LoadShortcut();
   procedure SetCodeTheme(AThemeFile: string);
+  procedure SetStyleTheme();
   procedure Free;   // hidden method from TObject
   end;
 

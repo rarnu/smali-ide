@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, sysutils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, codeViewIntf, SynHighlighterJava,
-  SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, SynEditTypes, Menus, LCLType, Forms, IniFiles;
+  SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, SynEditTypes, Menus, LCLType, Forms, IniFiles,
+  Buttons;
 
 type
 
@@ -26,10 +27,10 @@ type
     FFindTitle1: TLabel;
     FFindEdit: TEdit;
     FFindMatchCase: TCheckBox;
-    FFindBtn: TButton;
-    FFindBtnNext: TButton;
-    FFindBtnPrior: TButton;
-    FFindBtnClose: TButton;
+    FFindBtn: TBitBtn;
+    FFindBtnNext: TBitBtn;
+    FFindBtnPrior: TBitBtn;
+    FFindBtnClose: TBitBtn;
 
     procedure btnClicked(Sender: TObject);
     procedure menuClicked(Sender: TObject);
@@ -51,6 +52,7 @@ type
     procedure FocusEditor();
     procedure LoadShortcut();
     procedure SetCodeTheme(AThemeFile: string);
+    procedure SetStyleTheme;
   published
     property FileName: string read GetFileName write SetFileName;
   end;
@@ -58,7 +60,7 @@ type
 implementation
 
 uses
-  TextUtils, baseData, config;
+  TextUtils, baseData, config, ThemeUtils;
 
 { TSDKJavaCodeView }
 
@@ -107,21 +109,7 @@ begin
     Parent := Self;
     Align:= alClient;
     Color:= clWhite;
-    Gutter.Color:= clWhite;
-    for i := 0 to Gutter.Parts.Count - 1 do begin
-      part := Gutter.Parts.Part[i];
-      if (part is TSynGutterLineNumber) then begin
-        TSynGutterLineNumber(part).MarkupInfo.Background:= clWhite;
-      end;
-      if (part is TSynGutterSeparator) then begin
-        TSynGutterSeparator(part).MarkupInfo.Foreground:= clSilver;
-      end;
-      if (part is TSynGutterCodeFolding) then begin
-        TSynGutterCodeFolding(part).MarkupInfo.Foreground:= clSilver;
-      end;
-    end;
     Options:= Options + [eoKeepCaretX] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
-    RightEdgeColor:= clWhite;
     RightGutter.Visible:= False;
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
@@ -175,7 +163,7 @@ begin
   FFindMatchCase.BorderSpacing.Bottom:=4;
   FFindMatchCase.Caption:= 'Match case';
 
-  FFindBtn:= TButton.Create(FPnlFind);
+  FFindBtn:= TBitBtn.Create(FPnlFind);
   FFindBtn.Parent := FPnlFind;
   FFindBtn.Align:= alLeft;
   FFindBtn.Width:= 60;
@@ -184,7 +172,7 @@ begin
   FFindBtn.BorderSpacing.Bottom:= 4;
   FFindBtn.Caption:= 'Find';
 
-  FFindBtnNext:= TButton.Create(FPnlFind);
+  FFindBtnNext:= TBitBtn.Create(FPnlFind);
   FFindBtnNext.Parent := FPnlFind;
   FFindBtnNext.Align:= alLeft;
   FFindBtnNext.Width:= 60;
@@ -193,7 +181,7 @@ begin
   FFindBtnNext.BorderSpacing.Bottom:= 4;
   FFindBtnNext.Caption:= 'Next';
 
-  FFindBtnPrior:= TButton.Create(FPnlFind);
+  FFindBtnPrior:= TBitBtn.Create(FPnlFind);
   FFindBtnPrior.Parent := FPnlFind;
   FFindBtnPrior.Align:= alLeft;
   FFindBtnPrior.Width:= 60;
@@ -202,7 +190,7 @@ begin
   FFindBtnPrior.BorderSpacing.Bottom:= 4;
   FFindBtnPrior.Caption:= 'Prior';
 
-  FFindBtnClose:= TButton.Create(FPnlFind);
+  FFindBtnClose:= TBitBtn.Create(FPnlFind);
   FFindBtnClose.Parent := FPnlFind;
   FFindBtnClose.Align:= alRight;
   FFindBtnClose.Width:= 32;
@@ -332,6 +320,16 @@ begin
     end;
     Free;
   end;
+end;
+
+procedure TSDKJavaCodeView.SetStyleTheme;
+begin
+  ThemeUtils.RecolorEdit(FFindEdit);
+  ThemeUtils.RecolorButton(FFindBtn);
+  ThemeUtils.RecolorButton(FFindBtnNext);
+  ThemeUtils.RecolorButton(FFindBtnPrior);
+  ThemeUtils.RecolorButton(FFindBtnClose);
+  ThemeUtils.RecolorSynEdit(FEditor);
 end;
 
 end.
