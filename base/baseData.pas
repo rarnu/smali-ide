@@ -81,8 +81,11 @@ const
   KEY_DOCUMENT_BOLD = 'document_bold';
 
 
+  // common
 
   SEC_CONFIG = 'config';
+  SEC_COMMON = 'common';
+
   KEY_JAVA_BINARY_PATH = 'java_binary_path';
   KEY_CURL_BINARY_PATH = 'curl_binary_path';
   KEY_ANDROID_SDK_PATH = 'android_sdk_path';
@@ -109,6 +112,14 @@ const
   KEY_INSTALL_FRAMEWORK_SHORTCUT = 'install_framework_shortcut';
   KEY_SETTINGS_SHORTCUT = 'settings_shortcut';
   KEY_SHOW_SSMALI = 'show_ssmali';
+
+  KEY_FONT_NAME = 'font_name';
+  KEY_FONT_SIZE = 'font_size';
+  KEY_FONT_ANTI_ALIASING = 'font_antialiasing';
+  KEY_UI_COLOR = 'ui_color';
+  KEY_UI_FONT_COLOR = 'ui_font_color';
+  KEY_UI_TRANSPARENT = 'ui_transparent';
+  KEY_UI_ALPHA = 'ui_alpha';
 
   KEY_SHORTCUTS: array[0..19] of string = (
     KEY_HINT_KEYWORD_SHORTCUT,

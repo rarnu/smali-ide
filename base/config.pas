@@ -5,7 +5,7 @@ unit config;
 interface
 
 uses
-  Classes, SysUtils, IniFiles, baseData, Menus, LCLType;
+  Classes, SysUtils, IniFiles, baseData, Menus, LCLType, Graphics;
 
 type
 
@@ -15,17 +15,23 @@ type
   private
     FIni: TIniFile;
     FFileTypes: TStringList;
+    function GetAlpha: Integer;
     function GetAndroidSDKPath: string;
     function GetAndroidSDKVersion: string;
     function GetCloseAllOtherPages: TShortCut;
     function GetCloseAllPages: TShortCut;
     function GetCodeTheme: string;
+    function GetColor: Integer;
     function GetCompile: TShortCut;
     function GetCurlBinaryPath: string;
     function GetDecompile: TShortCut;
     function GetDeleteFile: TShortCut;
     function GetFileTypeEditor(Atype: string): string;
     function GetFileTypes: TStringList;
+    function GetFontAntiAliasing: Boolean;
+    function GetFontColor: Integer;
+    function GetFontName: string;
+    function GetFontSize: Integer;
     function GetHintClassMethod: TShortCut;
     function GetHintKeyword: TShortCut;
     function GetHintTemplate: TShortCut;
@@ -44,15 +50,22 @@ type
     function GetShowSearchResult: TShortCut;
     function GetShowSSmali: Boolean;
     function GetShowSsmaliShortcut: TShortCut;
+    function GetTransparent: Boolean;
+    procedure SetAlpha(AValue: Integer);
     procedure SetAndroidSDKPath(AValue: string);
     procedure SetAndroidSDKVersion(AValue: string);
     procedure SetCloseAllOtherPages(AValue: TShortCut);
     procedure SetCloseAllPages(AValue: TShortCut);
     procedure SetCodeTheme(AValue: string);
+    procedure SetColor(AValue: Integer);
     procedure SetCompile(AValue: TShortCut);
     procedure SetCurlBinaryPath(AValue: string);
     procedure SetDecompile(AValue: TShortCut);
     procedure SetDeleteFile(AValue: TShortCut);
+    procedure SetFontAntiAliasing(AValue: Boolean);
+    procedure SetFontColor(AValue: Integer);
+    procedure SetFontName(AValue: string);
+    procedure SetFontSize(AValue: Integer);
     procedure SetHintClassMethod(AValue: TShortCut);
     procedure SetHintKeyword(AValue: TShortCut);
     procedure SetHintTemplate(AValue: TShortCut);
@@ -71,6 +84,7 @@ type
     procedure SetShowSearchResult(AValue: TShortCut);
     procedure SetShowSSmali(AValue: Boolean);
     procedure SetShowSsmaliShortcut(AValue: TShortCut);
+    procedure SetTransparent(AValue: Boolean);
   public
     constructor Create;
     destructor Destroy; override;
@@ -124,6 +138,15 @@ type
 
     // visibility
     property ShowSSmali: Boolean read GetShowSSmali write SetShowSSmali;
+
+    // common
+    property FontName: string read GetFontName write SetFontName;
+    property FontSize: Integer read GetFontSize write SetFontSize;
+    property FontAntiAliasing: Boolean read GetFontAntiAliasing write SetFontAntiAliasing;
+    property Transparent: Boolean read GetTransparent write SetTransparent;
+    property Alpha: Integer read GetAlpha write SetAlpha;
+    property Color: Integer read GetColor write SetColor;
+    property FontColor: Integer read GetFontColor write SetFontColor;
 
   end;
 
@@ -207,6 +230,16 @@ begin
   Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, 0);
 end;
 
+function TSmaliIdeConfig.GetTransparent: Boolean;
+begin
+  Result := FIni.ReadBool(SEC_COMMON, KEY_UI_TRANSPARENT, False);
+end;
+
+procedure TSmaliIdeConfig.SetAlpha(AValue: Integer);
+begin
+  FIni.WriteInteger(SEC_COMMON, KEY_UI_ALPHA, AValue);
+end;
+
 procedure TSmaliIdeConfig.SetAndroidSDKPath(AValue: string);
 begin
   FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, AValue);
@@ -230,6 +263,11 @@ end;
 procedure TSmaliIdeConfig.SetCodeTheme(AValue: string);
 begin
   FIni.WriteString(SEC_CONFIG, KEY_THEME, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetColor(AValue: Integer);
+begin
+  FIni.WriteInteger(SEC_COMMON, KEY_UI_COLOR, AValue);
 end;
 
 procedure TSmaliIdeConfig.SetCompile(AValue: TShortCut);
@@ -257,6 +295,11 @@ begin
   Result := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, '');
 end;
 
+function TSmaliIdeConfig.GetAlpha: Integer;
+begin
+  Result := FIni.ReadInteger(SEC_COMMON, KEY_UI_ALPHA, 255);
+end;
+
 function TSmaliIdeConfig.GetAndroidSDKVersion: string;
 begin
   Result := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, '');
@@ -270,6 +313,11 @@ end;
 function TSmaliIdeConfig.GetCodeTheme: string;
 begin
   Result := FIni.ReadString(SEC_CONFIG, KEY_THEME, 'Default.style');
+end;
+
+function TSmaliIdeConfig.GetColor: Integer;
+begin
+  Result := FIni.ReadInteger(SEC_COMMON, KEY_UI_COLOR, clWhite);
 end;
 
 function TSmaliIdeConfig.GetCompile: TShortCut;
@@ -298,6 +346,26 @@ begin
   for i := 0 to secList.Count - 1 do if (secList[i].StartsWith('filetype_')) then FFileTypes.Add(secList[i]);
   secList.Free;
   Result := FFileTypes;
+end;
+
+function TSmaliIdeConfig.GetFontAntiAliasing: Boolean;
+begin
+  Result := FIni.ReadBool(SEC_COMMON, KEY_FONT_ANTI_ALIASING, True);
+end;
+
+function TSmaliIdeConfig.GetFontColor: Integer;
+begin
+  Result := FIni.ReadInteger(SEC_COMMON, KEY_UI_FONT_COLOR, clBlack);
+end;
+
+function TSmaliIdeConfig.GetFontName: string;
+begin
+  Result := FIni.ReadString(SEC_COMMON, KEY_FONT_NAME, {$IFDEF WINDOWS}'Microsoft Yahei'{$ELSE}{$IFDEF DARWIN}'Monaco'{$ELSE}'DejaVu Sans Mono'{$ENDIF}{$ENDIF});
+end;
+
+function TSmaliIdeConfig.GetFontSize: Integer;
+begin
+  Result := FIni.ReadInteger(SEC_COMMON, KEY_FONT_SIZE, 10);
 end;
 
 function TSmaliIdeConfig.GetHintClassMethod: TShortCut;
@@ -333,6 +401,26 @@ end;
 procedure TSmaliIdeConfig.SetDeleteFile(AValue: TShortCut);
 begin
   FIni.WriteInteger(SEC_CONFIG, KEY_DELETE_FILE_SHORTCUT, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetFontAntiAliasing(AValue: Boolean);
+begin
+  FIni.WriteBool(SEC_COMMON, KEY_FONT_ANTI_ALIASING, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetFontColor(AValue: Integer);
+begin
+  FIni.WriteInteger(SEC_COMMON, KEY_UI_FONT_COLOR, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetFontName(AValue: string);
+begin
+  FIni.WriteString(SEC_COMMON, KEY_FONT_NAME, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetFontSize(AValue: Integer);
+begin
+  FIni.WriteInteger(SEC_COMMON, KEY_FONT_SIZE, AValue);
 end;
 
 procedure TSmaliIdeConfig.SetHintClassMethod(AValue: TShortCut);
@@ -423,6 +511,11 @@ end;
 procedure TSmaliIdeConfig.SetShowSsmaliShortcut(AValue: TShortCut);
 begin
   FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, AValue);
+end;
+
+procedure TSmaliIdeConfig.SetTransparent(AValue: Boolean);
+begin
+  FIni.WriteBool(SEC_COMMON, KEY_UI_TRANSPARENT, AValue);
 end;
 
 constructor TSmaliIdeConfig.Create;

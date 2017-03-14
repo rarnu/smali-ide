@@ -18,6 +18,7 @@ type
     procedure InitComponents; virtual; abstract;
     procedure InitEvents; virtual; abstract;
     procedure InitLogic; virtual; abstract;
+    procedure InitTheme; virtual; abstract;
   public
 
   end;
@@ -27,17 +28,26 @@ var
 
 implementation
 
+uses
+  config, ThemeUtils;
+
 {$R *.lfm}
 
 { TFormBase }
 
 procedure TFormBase.FormCreate(Sender: TObject);
 begin
-  AlphaBlend:= True;
-  AlphaBlendValue:= 216;
   InitComponents;
   InitEvents;
   InitLogic;
+  AlphaBlend:= GlobalConfig.Transparent;
+  AlphaBlendValue:= GlobalConfig.Alpha;
+  Color:= GlobalConfig.Color;
+  Font.Color:= GlobalConfig.FontColor;
+  Font.Name:= GlobalConfig.FontName;
+  Font.Size:= GlobalConfig.FontSize;
+  Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
+  InitTheme;
 end;
 
 end.
