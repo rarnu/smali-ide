@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, StdCtrls, ExtCtrls, ComCtrls, Controls, Graphics, SynEdit, SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding, Menus, LCLType, Dialogs, Forms,
-  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf, IniFiles, synhighlighterdodolasmali, Buttons;
+  SynEditTypes, synhighlightersmali, SynCompletion, SynEditKeyCmds, codeViewIntf, IniFiles, synhighlighterdodolasmali, Buttons, SynEditMouseCmds;
 
 type
   { TSmaliCodeView }
@@ -89,6 +89,8 @@ type
     function GetFileName: string;
 
     procedure OnEditorChange(Sender: TObject);
+    procedure OnLinkClicked(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure SetFileName(AValue: string);
     function FindSmaliString(aset: TCharSet): string;
     function FindClassToJump(): string;
@@ -156,6 +158,7 @@ begin
   while idx > 0 do begin
     c := FEditor.Lines.Text[idx];
     if (c in aset) then begin
+      if (c = ';') then Break;
       s := c + s;
     end else begin
       Break;
@@ -167,6 +170,7 @@ begin
     c := FEditor.Lines.Text[idx];
     if (c in aset) then begin
       s := s + c;
+      if (c = ';') then Break;
     end else begin
       Break;
     end;
@@ -177,7 +181,7 @@ end;
 
 function TSmaliCodeView.FindClassToJump: string;
 const
-  CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', ';', '_', '$'];
+  CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', '_', '$', ';'];
 begin
   Result := FindSmaliString(CLASS_CHARS);
 end;
@@ -193,6 +197,13 @@ procedure TSmaliCodeView.OnEditorChange(Sender: TObject);
 begin
   FIsChanged := True;
   Caption:= FTitle + ' *';
+end;
+
+procedure TSmaliCodeView.OnLinkClicked(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  FEditor.SelectWord;
+  menuClicked(FMiJump);
 end;
 
 procedure TSmaliCodeView.btnClicked(Sender: TObject);
@@ -499,11 +510,13 @@ begin
     Parent := Self;
     Align:= alClient;
     Color:= clWhite;
-    Options:= Options + [eoKeepCaretX] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
+    MouseOptions:= MouseOptions + [emShowCtrlMouseLinks];
+    Options:= Options + [eoKeepCaretX, eoShowCtrlMouseLinks] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
     RightGutter.Visible:= False;
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
     OnChange:=@OnEditorChange;
+    OnClickLink:=@OnLinkClicked;
     Highlighter := FHighlighter;
   end;
 
