@@ -46,7 +46,6 @@ begin
   Font.Color:= GlobalConfig.FontColor;
   Font.Name:= GlobalConfig.FontName;
   Font.Size:= GlobalConfig.FontSize;
-  Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
   InitTheme;
 end;
 

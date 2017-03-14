@@ -244,7 +244,7 @@ var
 implementation
 
 uses
-  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils, ThemeUtils;
+  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils, ThemeUtils, frmInputBox;
 
 {$R *.lfm}
 
@@ -360,7 +360,7 @@ var
   tp: string;
   view: TFileTypeItemView;
 begin
-  tp := InputBox('Add File Type', 'Input file extension', '').Trim;
+  tp := frmInputBox.InputBox('Add File Type', 'Input file extension', '').Trim;
   if (tp = '') then Exit;
   view := TFileTypeItemView.Create(sbxFileType);
   view.Parent := sbxFileType;
@@ -858,7 +858,7 @@ var
   idx: Integer;
 begin
   // add template
-  tn := InputBox('Add Template', 'Unput Template Name', '').Trim;
+  tn := frmInputBox.InputBox('Add Template', 'Unput Template Name', '').Trim;
   if (tn = '') then Exit;
   p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT + 'custom' + SPLIT + tn + '.template';
   with TStringList.Create do begin

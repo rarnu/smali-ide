@@ -199,7 +199,7 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView, ThemeUtils;
+  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView, ThemeUtils, frmInputBox;
 
 { TFormMain }
 
@@ -628,7 +628,7 @@ var
   key: string;
 begin
   // file in files
-  key := InputBox('Find in Files', 'Input keyword', '').Trim;
+  key := frmInputBox.InputBox('Find in Files', 'Input keyword', '').Trim;
   if (key = '') then Exit;
   if (threadSearchInFile = nil) then begin
     threadSearchInFile:= TSearchInFileThread.Create(ExtractFilePath(CurrentProjectPath), key);
@@ -661,7 +661,7 @@ var
 begin
   // goto line
   if (pgCode.ActivePage is ICodeViewIntf) then begin
-    line := InputBox('Goto Line', 'Input a line number to goto:', '');
+    line := frmInputBox.InputBox('Goto Line', 'Input a line number to goto:', '');
     linenum:= StrToIntDef(line, -1);
     if (linenum <> -1) then begin
       (pgCode.ActivePage as ICodeViewIntf).GotoLine(linenum);
