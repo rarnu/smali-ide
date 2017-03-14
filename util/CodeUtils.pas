@@ -63,7 +63,7 @@ function FindSsmaliFile(AProjectPath: string; classPath: string): string;
 implementation
 
 uses
-  EncryptUtils, baseData,smaliCodeView, textCodeView, config;
+  EncryptUtils, baseData,smaliCodeView, textCodeView, config, frmInputBox;
 
 procedure TBuildClassIndexThread.SendSyncCallback;
 begin
@@ -434,7 +434,7 @@ procedure NewClass(projectPath: string; filePath: string; root: TTreeNodes; node
 var
   cn: string;
 begin
-  cn := InputBox('New Class', 'Class Name', '').Trim;
+  cn := frmInputBox.InputBox('New Class', 'Class Name', '').Trim;
   if (cn = '') then Exit;
   NewFile(projectPath, filePath, cn, 'new_class', root, node, pageControl, onCodeJump);
 end;
@@ -443,7 +443,7 @@ procedure NewInterface(projectPath: string; filePath: string; root: TTreeNodes; 
 var
   cn: string;
 begin
-  cn := InputBox('New Interface', 'Interface Name', '').Trim;
+  cn := frmInputBox.InputBox('New Interface', 'Interface Name', '').Trim;
   if (cn = '') then Exit;
   NewFile(projectPath, filePath, cn, 'new_interface', root, node, pageControl, onCodeJump);
 end;
@@ -452,7 +452,7 @@ procedure NewEnum(projectPath: string; filePath: string; root: TTreeNodes; node:
 var
   cn: string;
 begin
-  cn := InputBox('New Enum', 'Enum Name', '').Trim;
+  cn := frmInputBox.InputBox('New Enum', 'Enum Name', '').Trim;
   if (cn = '') then Exit;
   NewFile(projectPath, filePath, cn, 'new_enum', root, node, pagecontrol, onCodeJump);
 end;
@@ -461,7 +461,7 @@ procedure NewAnnotation(projectPath: string; filePath: string; root: TTreeNodes;
 var
   cn: string;
 begin
-  cn := InputBox('New Annotation', 'Annotation Name', '').Trim;
+  cn := frmInputBox.InputBox('New Annotation', 'Annotation Name', '').Trim;
   if (cn = '') then Exit;
   NewFile(projectPath, filePath, cn, 'new_annotation', root, node, pagecontrol, onCodeJump);
 end;
@@ -470,7 +470,7 @@ procedure NewTextFile(projectPath: string; filePath: string; root: TTreeNodes; n
 var
   cn: string;
 begin
-  cn := InputBox('New Text File', 'File Name', '').Trim;
+  cn := frmInputBox.InputBox('New Text File', 'File Name', '').Trim;
   if (cn = '') then Exit;
   if (not cn.Contains('.')) then begin
     cn += '.txt';

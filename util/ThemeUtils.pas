@@ -8,8 +8,6 @@ uses
   Classes, SysUtils, Buttons, Forms, StdCtrls, ExtCtrls, ComCtrls, Controls, SynEdit, SynCompletion, Graphics, Menus,
   SynGutterBase, SynGutterLineNumber, SynGutter, SynGutterCodeFolding;
 
-function ParseQuality(antiAliasing: Boolean): TFontQuality;
-
 procedure RecolorButton(b: TBitBtn);
 procedure RecolorTreeView(t: TTreeView);
 procedure RecolorListView(l: TListBox);
@@ -24,21 +22,12 @@ implementation
 uses
   config;
 
-function ParseQuality(antiAliasing: Boolean): TFontQuality;
-begin
-  if antiAliasing then
-    Result := fqAntialiased
-  else
-    Result := fqNonAntialiased;
-end;
-
 procedure RecolorButton(b: TBitBtn);
 begin
   b.Color:= GlobalConfig.Color;
   b.Font.Name:= GlobalConfig.FontName;
   b.Font.Color:= GlobalConfig.FontColor;
   b.Font.Size:= GlobalConfig.FontSize;
-  b.Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
 end;
 
 procedure RecolorTreeView(t: TTreeView);
@@ -47,7 +36,6 @@ begin
   t.Font.Name:= GlobalConfig.FontName;
   t.Font.Color:= GlobalConfig.FontColor;
   t.Font.Size:= GlobalConfig.FontSize;
-  t.Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
 end;
 
 procedure RecolorListView(l: TListBox);
@@ -56,7 +44,6 @@ begin
   l.Font.Name:= GlobalConfig.FontName;
   l.Font.Size:= GlobalConfig.FontSize;
   l.Font.Color:= GlobalConfig.FontColor;
-  l.Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
 end;
 
 procedure RecolorSynEdit(e: TSynEdit);
@@ -93,7 +80,6 @@ begin
   e.Font.Name:= GlobalConfig.FontName;
   e.Font.Size:= GlobalConfig.FontSize;
   e.Font.Color:= GlobalConfig.FontColor;
-  e.Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
 end;
 
 procedure RecolorMemo(m: TMemo);
@@ -102,7 +88,6 @@ begin
   m.Font.Name:= GlobalConfig.FontName;
   m.Font.Size:= GlobalConfig.FontSize;
   m.Font.Color:= GlobalConfig.FontColor;
-  m.Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
 end;
 
 procedure RecolorComboBox(c: TComboBox);
@@ -111,7 +96,6 @@ begin
   c.Font.Name:= GlobalConfig.FontName;
   c.Font.Size:= GlobalConfig.FontSize;
   c.Font.Color:= GlobalConfig.FontColor;
-  c.Font.Quality:= ParseQuality(GlobalConfig.FontAntiAliasing);
 end;
 
 procedure RecolorCompleter(c: TSynCompletion);
