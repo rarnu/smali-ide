@@ -5,46 +5,48 @@ unit frmSettings;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, StdCtrls, frmBase, SynEdit, LCLType, LCLProc, Menus, synhighlightersmali,
-  SynHighlighterXML, SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript,
-  synhighlighterunixshellscript, IniFiles, CommandUtils, SynHighlighterJava, SynGutter,
-  SynGutterBase, SynGutterLineNumber, SynGutterCodeFolding;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
+  ComCtrls, ExtCtrls, StdCtrls, frmBase, SynEdit, LCLType, LCLProc, Menus,
+  Buttons, synhighlightersmali, SynHighlighterXML,
+  SynHighlighterHTML, SynHighlighterCss, SynHighlighterJScript,
+  synhighlighterunixshellscript, IniFiles, CommandUtils, SynHighlighterJava,
+  SynGutter, SynGutterBase, SynGutterLineNumber, SynGutterCodeFolding;
 
 type
 
   { TFormSettings }
 
   TFormSettings = class(TFormBase)
-    btnChooseJava: TButton;
-    btnChooseCurl: TButton;
-    btnChooseSDKPath: TButton;
-    btnCodeEditorClassMethodCompletion: TButton;
-    btnCodeEditorJumpClassMethod: TButton;
-    btnHelpSettings: TButton;
-    btnCodeEditorKeywordsCompletion: TButton;
-    btnCodeTreeNewInterface: TButton;
-    btnCodeTreeNewClass: TButton;
-    btnCodeTreeNewEnum: TButton;
-    btnCodeTreeDeleteFile: TButton;
-    btnCodeEditorSmaliToJava: TButton;
-    btnCodeTreeNewTextFile: TButton;
-    btnCodeTreeNewAnnotation: TButton;
-    btnCodeEditorTemplateCompletion: TButton;
-    btnViewClassIndex: TButton;
-    btnPackageDecompile: TButton;
-    btnPackageInstallFramework: TButton;
-    btnViewSsmali: TButton;
-    btnViewSearchResult: TButton;
-    btnViewConsole: TButton;
-    btnViewCloseAllPages: TButton;
-    btnViewCloseAllOtherPages: TButton;
-    btnPackageCompile: TButton;
-    btnAddFileType: TButton;
-    btnAddTemplate: TButton;
-    btnDeleteTemplate: TButton;
-    btnFontName: TButton;
-    btnUIColor: TButton;
+    btnChooseJava: TBitBtn;
+    btnChooseCurl: TBitBtn;
+    btnChooseSDKPath: TBitBtn;
+    btnCodeEditorClassMethodCompletion: TBitBtn;
+    btnCodeEditorJumpClassMethod: TBitBtn;
+    btnHelpSettings: TBitBtn;
+    btnCodeEditorKeywordsCompletion: TBitBtn;
+    btnCodeTreeNewInterface: TBitBtn;
+    btnCodeTreeNewClass: TBitBtn;
+    btnCodeTreeNewEnum: TBitBtn;
+    btnCodeTreeDeleteFile: TBitBtn;
+    btnCodeEditorSmaliToJava: TBitBtn;
+    btnCodeTreeNewTextFile: TBitBtn;
+    btnCodeTreeNewAnnotation: TBitBtn;
+    btnCodeEditorTemplateCompletion: TBitBtn;
+    btnUIFontColor: TBitBtn;
+    btnViewClassIndex: TBitBtn;
+    btnPackageDecompile: TBitBtn;
+    btnPackageInstallFramework: TBitBtn;
+    btnViewSsmali: TBitBtn;
+    btnViewSearchResult: TBitBtn;
+    btnViewConsole: TBitBtn;
+    btnViewCloseAllPages: TBitBtn;
+    btnViewCloseAllOtherPages: TBitBtn;
+    btnPackageCompile: TBitBtn;
+    btnAddFileType: TBitBtn;
+    btnAddTemplate: TBitBtn;
+    btnDeleteTemplate: TBitBtn;
+    btnFontName: TBitBtn;
+    btnUIColor: TBitBtn;
     cbAndroidVersion: TComboBox;
     chkUITrans: TCheckBox;
     chkFontAntiAliasing: TCheckBox;
@@ -64,10 +66,10 @@ type
     gbFont: TGroupBox;
     gbUI: TGroupBox;
     lblUIColor: TLabel;
-    lblFontInc: TLabel;
+    lblFontSizeValue: TLabel;
     lblFontSize: TLabel;
     lblFontName: TLabel;
-    Label2: TLabel;
+    lblFontNameValue: TLabel;
     lblChooseSDKPath: TLabel;
     lblChooseAndroidVersion: TLabel;
     lblJadxStatus: TLabel;
@@ -96,6 +98,7 @@ type
     lblCodeTreeDeleteFile: TLabel;
     lblCodeTreeNewTextFile: TLabel;
     lblCodeTreeNewAnnotation: TLabel;
+    lblUIFontColor: TLabel;
     lblViewClassIndex: TLabel;
     lblPackageDecompile: TLabel;
     lblPackageInstallFramework: TLabel;
@@ -108,7 +111,9 @@ type
     lstTemplate: TListBox;
     lstStyles: TListBox;
     pnlColorValue: TPanel;
+    pnlFontColorValue: TPanel;
     pnlIColor: TPanel;
+    pnlIFontColor: TPanel;
     pnlTrans: TPanel;
     pnlFontAntiAlias: TPanel;
     pnlFont: TPanel;
@@ -171,12 +176,18 @@ type
     procedure btnChooseJavaClick(Sender: TObject);
     procedure btnChooseSDKPathClick(Sender: TObject);
     procedure btnDeleteTemplateClick(Sender: TObject);
+    procedure btnFontNameClick(Sender: TObject);
+    procedure btnUIColorClick(Sender: TObject);
+    procedure btnUIFontColorClick(Sender: TObject);
     procedure btnViewClassIndexClick(Sender: TObject);
     procedure btnAddFileTypeClick(Sender: TObject);
     procedure cbAndroidVersionChange(Sender: TObject);
+    procedure chkFontAntiAliasingClick(Sender: TObject);
+    procedure chkUITransClick(Sender: TObject);
     procedure lstStylesClick(Sender: TObject);
     procedure lstTemplateClick(Sender: TObject);
     procedure synTemplateChange(Sender: TObject);
+    procedure trackTransChange(Sender: TObject);
   private
 
     STATIC_SHORTCUTS: array of TShortCut;
@@ -216,11 +227,13 @@ type
     procedure LoadJadxVersion();
     procedure LoadFileTypes();
     procedure LoadTemplate();
+    procedure LoadUIStyle();
   protected
     procedure InitSynEdit(AEditor: TSynEdit);
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
 
   end;
@@ -231,7 +244,7 @@ var
 implementation
 
 uses
-  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils;
+  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils, ThemeUtils;
 
 {$R *.lfm}
 
@@ -278,13 +291,53 @@ begin
   DeleteFile(p);
 end;
 
+procedure TFormSettings.btnFontNameClick(Sender: TObject);
+begin
+  // choose font
+  with TFontDialog.Create(nil) do begin
+    Font.Name:= GlobalConfig.FontName;
+    Font.Size:= GlobalConfig.FontSize;
+    if Execute then begin
+      GlobalConfig.FontName:= Font.Name;
+      GlobalConfig.FontSize:= Font.Size;
+      lblFontNameValue.Caption:= Font.Name;
+      lblFontSizeValue.Caption:= IntToStr(Font.Size);
+    end;
+    Free;
+  end;
+end;
+
+procedure TFormSettings.btnUIColorClick(Sender: TObject);
+begin
+  // choose color
+  with TColorDialog.Create(nil) do begin
+    Color:= GlobalConfig.Color;
+    if Execute then begin
+      GlobalConfig.Color:= Color;
+      pnlColorValue.Color:= Color;
+    end;
+    Free;
+  end;
+end;
+
+procedure TFormSettings.btnUIFontColorClick(Sender: TObject);
+begin
+  with TColorDialog.Create(nil) do begin
+    Color:= GlobalConfig.FontColor;
+    if Execute then begin
+      GlobalConfig.FontColor:= Color;
+      pnlFontColorValue.Color:= Color;
+    end;
+  end;
+end;
+
 procedure TFormSettings.btnViewClassIndexClick(Sender: TObject);
 var
-  btn: TButton;
+  btn: TBitBtn;
   key: String;
 begin
   // accept keys
-  btn := TButton(Sender);
+  btn := TBitBtn(Sender);
   key := btn.Hint;
   with TFormShortcutAccept.Create(nil) do begin
     if ShowModal = mrOK then begin
@@ -322,6 +375,16 @@ procedure TFormSettings.cbAndroidVersionChange(Sender: TObject);
 begin
   // choose android version
   GlobalConfig.AndroidSDKVersion:= cbAndroidVersion.Text;
+end;
+
+procedure TFormSettings.chkFontAntiAliasingClick(Sender: TObject);
+begin
+  GlobalConfig.FontAntiAliasing:= chkFontAntiAliasing.Checked;
+end;
+
+procedure TFormSettings.chkUITransClick(Sender: TObject);
+begin
+  GlobalConfig.Transparent:= chkUITrans.Checked;
 end;
 
 function IfThen(b: Boolean; trueValue: TFontStyles; falseValue: TFontStyles): TFontStyles;
@@ -506,7 +569,7 @@ begin
     Free;
   end;
 
-  GlobalConfig.CodeTheme:= lstStyles.Items[idx];
+  if (Sender <> nil) then GlobalConfig.CodeTheme:= lstStyles.Items[idx];
 end;
 
 procedure TFormSettings.lstTemplateClick(Sender: TObject);
@@ -524,6 +587,11 @@ end;
 procedure TFormSettings.synTemplateChange(Sender: TObject);
 begin
   if (string(synTemplate.Hint).Trim <> '') then synTemplate.Lines.SaveToFile(synTemplate.Hint);
+end;
+
+procedure TFormSettings.trackTransChange(Sender: TObject);
+begin
+  GlobalConfig.Alpha:= trackTrans.Position;
 end;
 
 function TFormSettings.IsCanSetShortcut(AKey: string; AShortcut: TShortCut
@@ -726,6 +794,18 @@ begin
   end;
 end;
 
+procedure TFormSettings.LoadUIStyle;
+begin
+  // load ui style
+  lblFontNameValue.Caption:= GlobalConfig.FontName;
+  lblFontSizeValue.Caption:= IntToStr(GlobalConfig.FontSize);
+  chkFontAntiAliasing.Checked:= GlobalConfig.FontAntiAliasing;
+  chkUITrans.Checked:= GlobalConfig.Transparent;
+  trackTrans.Position:= GlobalConfig.Alpha;
+  pnlColorValue.Color:= GlobalConfig.Color;
+  pnlFontColorValue.Color:= GlobalConfig.FontColor;
+end;
+
 procedure TFormSettings.InitSynEdit(AEditor: TSynEdit);
 var
   i: integer;
@@ -734,7 +814,7 @@ begin
   // init synedit
   with AEditor do begin
     Align:= alClient;
-    Color:= clWhite;
+    Color:= GlobalConfig.Color;
     Gutter.Color:= clWhite;
     for i := 0 to Gutter.Parts.Count - 1 do begin
       part := Gutter.Parts.Part[i];
@@ -864,6 +944,15 @@ begin
   synTemplate.Parent := tsTemplate;
   InitSynEdit(synTemplate);
 
+  ThemeUtils.RecolorSynEdit(FSynSmali);
+  ThemeUtils.RecolorSynEdit(FSynXML);
+  ThemeUtils.RecolorSynEdit(FSynHTML);
+  ThemeUtils.RecolorSynEdit(FSynCSS);
+  ThemeUtils.RecolorSynEdit(FSynJS);
+  ThemeUtils.RecolorSynEdit(FSynShell);
+  ThemeUtils.RecolorSynEdit(FSynJava);
+  ThemeUtils.RecolorSynEdit(synTemplate);
+
   // load sample
   p := ExtractFilePath(ParamStr(0)) + 'template' + SPLIT;
   if (FileExists(p + 'sample_smali')) then FSynSmali.Lines.LoadFromFile(p + 'sample_smali');
@@ -873,7 +962,6 @@ begin
   if (FileExists(p + 'sample_js')) then FSynJS.Lines.LoadFromFile(p + 'sample_js');
   if (FileExists(p + 'sample_shell')) then FSynShell.Lines.LoadFromFile(p + 'sample_shell');
   if (FileExists(p + 'sample_java')) then FSynJava.Lines.LoadFromFile(p + 'sample_java');
-
 end;
 
 procedure TFormSettings.InitEvents;
@@ -889,7 +977,7 @@ begin
   {$IFNDEF WINDOWS}
   if (FileExists('/usr/bin/java')) then begin
     lblJavaStatus.Caption:= '(exists)';
-    lblJavaStatus.Font.Color:= clDefault;
+    lblJavaStatus.Font.Color:= GlobalConfig.FontColor;
   end else begin
     lblJavaStatus.Caption:= '(not exists)';
     lblJavaStatus.Font.Color:= clRed;
@@ -898,7 +986,7 @@ begin
   p := WindowsUtils.GetDefaultJavaPath();
   if (FileExists(p)) then begin
     lblJavaStatus.Caption:= '(exists)';
-    lblJavaStatus.Font.Color:= clDefault;
+    lblJavaStatus.Font.Color:= GlobalConfig.FontColor;
   end else begin
     lblJavaStatus.Caption:= '(not exists)';
     lblJavaStatus.Font.Color:= clRed;
@@ -911,7 +999,7 @@ begin
   // curl
   if (FileExists('/usr/bin/curl')) then begin
     lblCurlStatus.Caption:= '(exists)';
-    lblCurlStatus.Font.Color:= clDefault;
+    lblCurlStatus.Font.Color:= GlobalConfig.FontColor;
   end else begin
     lblCurlStatus.Caption:= '(not exists)';
     lblCurlStatus.Font.Color:= clRed;
@@ -932,7 +1020,7 @@ begin
   p := ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'apktool.jar';
   if (FileExists(p)) then begin
     lblApktoolStatus.Caption:= '(exists)';
-    lblApktoolStatus.Font.Color:= clDefault;
+    lblApktoolStatus.Font.Color:= GlobalConfig.FontColor;
   end else begin
     lblApktoolStatus.Caption:= '(not exists)';
     lblApktoolStatus.Font.Color:= clRed;
@@ -942,7 +1030,7 @@ begin
   p := ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'jadx';
   if (FileExists(p)) then begin
     lblJadxStatus.Caption:= '(exists)';
-    lblJadxStatus.Font.Color:= clDefault;
+    lblJadxStatus.Font.Color:= GlobalConfig.FontColor;
   end else begin
     lblJadxStatus.Caption:= '(not exists)';
     lblJadxStatus.Font.Color:= clRed;
@@ -950,13 +1038,57 @@ begin
 
   LoadApktoolVersion();
   LoadJadxVersion();
-
+  LoadUIStyle();
   LoadStyles();
   lstStyles.ItemIndex:= lstStyles.Items.IndexOf(GlobalConfig.CodeTheme);
-  lstStylesClick(lstStyles);
+  lstStylesClick(nil);
   LoadFileTypes();
   LoadTemplate();
+end;
 
+procedure TFormSettings.InitTheme;
+begin
+  ThemeUtils.RecolorButton(btnChooseJava);
+  ThemeUtils.RecolorEdit(edtJavaPath);
+  ThemeUtils.RecolorButton(btnChooseCurl);
+  ThemeUtils.RecolorEdit(edtCurlPath);
+  ThemeUtils.RecolorButton(btnChooseSDKPath);
+  ThemeUtils.RecolorEdit(edtAndroidSDKPath);
+  ThemeUtils.RecolorButton(btnViewClassIndex);
+  ThemeUtils.RecolorButton(btnViewSearchResult);
+  ThemeUtils.RecolorButton(btnViewConsole);
+  ThemeUtils.RecolorButton(btnViewCloseAllPages);
+  ThemeUtils.RecolorButton(btnViewCloseAllOtherPages);
+  ThemeUtils.RecolorButton(btnViewSsmali);
+  ThemeUtils.RecolorButton(btnPackageDecompile);
+  ThemeUtils.RecolorButton(btnPackageCompile);
+  ThemeUtils.RecolorButton(btnPackageInstallFramework);
+  ThemeUtils.RecolorButton(btnCodeTreeNewClass);
+  ThemeUtils.RecolorButton(btnCodeTreeNewInterface);
+  ThemeUtils.RecolorButton(btnCodeTreeNewEnum);
+  ThemeUtils.RecolorButton(btnCodeTreeDeleteFile);
+  ThemeUtils.RecolorButton(btnCodeTreeNewTextFile);
+  ThemeUtils.RecolorButton(btnCodeTreeNewAnnotation);
+  ThemeUtils.RecolorButton(btnCodeEditorJumpClassMethod);
+  ThemeUtils.RecolorButton(btnCodeEditorSmaliToJava);
+  ThemeUtils.RecolorButton(btnCodeEditorKeywordsCompletion);
+  ThemeUtils.RecolorButton(btnCodeEditorTemplateCompletion);
+  ThemeUtils.RecolorButton(btnCodeEditorClassMethodCompletion);
+  ThemeUtils.RecolorButton(btnHelpSettings);
+  ThemeUtils.RecolorButton(btnFontName);
+  ThemeUtils.RecolorButton(btnUIColor);
+  ThemeUtils.RecolorButton(btnUIFontColor);
+  ThemeUtils.RecolorListView(lstStyles);
+  ThemeUtils.RecolorButton(btnAddFileType);
+  ThemeUtils.RecolorListView(lstTemplate);
+  ThemeUtils.RecolorButton(btnAddTemplate);
+  ThemeUtils.RecolorButton(btnDeleteTemplate);
+  ThemeUtils.RecolorComboBox(cbAndroidVersion);
+
+  // TODO:
+  (*
+name: , class: TSynEdit
+  *)
 end;
 
 end.

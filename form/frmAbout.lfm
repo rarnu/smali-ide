@@ -3793,7 +3793,7 @@ inherited FormAbout: TFormAbout
     object pnlApktool: TPanel
       Left = 8
       Height = 40
-      Top = 28
+      Top = 33
       Width = 365
       Align = alTop
       BorderSpacing.Around = 8
@@ -3832,7 +3832,7 @@ inherited FormAbout: TFormAbout
     end
     object lblAck: TLabel
       Left = 8
-      Height = 12
+      Height = 17
       Top = 8
       Width = 365
       Align = alTop
@@ -3843,7 +3843,7 @@ inherited FormAbout: TFormAbout
     object pnlJadx: TPanel
       Left = 8
       Height = 40
-      Top = 76
+      Top = 81
       Width = 365
       Align = alTop
       BorderSpacing.Around = 8
@@ -3883,7 +3883,7 @@ inherited FormAbout: TFormAbout
     object pnlSynEdit: TPanel
       Left = 8
       Height = 40
-      Top = 124
+      Top = 129
       Width = 365
       Align = alTop
       BorderSpacing.Around = 8
@@ -3931,7 +3931,7 @@ inherited FormAbout: TFormAbout
     ClientHeight = 48
     ClientWidth = 397
     TabOrder = 2
-    object btnOK: TButton
+    object btnOK: TBitBtn
       Left = 314
       Height = 32
       Top = 8
@@ -3939,7 +3939,10 @@ inherited FormAbout: TFormAbout
       Align = alRight
       BorderSpacing.Around = 8
       Caption = 'OK'
+      Color = clWhite
+      Font.Color = clBlack
       ModalResult = 1
+      ParentFont = False
       TabOrder = 0
     end
   end

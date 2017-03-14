@@ -27,6 +27,7 @@ type
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
     property Code: string read GetCode write SetCode;
   end;
@@ -37,7 +38,7 @@ var
 implementation
 
 uses
-  config, baseData;
+  config, baseData, ThemeUtils;
 
 {$R *.lfm}
 
@@ -108,21 +109,7 @@ begin
     Parent := Self;
     Align:= alClient;
     Color:= clWhite;
-    Gutter.Color:= clWhite;
-    for i := 0 to Gutter.Parts.Count - 1 do begin
-      part := Gutter.Parts.Part[i];
-      if (part is TSynGutterLineNumber) then begin
-        TSynGutterLineNumber(part).MarkupInfo.Background:= clWhite;
-      end;
-      if (part is TSynGutterSeparator) then begin
-        TSynGutterSeparator(part).MarkupInfo.Foreground:= clSilver;
-      end;
-      if (part is TSynGutterCodeFolding) then begin
-        TSynGutterCodeFolding(part).MarkupInfo.Foreground:= clSilver;
-      end;
-    end;
     Options:= Options + [eoKeepCaretX] - [eoAutoIndent, eoScrollPastEol, eoSmartTabs];
-    RightEdgeColor:= clWhite;
     RightGutter.Visible:= False;
     ScrollBars:= ssAutoBoth;
     TabWidth:= 4;
@@ -141,6 +128,11 @@ end;
 procedure TFormJava.InitLogic;
 begin
   //
+end;
+
+procedure TFormJava.InitTheme;
+begin
+  ThemeUtils.RecolorSynEdit(FSynJava);
 end;
 
 end.

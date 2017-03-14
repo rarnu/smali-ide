@@ -22,6 +22,7 @@ type
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
   published
     property AcceptShortcut: TShortCut read FAcceptShortcut write FAcceptShortcut;
@@ -65,6 +66,11 @@ begin
 end;
 
 procedure TFormShortcutAccept.InitLogic;
+begin
+  //
+end;
+
+procedure TFormShortcutAccept.InitTheme;
 begin
   //
 end;

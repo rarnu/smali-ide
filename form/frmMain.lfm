@@ -11,21 +11,23 @@ inherited FormMain: TFormMain
   Menu = mmMain
   object pnlProjectFiles: TPanel[0]
     Left = 0
-    Height = 243
+    Height = 247
     Top = 36
     Width = 240
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 239
-    ClientWidth = 236
+    ClientHeight = 247
+    ClientWidth = 240
     TabOrder = 0
     object tvProjectFiles: TTreeView
       Left = 0
-      Height = 239
+      Height = 247
       Top = 0
-      Width = 236
+      Width = 240
       Align = alClient
+      BackgroundColor = clWhite
       BorderStyle = bsNone
+      Color = clWhite
       DefaultItemHeight = 40
       ExpandSignSize = 7
       HideSelection = False
@@ -40,15 +42,17 @@ inherited FormMain: TFormMain
   end
   object splProjectFiles: TSplitter[1]
     Left = 240
-    Height = 243
+    Height = 247
     Top = 36
-    Width = 5
+    Width = 3
+    Color = clWhite
+    ParentColor = False
   end
   object pgCode: TPageControl[2]
-    Left = 245
-    Height = 243
+    Left = 243
+    Height = 247
     Top = 36
-    Width = 331
+    Width = 335
     Align = alClient
     MultiLine = True
     TabOrder = 2
@@ -159,70 +163,59 @@ inherited FormMain: TFormMain
   end
   object pnlClassIndex: TPanel[4]
     Left = 581
-    Height = 243
+    Height = 247
     Top = 36
     Width = 219
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 239
-    ClientWidth = 215
+    ClientHeight = 247
+    ClientWidth = 219
     TabOrder = 4
     object tvClassIndex: TTreeView
       Left = 0
-      Height = 212
+      Height = 220
       Top = 27
-      Width = 215
+      Width = 219
       Align = alClient
+      BackgroundColor = clWhite
+      Color = clWhite
       ExpandSignSize = 7
+      HideSelection = False
       Images = imgIndex
       ReadOnly = True
       ScrollBars = ssAutoBoth
       TabOrder = 0
       OnClick = tvClassIndexClick
-      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      Options = [tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips]
     end
     object edtFilterClass: TEdit
       Left = 0
       Height = 27
       Top = 0
-      Width = 215
+      Width = 219
       Align = alTop
       OnChange = edtFilterClassChange
       TabOrder = 1
     end
   end
   object splRight: TSplitter[5]
-    Left = 576
-    Height = 243
+    Left = 578
+    Height = 247
     Top = 36
-    Width = 5
+    Width = 3
     Align = alRight
     ResizeAnchor = akRight
   end
-  object sbMain: TStatusBar[6]
-    Left = 0
-    Height = 21
-    Top = 579
-    Width = 800
-    Panels = <    
-      item
-        Width = 300
-      end    
-      item
-        Width = 50
-      end>
-    SimplePanel = False
-  end
-  object pnlSearch: TPanel[7]
+  object pnlSearch: TPanel[6]
     Left = 0
     Height = 152
-    Top = 284
+    Top = 286
     Width = 800
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 152
     ClientWidth = 800
-    TabOrder = 7
+    TabOrder = 6
     object lstSearchResult: TListBox
       Left = 0
       Height = 131
@@ -232,7 +225,7 @@ inherited FormMain: TFormMain
       ItemHeight = 0
       OnClick = lstSearchResultClick
       OnKeyDown = lstSearchResultKeyDown
-      ScrollWidth = 796
+      ScrollWidth = 798
       TabOrder = 0
       TopIndex = -1
     end
@@ -256,7 +249,7 @@ inherited FormMain: TFormMain
         Caption = 'Search Result'
         ParentColor = False
       end
-      object btnCancelsearch: TButton
+      object btnCancelsearch: TBitBtn
         Left = 771
         Height = 21
         Top = 0
@@ -280,16 +273,16 @@ inherited FormMain: TFormMain
       end
     end
   end
-  object splBottom: TSplitter[8]
+  object splBottom: TSplitter[7]
     Cursor = crVSplit
     Left = 0
-    Height = 5
-    Top = 279
+    Height = 3
+    Top = 283
     Width = 800
     Align = alBottom
     ResizeAnchor = akBottom
   end
-  object pnlConsole: TPanel[9]
+  object pnlConsole: TPanel[8]
     Left = 0
     Height = 138
     Top = 441
@@ -298,7 +291,7 @@ inherited FormMain: TFormMain
     BevelOuter = bvNone
     ClientHeight = 138
     ClientWidth = 800
-    TabOrder = 9
+    TabOrder = 8
     Visible = False
     object mmConsole: TMemo
       Left = 0
@@ -331,7 +324,7 @@ inherited FormMain: TFormMain
         Caption = 'Console'
         ParentColor = False
       end
-      object btnCleanConsole: TButton
+      object btnCleanConsole: TBitBtn
         Left = 779
         Height = 21
         Top = 0
@@ -344,15 +337,26 @@ inherited FormMain: TFormMain
       end
     end
   end
-  object splConsole: TSplitter[10]
+  object splConsole: TSplitter[9]
     Cursor = crVSplit
     Left = 0
-    Height = 5
-    Top = 436
+    Height = 3
+    Top = 438
     Width = 800
     Align = alBottom
     ResizeAnchor = akBottom
     Visible = False
+  end
+  object sbMain: TPanel[10]
+    Left = 0
+    Height = 21
+    Top = 579
+    Width = 800
+    Align = alBottom
+    Alignment = taLeftJustify
+    BevelInner = bvRaised
+    BevelOuter = bvLowered
+    TabOrder = 10
   end
   object mmMain: TMainMenu[11]
     Images = imgLst

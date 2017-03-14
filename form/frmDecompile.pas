@@ -6,17 +6,17 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, frmBase;
+  StdCtrls, frmBase, Buttons;
 
 type
 
   { TFormDecompile }
 
   TFormDecompile = class(TFormBase)
-    btnApkPath: TButton;
-    btnOutputPath: TButton;
-    btnOK: TButton;
-    btnCanel: TButton;
+    btnApkPath: TBitBtn;
+    btnOutputPath: TBitBtn;
+    btnOK: TBitBtn;
+    btnCanel: TBitBtn;
     chkNoRes: TCheckBox;
     chkNoSrc: TCheckBox;
     edtApkPath: TEdit;
@@ -34,6 +34,7 @@ type
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
 
   end;
@@ -42,6 +43,9 @@ var
   FormDecompile: TFormDecompile;
 
 implementation
+
+uses
+  ThemeUtils;
 
 {$R *.lfm}
 
@@ -77,6 +81,16 @@ end;
 procedure TFormDecompile.InitLogic;
 begin
   //
+end;
+
+procedure TFormDecompile.InitTheme;
+begin
+  ThemeUtils.RecolorButton(btnApkPath);
+  ThemeUtils.RecolorButton(btnOutputPath);
+  ThemeUtils.RecolorButton(btnOK);
+  ThemeUtils.RecolorButton(btnCanel);
+  ThemeUtils.RecolorEdit(edtApkPath);
+  ThemeUtils.RecolorEdit(edtOutputPath);
 end;
 
 end.

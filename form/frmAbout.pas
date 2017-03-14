@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, frmBase, LCLIntf;
+  StdCtrls, frmBase, LCLIntf, Buttons;
 
 type
 
@@ -14,7 +14,7 @@ type
 
   TFormAbout = class(TFormBase)
     bv: TBevel;
-    btnOK: TButton;
+    btnOK: TBitBtn;
     imgIcon: TImage;
     lblSynEdit: TLabel;
     lblJadxGithub: TLabel;
@@ -38,6 +38,7 @@ type
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
 
   end;
@@ -46,6 +47,9 @@ var
   FormAbout: TFormAbout;
 
 implementation
+
+uses
+  ThemeUtils;
 
 {$R *.lfm}
 
@@ -79,6 +83,11 @@ end;
 procedure TFormAbout.InitLogic;
 begin
   //
+end;
+
+procedure TFormAbout.InitTheme;
+begin
+  ThemeUtils.RecolorButton(btnOK);
 end;
 
 end.

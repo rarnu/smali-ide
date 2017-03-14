@@ -6,14 +6,14 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, frmBase, SmaliIdeAPI, LCLIntf;
+  ExtCtrls, frmBase, SmaliIdeAPI, LCLIntf, Buttons;
 
 type
 
   { TFormUpdate }
 
   TFormUpdate = class(TFormBase)
-    btnUpdate: TButton;
+    btnUpdate: TBitBtn;
     gbLastVersion: TGroupBox;
     gbHistoryVersion: TGroupBox;
     lblLastVersion: TLabel;
@@ -34,6 +34,7 @@ type
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
     property UpdateInfo: TUpdateInfo read FUpdateInfo write SetUpdateInfo;
 
@@ -45,7 +46,7 @@ var
 implementation
 
 uses
-  updateHistoryView;
+  updateHistoryView, ThemeUtils;
 
 {$R *.lfm}
 
@@ -90,6 +91,12 @@ end;
 procedure TFormUpdate.InitLogic;
 begin
   //
+end;
+
+procedure TFormUpdate.InitTheme;
+begin
+  ThemeUtils.RecolorButton(btnUpdate);
+  ThemeUtils.RecolorMemo(mmDesc);
 end;
 
 end.

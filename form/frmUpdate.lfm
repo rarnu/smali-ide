@@ -111,7 +111,7 @@ inherited FormUpdate: TFormUpdate
       ClientHeight = 48
       ClientWidth = 376
       TabOrder = 3
-      object btnUpdate: TButton
+      object btnUpdate: TBitBtn
         Left = 293
         Height = 32
         Top = 8

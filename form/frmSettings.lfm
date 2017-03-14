@@ -42,14 +42,14 @@ inherited FormSettings: TFormSettings
           Width = 668
           Align = alTop
           BevelColor = clNone
-          BevelOuter = bvSpace
+          BevelOuter = bvNone
           ClientHeight = 40
           ClientWidth = 668
           TabOrder = 0
           object lblDefaultJava: TLabel
-            Left = 9
-            Height = 38
-            Top = 1
+            Left = 8
+            Height = 40
+            Top = 0
             Width = 180
             Align = alLeft
             AutoSize = False
@@ -59,11 +59,12 @@ inherited FormSettings: TFormSettings
             ParentColor = False
           end
           object lblJavaStatus: TLabel
-            Left = 197
-            Height = 22
-            Top = 9
-            Width = 43
+            Left = 196
+            Height = 24
+            Top = 8
+            Width = 100
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = '(exist)'
             Layout = tlCenter
@@ -93,7 +94,7 @@ inherited FormSettings: TFormSettings
             Layout = tlCenter
             ParentColor = False
           end
-          object btnChooseJava: TButton
+          object btnChooseJava: TBitBtn
             Left = 632
             Height = 28
             Top = 8
@@ -133,14 +134,14 @@ inherited FormSettings: TFormSettings
           Width = 668
           Align = alTop
           BevelColor = clNone
-          BevelOuter = bvSpace
+          BevelOuter = bvNone
           ClientHeight = 40
           ClientWidth = 668
           TabOrder = 0
           object lblDefaultCurl: TLabel
-            Left = 9
-            Height = 38
-            Top = 1
+            Left = 8
+            Height = 40
+            Top = 0
             Width = 180
             Align = alLeft
             AutoSize = False
@@ -150,11 +151,12 @@ inherited FormSettings: TFormSettings
             ParentColor = False
           end
           object lblCurlStatus: TLabel
-            Left = 197
-            Height = 22
-            Top = 9
-            Width = 43
+            Left = 196
+            Height = 24
+            Top = 8
+            Width = 100
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = '(exist)'
             Layout = tlCenter
@@ -184,7 +186,7 @@ inherited FormSettings: TFormSettings
             Layout = tlCenter
             ParentColor = False
           end
-          object btnChooseCurl: TButton
+          object btnChooseCurl: TBitBtn
             Left = 632
             Height = 28
             Top = 8
@@ -224,14 +226,14 @@ inherited FormSettings: TFormSettings
           Width = 668
           Align = alTop
           BevelColor = clNone
-          BevelOuter = bvSpace
+          BevelOuter = bvNone
           ClientHeight = 40
           ClientWidth = 668
           TabOrder = 0
           object lblDefaultApktool: TLabel
-            Left = 9
-            Height = 38
-            Top = 1
+            Left = 8
+            Height = 40
+            Top = 0
             Width = 180
             Align = alLeft
             AutoSize = False
@@ -241,11 +243,12 @@ inherited FormSettings: TFormSettings
             ParentColor = False
           end
           object lblApktoolStatus: TLabel
-            Left = 197
-            Height = 22
-            Top = 9
-            Width = 43
+            Left = 196
+            Height = 24
+            Top = 8
+            Width = 100
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = '(exist)'
             Layout = tlCenter
@@ -306,14 +309,14 @@ inherited FormSettings: TFormSettings
           Width = 668
           Align = alTop
           BevelColor = clNone
-          BevelOuter = bvSpace
+          BevelOuter = bvNone
           ClientHeight = 40
           ClientWidth = 668
           TabOrder = 0
           object lblJadxDefault: TLabel
-            Left = 9
-            Height = 38
-            Top = 1
+            Left = 8
+            Height = 40
+            Top = 0
             Width = 180
             Align = alLeft
             AutoSize = False
@@ -323,11 +326,12 @@ inherited FormSettings: TFormSettings
             ParentColor = False
           end
           object lblJadxStatus: TLabel
-            Left = 197
-            Height = 22
-            Top = 9
-            Width = 43
+            Left = 196
+            Height = 24
+            Top = 8
+            Width = 100
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = '(exist)'
             Layout = tlCenter
@@ -403,7 +407,7 @@ inherited FormSettings: TFormSettings
             Layout = tlCenter
             ParentColor = False
           end
-          object btnChooseSDKPath: TButton
+          object btnChooseSDKPath: TBitBtn
             Left = 632
             Height = 28
             Top = 8
@@ -453,9 +457,15 @@ inherited FormSettings: TFormSettings
             Width = 464
             Align = alClient
             BorderSpacing.Around = 8
+            Color = clWhite
+            Font.Color = clBlack
             ItemHeight = 0
+            Items.Strings = (
+              '1111'
+              '222'
+            )
             OnChange = cbAndroidVersionChange
-            Style = csDropDownList
+            ParentFont = False
             TabOrder = 0
           end
         end
@@ -470,12 +480,12 @@ inherited FormSettings: TFormSettings
         Height = 588
         Top = 0
         Width = 688
-        HorzScrollBar.Page = 236
+        HorzScrollBar.Page = 290
         VertScrollBar.Page = 588
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 588
-        ClientWidth = 672
+        ClientWidth = 685
         TabOrder = 0
         object gbView: TGroupBox
           Left = 8
@@ -502,14 +512,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 162
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Switch Class Index View'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnViewClassIndex: TButton
+            object btnViewClassIndex: TBitBtn
               Left = 444
               Height = 24
               Hint = 'show_classindex_shortcut'
@@ -536,14 +547,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 179
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Switch Class Search Result'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnViewSearchResult: TButton
+            object btnViewSearchResult: TBitBtn
               Left = 444
               Height = 24
               Hint = 'show_searchresult_shortcut'
@@ -570,14 +582,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 104
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Switch Console'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnViewConsole: TButton
+            object btnViewConsole: TBitBtn
               Left = 444
               Height = 24
               Hint = 'show_console_shortcut'
@@ -604,14 +617,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 102
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Close All Pages'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnViewCloseAllPages: TButton
+            object btnViewCloseAllPages: TBitBtn
               Left = 444
               Height = 24
               Hint = 'close_all_pages_shortcut'
@@ -638,14 +652,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 146
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Close All Other Pages'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnViewCloseAllOtherPages: TButton
+            object btnViewCloseAllOtherPages: TBitBtn
               Left = 444
               Height = 24
               Hint = 'close_all_other_pages_shortcut'
@@ -672,14 +687,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 93
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Switch Ssmali'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnViewSsmali: TButton
+            object btnViewSsmali: TBitBtn
               Left = 444
               Height = 24
               Hint = 'show_ssmali_shortcut'
@@ -718,14 +734,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 73
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Decompile'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnPackageDecompile: TButton
+            object btnPackageDecompile: TBitBtn
               Left = 444
               Height = 24
               Hint = 'decompile_shortcut'
@@ -752,14 +769,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 56
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Compile'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnPackageCompile: TButton
+            object btnPackageCompile: TBitBtn
               Left = 444
               Height = 24
               Hint = 'compile_shortcut'
@@ -786,14 +804,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 123
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Install Framework'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnPackageInstallFramework: TButton
+            object btnPackageInstallFramework: TBitBtn
               Left = 444
               Height = 24
               Hint = 'install_framework_shortcut'
@@ -832,14 +851,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 69
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'New Class'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeTreeNewClass: TButton
+            object btnCodeTreeNewClass: TBitBtn
               Left = 444
               Height = 24
               Hint = 'new_class_shortcut'
@@ -866,14 +886,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 96
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'New Interface'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeTreeNewInterface: TButton
+            object btnCodeTreeNewInterface: TBitBtn
               Left = 444
               Height = 24
               Hint = 'new_interface_shortcut'
@@ -900,14 +921,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 74
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'New Enum'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeTreeNewEnum: TButton
+            object btnCodeTreeNewEnum: TBitBtn
               Left = 444
               Height = 24
               Hint = 'new_enum_shortcut'
@@ -934,14 +956,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 72
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Delete File'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeTreeDeleteFile: TButton
+            object btnCodeTreeDeleteFile: TBitBtn
               Left = 444
               Height = 24
               Hint = 'delete_file_shortcut'
@@ -968,14 +991,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 90
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'New Text File'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeTreeNewTextFile: TButton
+            object btnCodeTreeNewTextFile: TBitBtn
               Left = 444
               Height = 24
               Hint = 'new_textfile_shortcut'
@@ -1002,14 +1026,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 113
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'New Annotation'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeTreeNewAnnotation: TButton
+            object btnCodeTreeNewAnnotation: TBitBtn
               Left = 444
               Height = 24
               Hint = 'new_annotation_shortcut'
@@ -1048,14 +1073,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 143
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Jump Class / Method'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeEditorJumpClassMethod: TButton
+            object btnCodeEditorJumpClassMethod: TBitBtn
               Left = 444
               Height = 24
               Hint = 'jump_class_method_shortcut'
@@ -1082,14 +1108,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 90
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Smali to Java'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeEditorSmaliToJava: TButton
+            object btnCodeEditorSmaliToJava: TBitBtn
               Left = 444
               Height = 24
               Hint = 'jump_to_java_shortcut'
@@ -1116,14 +1143,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 150
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Keywords Completion'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeEditorKeywordsCompletion: TButton
+            object btnCodeEditorKeywordsCompletion: TBitBtn
               Left = 444
               Height = 24
               Hint = 'hint_keyword_shortcut'
@@ -1150,14 +1178,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 146
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Template Completion'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeEditorTemplateCompletion: TButton
+            object btnCodeEditorTemplateCompletion: TBitBtn
               Left = 444
               Height = 24
               Hint = 'hint_template_shortcut'
@@ -1184,14 +1213,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 184
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Class / Method Completion'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnCodeEditorClassMethodCompletion: TButton
+            object btnCodeEditorClassMethodCompletion: TBitBtn
               Left = 444
               Height = 24
               Hint = 'hint_classmethod_shortcut'
@@ -1230,14 +1260,15 @@ inherited FormSettings: TFormSettings
               Left = 8
               Height = 24
               Top = 8
-              Width = 57
+              Width = 250
               Align = alLeft
+              AutoSize = False
               BorderSpacing.Around = 8
               Caption = 'Settings'
               Layout = tlCenter
               ParentColor = False
             end
-            object btnHelpSettings: TButton
+            object btnHelpSettings: TBitBtn
               Left = 444
               Height = 24
               Hint = 'settings_shortcut'
@@ -1278,7 +1309,7 @@ inherited FormSettings: TFormSettings
           ClientHeight = 44
           ClientWidth = 668
           TabOrder = 0
-          object btnFontName: TButton
+          object btnFontName: TBitBtn
             Left = 632
             Height = 28
             Top = 8
@@ -1286,48 +1317,53 @@ inherited FormSettings: TFormSettings
             Align = alRight
             BorderSpacing.Around = 8
             Caption = '...'
+            OnClick = btnFontNameClick
             TabOrder = 0
           end
           object lblFontName: TLabel
             Left = 8
             Height = 28
             Top = 8
-            Width = 40
+            Width = 80
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = 'Name'
             Layout = tlCenter
             ParentColor = False
           end
-          object Label2: TLabel
-            Left = 56
+          object lblFontNameValue: TLabel
+            Left = 96
             Height = 28
             Top = 8
-            Width = 52
+            Width = 150
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = 'Default'
             Layout = tlCenter
             ParentColor = False
           end
           object lblFontSize: TLabel
-            Left = 132
+            Left = 270
             Height = 28
             Top = 8
-            Width = 27
+            Width = 80
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Left = 16
             BorderSpacing.Around = 8
             Caption = 'Size'
             Layout = tlCenter
             ParentColor = False
           end
-          object lblFontInc: TLabel
-            Left = 167
+          object lblFontSizeValue: TLabel
+            Left = 358
             Height = 28
             Top = 8
-            Width = 16
+            Width = 80
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = '10'
             Layout = tlCenter
@@ -1348,25 +1384,25 @@ inherited FormSettings: TFormSettings
             Left = 8
             Height = 28
             Top = 8
-            Width = 114
+            Width = 120
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = 'Anti-Aliasing'
-            Font.Quality = fqAntialiased
-            ParentFont = False
+            OnClick = chkFontAntiAliasingClick
             TabOrder = 0
           end
         end
       end
       object gbUI: TGroupBox
         Left = 8
-        Height = 111
+        Height = 151
         Top = 129
         Width = 672
         Align = alTop
         BorderSpacing.Around = 8
         Caption = 'UI'
-        ClientHeight = 92
+        ClientHeight = 132
         ClientWidth = 668
         TabOrder = 1
         object pnlTrans: TPanel
@@ -1383,18 +1419,22 @@ inherited FormSettings: TFormSettings
             Left = 8
             Height = 28
             Top = 8
-            Width = 109
+            Width = 120
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = 'Transparent'
+            OnClick = chkUITransClick
             TabOrder = 0
           end
           object trackTrans: TTrackBar
-            Left = 125
+            Left = 136
             Height = 46
             Top = 0
-            Width = 535
+            Width = 524
             Max = 255
+            Min = 100
+            OnChange = trackTransChange
             PageSize = 1
             Position = 255
             ScalePos = trRight
@@ -1420,15 +1460,16 @@ inherited FormSettings: TFormSettings
             Left = 8
             Height = 28
             Top = 8
-            Width = 37
+            Width = 80
             Align = alLeft
+            AutoSize = False
             BorderSpacing.Around = 8
             Caption = 'Color'
             Layout = tlCenter
             ParentColor = False
           end
           object pnlColorValue: TPanel
-            Left = 69
+            Left = 112
             Height = 28
             Top = 8
             Width = 170
@@ -1437,9 +1478,11 @@ inherited FormSettings: TFormSettings
             BorderSpacing.Around = 8
             BevelInner = bvRaised
             BevelOuter = bvLowered
+            Color = clWhite
+            ParentColor = False
             TabOrder = 0
           end
-          object btnUIColor: TButton
+          object btnUIColor: TBitBtn
             Left = 632
             Height = 28
             Top = 8
@@ -1447,6 +1490,56 @@ inherited FormSettings: TFormSettings
             Align = alRight
             BorderSpacing.Around = 8
             Caption = '...'
+            Color = clWhite
+            OnClick = btnUIColorClick
+            TabOrder = 1
+          end
+        end
+        object pnlIFontColor: TPanel
+          Left = 0
+          Height = 44
+          Top = 88
+          Width = 668
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 44
+          ClientWidth = 668
+          TabOrder = 2
+          object lblUIFontColor: TLabel
+            Left = 8
+            Height = 28
+            Top = 8
+            Width = 80
+            Align = alLeft
+            AutoSize = False
+            BorderSpacing.Around = 8
+            Caption = 'Font Color'
+            Layout = tlCenter
+            ParentColor = False
+          end
+          object pnlFontColorValue: TPanel
+            Left = 112
+            Height = 28
+            Top = 8
+            Width = 170
+            Align = alLeft
+            BorderSpacing.Left = 16
+            BorderSpacing.Around = 8
+            BevelInner = bvRaised
+            BevelOuter = bvLowered
+            Color = clWhite
+            ParentColor = False
+            TabOrder = 0
+          end
+          object btnUIFontColor: TBitBtn
+            Left = 632
+            Height = 28
+            Top = 8
+            Width = 28
+            Align = alRight
+            BorderSpacing.Around = 8
+            Caption = '...'
+            OnClick = btnUIFontColorClick
             TabOrder = 1
           end
         end
@@ -1465,8 +1558,10 @@ inherited FormSettings: TFormSettings
         BorderSpacing.Left = 8
         BorderSpacing.Top = 8
         BorderSpacing.Bottom = 8
+        Color = clWhite
         ItemHeight = 0
         OnClick = lstStylesClick
+        ParentFont = False
         ScrollWidth = 190
         TabOrder = 0
         TopIndex = -1
@@ -1475,13 +1570,13 @@ inherited FormSettings: TFormSettings
         Left = 200
         Height = 588
         Top = 0
-        Width = 5
+        Width = 3
       end
       object pgStyles: TPageControl
-        Left = 205
+        Left = 203
         Height = 572
         Top = 8
-        Width = 475
+        Width = 477
         ActivePage = tsSmali
         Align = alClient
         BorderSpacing.Top = 8
@@ -1537,7 +1632,7 @@ inherited FormSettings: TFormSettings
         ClientHeight = 40
         ClientWidth = 688
         TabOrder = 1
-        object btnAddFileType: TButton
+        object btnAddFileType: TBitBtn
           Left = 8
           Height = 24
           Top = 8
@@ -1589,7 +1684,7 @@ inherited FormSettings: TFormSettings
           ClientHeight = 48
           ClientWidth = 192
           TabOrder = 1
-          object btnAddTemplate: TButton
+          object btnAddTemplate: TBitBtn
             Left = 8
             Height = 32
             Top = 8
@@ -1600,7 +1695,7 @@ inherited FormSettings: TFormSettings
             OnClick = btnAddTemplateClick
             TabOrder = 0
           end
-          object btnDeleteTemplate: TButton
+          object btnDeleteTemplate: TBitBtn
             Left = 76
             Height = 32
             Top = 8
@@ -1617,7 +1712,7 @@ inherited FormSettings: TFormSettings
         Left = 200
         Height = 588
         Top = 0
-        Width = 5
+        Width = 3
       end
     end
   end

@@ -5,15 +5,15 @@ unit frmMain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, SmaliIdeAPI,
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, SmaliIdeAPI, Buttons,
   ExtCtrls, ComCtrls, StdCtrls, frmBase, math, LCLType, SearchInFileUtils, CommandUtils, LCLIntf, process;
 
 type
   { TFormMain }
 
   TFormMain = class(TFormBase)
-    btnCancelsearch: TButton;
-    btnCleanConsole: TButton;
+    btnCancelsearch: TBitBtn;
+    btnCleanConsole: TBitBtn;
     edtFilterClass: TEdit;
     imgIndex: TImageList;
     imgLst: TImageList;
@@ -77,6 +77,7 @@ type
     mm1: TMenuItem;
     miExit: TMenuItem;
     mmMain: TMainMenu;
+    sbMain: TPanel;
     pnlConsole: TPanel;
     pnlConsoleTitle: TPanel;
     pnlSearchOper: TPanel;
@@ -89,7 +90,6 @@ type
     splConsole: TSplitter;
     splRight: TSplitter;
     splProjectFiles: TSplitter;
-    sbMain: TStatusBar;
     tbMain: TToolBar;
     tBtnCut: TToolButton;
     tBtnCopy: TToolButton;
@@ -182,6 +182,7 @@ type
     procedure InitComponents; override;
     procedure InitEvents; override;
     procedure InitLogic; override;
+    procedure InitTheme; override;
   public
 
   published
@@ -198,7 +199,7 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView;
+  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView, ThemeUtils;
 
 { TFormMain }
 
@@ -233,6 +234,7 @@ begin
           page.ProjectPath:= CurrentProjectPath;
           page.FileName:= path;
           page.SetCodeTheme(GlobalConfig.CodeTheme);
+          page.SetStyleTheme();
           page.OnCodeJump:=@codeJumpCallback;
           pgCode.TabIndex:= pgCode.PageCount - 1;
         end else begin
@@ -243,6 +245,7 @@ begin
             pageText.ProjectPath:= CurrentProjectPath;
             pageText.FileName:= path;
             pageText.SetCodeTheme(GlobalConfig.CodeTheme);
+            pageText.SetStyleTheme();
             pgCode.TabIndex:= pgCode.PageCount - 1;
           end else if (CodeUtils.IsImageFile(path)) then begin
             // open image path
@@ -410,6 +413,7 @@ begin
       page.ProjectPath:= CurrentProjectPath;
       page.FileName:= openPath;
       page.SetCodeTheme(GlobalConfig.CodeTheme);
+      page.SetStyleTheme();
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -425,6 +429,7 @@ begin
         javaPage.Parent := pgCode;
         javaPage.FileName:= openPath;
         javaPage.SetCodeTheme(GlobalConfig.CodeTheme);
+        javaPage.SetStyleTheme();
         pgCode.TabIndex:= pgCode.PageCount - 1;
       end else begin
         pgCode.TabIndex:= idx;
@@ -485,7 +490,7 @@ end;
 
 procedure TFormMain.buildClassIndexCallback(sender: TObject; path: string; count: Integer);
 begin
-  sbMain.Panels[0].Text:= Format('Indexing: [%d] %s', [count, path]);
+  sbMain.Caption:= Format('Indexing: [%d] %s', [count, path]);
   Application.ProcessMessages;
 end;
 
@@ -496,7 +501,7 @@ var
   s: string;
 begin
   tvClassIndex.Items.Clear;
-  sbMain.Panels[0].Text:= 'Ready';
+  sbMain.Caption:= 'Ready';
   indexPath := ExtractFilePath(ParamStr(0)) + 'index' + SPLIT + md5EncryptString(CurrentProjectPath) + SPLIT + 'index';
   if (FileExists(indexPath)) then begin
     tvClassIndex.BeginUpdate;
@@ -862,6 +867,7 @@ begin
       page.ProjectPath:= CurrentProjectPath;
       page.FileName:= APath;
       page.SetCodeTheme(GlobalConfig.CodeTheme);
+      page.SetStyleTheme();
       page.OnCodeJump:=@codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -871,6 +877,7 @@ begin
         pageText.ProjectPath:= CurrentProjectPath;
         pageText.FileName:= APath;
         pageText.SetCodeTheme(GlobalConfig.CodeTheme);
+        pageText.SetStyleTheme();
         pgCode.TabIndex:= pgCode.PageCount - 1;
       end
     end;
@@ -883,7 +890,12 @@ end;
 
 procedure TFormMain.btnCancelsearchClick(Sender: TObject);
 begin
-  threadSearchInFile.AbortSearch();
+  if (threadSearchInFile <> nil) then begin
+    try
+      threadSearchInFile.AbortSearch();
+    except
+    end;
+  end;
 end;
 
 procedure TFormMain.btnCleanConsoleClick(Sender: TObject);
@@ -1012,6 +1024,7 @@ var
       Result.ProjectPath:= CurrentProjectPath;
       Result.FileName:= p;
       Result.SetCodeTheme(GlobalConfig.CodeTheme);
+      Result.SetStyleTheme();
       Result.OnCodeJump:= @codeJumpCallback;
       pgCode.TabIndex:= pgCode.PageCount - 1;
     end else begin
@@ -1057,6 +1070,17 @@ procedure TFormMain.InitLogic;
 begin
   loadShortcut();
   miSSmali.Checked:= GlobalConfig.ShowSSmali;
+end;
+
+procedure TFormMain.InitTheme;
+begin
+  ThemeUtils.RecolorTreeView(tvProjectFiles);
+  ThemeUtils.RecolorTreeView(tvClassIndex);
+  ThemeUtils.RecolorEdit(edtFilterClass);
+  ThemeUtils.RecolorListView(lstSearchResult);
+  ThemeUtils.RecolorButton(btnCancelsearch);
+  ThemeUtils.RecolorMemo(mmConsole);
+  ThemeUtils.RecolorButton(btnCleanConsole);
 end;
 
 end.
