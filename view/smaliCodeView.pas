@@ -93,6 +93,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure SetFileName(AValue: string);
     function FindSmaliString(aset: TCharSet): string;
+    function FindMethodSmaliString(aset: TCharSet): string;
     function FindClassToJump(): string;
     function FindMethodToJump(): string;
     procedure menuClicked(sender: TObject);
@@ -179,6 +180,36 @@ begin
   Result := s;
 end;
 
+function TSmaliCodeView.FindMethodSmaliString(aset: TCharSet): string;
+var
+  s: string = '';
+  idx: Integer;
+  c: Char;
+begin
+  // find class to jump
+  idx:= FEditor.SelStart;
+  while idx > 0 do begin
+    c := FEditor.Lines.Text[idx];
+    if (c in aset) then begin
+      s := c + s;
+    end else begin
+      Break;
+    end;
+    Dec(idx);
+  end;
+  idx := FEditor.SelStart + 1;
+  while idx < FEditor.Lines.Text.Length do begin
+    c := FEditor.Lines.Text[idx];
+    if (c in aset) then begin
+      s := s + c;
+    end else begin
+      Break;
+    end;
+    Inc(idx);
+  end;
+  Result := s;
+end;
+
 function TSmaliCodeView.FindClassToJump: string;
 const
   CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', '_', '$', ';'];
@@ -190,7 +221,7 @@ function TSmaliCodeView.FindMethodToJump: string;
 const
   CLASS_CHARS: TCharSet = ['A'..'Z', 'a'..'z', '0'..'9', '/', ';', '_', '$', '-', '<', '>', '(', ')', '[', ':'];
 begin
-  Result := FindSmaliString(CLASS_CHARS);
+  Result := FindMethodSmaliString(CLASS_CHARS);
 end;
 
 procedure TSmaliCodeView.OnEditorChange(Sender: TObject);

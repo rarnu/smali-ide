@@ -435,12 +435,12 @@ begin
         pgCode.TabIndex:= idx;
       end;
     end else begin
-      if (typ = 0) then MessageDlg('Hint', Format('Class "%s" is not included in the project.', [path]), mtInformation, [mbOK], 0);
+      // if (typ = 0) then MessageDlg('Hint', Format('Class "%s" is not included in the project.', [path]), mtInformation, [mbOK], 0);
     end;
   end;
   if (typ = 1) then begin
     ret := TSmaliCodeView(pgCode.ActivePage).FindMethodAndJump(method);
-    if not ret then MessageDlg('Hint', Format('Method "%s" is not included in class "%s".', [method, path]), mtInformation, [mbOK], 0);
+    // if not ret then MessageDlg('Hint', Format('Method "%s" is not included in class "%s".', [method, path]), mtInformation, [mbOK], 0);
   end;
 end;
 
