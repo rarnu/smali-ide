@@ -386,6 +386,7 @@ var
   ret: Boolean;
   smaliIdx: Integer = 1;
 begin
+
   while True do begin
     if (smaliIdx = 1) then begin
       filePath:= ExtractFilePath(CurrentProjectPath) + 'smali' + SPLIT + path;

@@ -542,17 +542,29 @@ end;
 function FindFileInAndroidSDK(APath: string): string;
 var
   p: string;
+  base: string;
 begin
   // find file in android sdk
-  p := GlobalConfig.AndroidSDKPath;
-  if (not p.EndsWith(SPLIT)) then p += SPLIT;
-  p += 'sources';
-  p += SPLIT;
-  p += GlobalConfig.AndroidSDKVersion;
-  p += SPLIT;
-  p += APath;
+  base := GlobalConfig.AndroidSDKPath;
+  if (not base.EndsWith(SPLIT)) then base += SPLIT;
+  base += 'sources';
+  base += SPLIT;
+  base += GlobalConfig.AndroidSDKVersion;
+  base += SPLIT;
+  p := base + APath;
   p += '.java';
   Result := p;
+  if (FileExists(p)) then Exit;
+
+  // $
+  while (APath.Contains('$')) do begin
+    APath:= APath.Substring(0, APath.LastIndexOf('$'));
+    p := base + APath;
+    p += '.java';
+    Result := p;
+    if (FileExists(p)) then Exit;
+  end;
+
   if (not FileExists(p)) then Result := '';
 end;
 
