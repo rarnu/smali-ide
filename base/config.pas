@@ -13,78 +13,44 @@ type
 
   TSmaliIdeConfig = class
   private
+    FAlpha: Integer;
+    FAndroidSDKPath: string;
+    FAndroidSDKVersion: string;
+    FCloseAllOtherPages: TShortCut;
+    FCloseAllPages: TShortCut;
+    FCodeTheme: string;
+    FColor: Integer;
+    FCompile: TShortCut;
+    FCurlBinaryPath: string;
+    FDecompile: TShortCut;
+    FDeleteFile: TShortCut;
+    FFontAntiAliasing: Boolean;
+    FFontColor: Integer;
+    FFontName: string;
+    FFontSize: Integer;
+    FHintClassMethod: TShortCut;
+    FHintKeyword: TShortCut;
+    FHintTemplate: TShortCut;
     FIni: TIniFile;
     FFileTypes: TStringList;
-    function GetAlpha: Integer;
-    function GetAndroidSDKPath: string;
-    function GetAndroidSDKVersion: string;
-    function GetCloseAllOtherPages: TShortCut;
-    function GetCloseAllPages: TShortCut;
-    function GetCodeTheme: string;
-    function GetColor: Integer;
-    function GetCompile: TShortCut;
-    function GetCurlBinaryPath: string;
-    function GetDecompile: TShortCut;
-    function GetDeleteFile: TShortCut;
+    FInstallFramework: TShortCut;
+    FJavaBinaryPath: string;
+    FJumpClassMethod: TShortCut;
+    FJumpToJava: TShortCut;
+    FNewAnnotation: TShortCut;
+    FNewClass: TShortCut;
+    FNewEnum: TShortCut;
+    FNewInterface: TShortCut;
+    FNewTextFile: TShortCut;
+    FSettings: TShortCut;
+    FShowClassIndex: TShortCut;
+    FShowConsole: TShortCut;
+    FShowSearchResult: TShortCut;
+    FShowSSmali: Boolean;
+    FShowSsmaliShortcut: TShortCut;
+    FTransparent: Boolean;
     function GetFileTypeEditor(Atype: string): string;
     function GetFileTypes: TStringList;
-    function GetFontAntiAliasing: Boolean;
-    function GetFontColor: Integer;
-    function GetFontName: string;
-    function GetFontSize: Integer;
-    function GetHintClassMethod: TShortCut;
-    function GetHintKeyword: TShortCut;
-    function GetHintTemplate: TShortCut;
-    function GetInstallFramework: TShortCut;
-    function GetJavaBinaryPath: string;
-    function GetJumpClassMethod: TShortCut;
-    function GetJumpToJava: TShortCut;
-    function GetNewAnnotation: TShortCut;
-    function GetNewClass: TShortCut;
-    function GetNewEnum: TShortCut;
-    function GetNewInterface: TShortCut;
-    function GetNewTextFile: TShortCut;
-    function GetSettings: TShortCut;
-    function GetShowClassIndex: TShortCut;
-    function GetShowConsole: TShortCut;
-    function GetShowSearchResult: TShortCut;
-    function GetShowSSmali: Boolean;
-    function GetShowSsmaliShortcut: TShortCut;
-    function GetTransparent: Boolean;
-    procedure SetAlpha(AValue: Integer);
-    procedure SetAndroidSDKPath(AValue: string);
-    procedure SetAndroidSDKVersion(AValue: string);
-    procedure SetCloseAllOtherPages(AValue: TShortCut);
-    procedure SetCloseAllPages(AValue: TShortCut);
-    procedure SetCodeTheme(AValue: string);
-    procedure SetColor(AValue: Integer);
-    procedure SetCompile(AValue: TShortCut);
-    procedure SetCurlBinaryPath(AValue: string);
-    procedure SetDecompile(AValue: TShortCut);
-    procedure SetDeleteFile(AValue: TShortCut);
-    procedure SetFontAntiAliasing(AValue: Boolean);
-    procedure SetFontColor(AValue: Integer);
-    procedure SetFontName(AValue: string);
-    procedure SetFontSize(AValue: Integer);
-    procedure SetHintClassMethod(AValue: TShortCut);
-    procedure SetHintKeyword(AValue: TShortCut);
-    procedure SetHintTemplate(AValue: TShortCut);
-    procedure SetInstallFramework(AValue: TShortCut);
-    procedure SetJavaBinaryPath(AValue: string);
-    procedure SetJumpClassMethod(AValue: TShortCut);
-    procedure SetJumpToJava(AValue: TShortCut);
-    procedure SetNewAnnotation(AValue: TShortCut);
-    procedure SetNewClass(AValue: TShortCut);
-    procedure SetNewEnum(AValue: TShortCut);
-    procedure SetNewInterface(AValue: TShortCut);
-    procedure SetNewTextFile(AValue: TShortCut);
-    procedure SetSettings(AValue: TShortCut);
-    procedure SetShowClassIndex(AValue: TShortCut);
-    procedure SetShowConsole(AValue: TShortCut);
-    procedure SetShowSearchResult(AValue: TShortCut);
-    procedure SetShowSSmali(AValue: Boolean);
-    procedure SetShowSsmaliShortcut(AValue: TShortCut);
-    procedure SetTransparent(AValue: Boolean);
   public
     constructor Create;
     destructor Destroy; override;
@@ -96,57 +62,57 @@ type
     property FileTypeEditor[Atype: string]: string read GetFileTypeEditor;
   published
     // path
-    property JavaBinaryPath: string read GetJavaBinaryPath write SetJavaBinaryPath;
-    property CurlBinaryPath: string read GetCurlBinaryPath write SetCurlBinaryPath;
-    property AndroidSDKPath: string read GetAndroidSDKPath write SetAndroidSDKPath;
-    property AndroidSDKVersion: string read GetAndroidSDKVersion write SetAndroidSDKVersion;
+    property JavaBinaryPath: string read FJavaBinaryPath write FJavaBinaryPath;
+    property CurlBinaryPath: string read FCurlBinaryPath write FCurlBinaryPath;
+    property AndroidSDKPath: string read FAndroidSDKPath write FAndroidSDKPath;
+    property AndroidSDKVersion: string read FAndroidSDKVersion write FAndroidSDKVersion;
 
     // shortcut
-    property HintKeyword: TShortCut read GetHintKeyword write SetHintKeyword;
-    property HintClassMethod: TShortCut read GetHintClassMethod write SetHintClassMethod;
-    property HintTemplate: TShortCut read GetHintTemplate write SetHintTemplate;
-    property JumpClassMethod: TShortCut read GetJumpClassMethod write SetJumpClassMethod;
-    property JumpToJava: TShortCut read GetJumpToJava write SetJumpToJava;
+    property HintKeyword: TShortCut read FHintKeyword write FHintKeyword;
+    property HintClassMethod: TShortCut read FHintClassMethod write FHintClassMethod;
+    property HintTemplate: TShortCut read FHintTemplate write FHintTemplate;
+    property JumpClassMethod: TShortCut read FJumpClassMethod write FJumpClassMethod;
+    property JumpToJava: TShortCut read FJumpToJava write FJumpToJava;
 
     // code files
-    property NewClass: TShortCut read GetNewClass write SetNewClass;
-    property NewInterface: TShortCut read GetNewInterface write SetNewInterface;
-    property NewEnum: TShortCut read GetNewEnum write SetNewEnum;
-    property NewAnnotation: TShortCut read GetNewAnnotation write SetNewAnnotation;
-    property NewTextFile: TShortCut read GetNewTextFile write SetNewTextFile;
-    property DeleteFile: TShortCut read GetDeleteFile write SetDeleteFile;
+    property NewClass: TShortCut read FNewClass write FNewClass;
+    property NewInterface: TShortCut read FNewInterface write FNewInterface;
+    property NewEnum: TShortCut read FNewEnum write FNewEnum;
+    property NewAnnotation: TShortCut read FNewAnnotation write FNewAnnotation;
+    property NewTextFile: TShortCut read FNewTextFile write FNewTextFile;
+    property DeleteFile: TShortCut read FDeleteFile write FDeleteFile;
 
     // show
-    property ShowClassIndex: TShortCut read GetShowClassIndex write SetShowClassIndex;
-    property ShowSearchResult: TShortCut read GetShowSearchResult write SetShowSearchResult;
-    property ShowConsole: TShortCut read GetShowConsole write SetShowConsole;
-    property ShowSsmaliShortcut: TShortCut read GetShowSsmaliShortcut write SetShowSsmaliShortcut;
-    property CloseAllPages: TShortCut read GetCloseAllPages write SetCloseAllPages;
-    property CloseAllOtherPages: TShortCut read GetCloseAllOtherPages write SetCloseAllOtherPages;
+    property ShowClassIndex: TShortCut read FShowClassIndex write FShowClassIndex;
+    property ShowSearchResult: TShortCut read FShowSearchResult write FShowSearchResult;
+    property ShowConsole: TShortCut read FShowConsole write FShowConsole;
+    property ShowSsmaliShortcut: TShortCut read FShowSsmaliShortcut write FShowSsmaliShortcut;
+    property CloseAllPages: TShortCut read FCloseAllPages write FCloseAllPages;
+    property CloseAllOtherPages: TShortCut read FCloseAllOtherPages write FCloseAllOtherPages;
 
     // forms
-    property Decompile: TShortCut read GetDecompile write SetDecompile;
-    property Compile: TShortCut read GetCompile write SetCompile;
-    property InstallFramework: TShortCut read GetInstallFramework write SetInstallFramework;
-    property Settings: TShortCut read GetSettings write SetSettings;
+    property Decompile: TShortCut read FDecompile write FDecompile;
+    property Compile: TShortCut read FCompile write FCompile;
+    property InstallFramework: TShortCut read FInstallFramework write FInstallFramework;
+    property Settings: TShortCut read FSettings write FSettings;
 
     // theme
-    property CodeTheme: string read GetCodeTheme write SetCodeTheme;
+    property CodeTheme: string read FCodeTheme write FCodeTheme;
 
     // file types
     property FileTypes: TStringList read GetFileTypes;
 
     // visibility
-    property ShowSSmali: Boolean read GetShowSSmali write SetShowSSmali;
+    property ShowSSmali: Boolean read FShowSSmali write FShowSSmali;
 
     // common
-    property FontName: string read GetFontName write SetFontName;
-    property FontSize: Integer read GetFontSize write SetFontSize;
-    property FontAntiAliasing: Boolean read GetFontAntiAliasing write SetFontAntiAliasing;
-    property Transparent: Boolean read GetTransparent write SetTransparent;
-    property Alpha: Integer read GetAlpha write SetAlpha;
-    property Color: Integer read GetColor write SetColor;
-    property FontColor: Integer read GetFontColor write SetFontColor;
+    property FontName: string read FFontName write FFontName;
+    property FontSize: Integer read FFontSize write FFontSize;
+    property FontAntiAliasing: Boolean read FFontAntiAliasing write FFontAntiAliasing;
+    property Transparent: Boolean read FTransparent write FTransparent;
+    property Alpha: Integer read FAlpha write FAlpha;
+    property Color: Integer read FColor write FColor;
+    property FontColor: Integer read FFontColor write FFontColor;
 
   end;
 
@@ -159,176 +125,6 @@ uses
   WindowsUtils;
 
 { TSmaliIdeConfig }
-
-function TSmaliIdeConfig.GetJavaBinaryPath: string;
-begin
-  Result := FIni.ReadString(SEC_CONFIG, KEY_JAVA_BINARY_PATH, {$IFNDEF WINDOWS}'/usr/bin/java'{$ELSE}WindowsUtils.GetDefaultJavaPath(){$ENDIF});
-end;
-
-function TSmaliIdeConfig.GetJumpClassMethod: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_JUMP_CLASS_METHOD_SHORTCUT, ShortCut(VK_F2, []));
-end;
-
-function TSmaliIdeConfig.GetJumpToJava: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_JUMP_TO_JAVA_SHORTCUT, ShortCut(VK_RETURN, [ssAlt]));
-end;
-
-function TSmaliIdeConfig.GetNewAnnotation: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_ANNOTATION_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetNewClass: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_CLASS_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetNewEnum: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_ENUM_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetNewInterface: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_INTERFACE_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetNewTextFile: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_TEXTFILE_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetSettings: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_SETTINGS_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetShowClassIndex: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_CLASSINDEX_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetShowConsole: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_CONSOLE_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetShowSearchResult: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetShowSSmali: Boolean;
-begin
-  Result := FIni.ReadBool(SEC_CONFIG, KEY_SHOW_SSMALI, False);
-end;
-
-function TSmaliIdeConfig.GetShowSsmaliShortcut: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetTransparent: Boolean;
-begin
-  Result := FIni.ReadBool(SEC_COMMON, KEY_UI_TRANSPARENT, False);
-end;
-
-procedure TSmaliIdeConfig.SetAlpha(AValue: Integer);
-begin
-  FIni.WriteInteger(SEC_COMMON, KEY_UI_ALPHA, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetAndroidSDKPath(AValue: string);
-begin
-  FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetAndroidSDKVersion(AValue: string);
-begin
-  FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetCloseAllOtherPages(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetCloseAllPages(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_CLOSE_ALL_PAGES_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetCodeTheme(AValue: string);
-begin
-  FIni.WriteString(SEC_CONFIG, KEY_THEME, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetColor(AValue: Integer);
-begin
-  FIni.WriteInteger(SEC_COMMON, KEY_UI_COLOR, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetCompile(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_COMPILE_SHORTCUT, AValue);
-end;
-
-function TSmaliIdeConfig.GetCurlBinaryPath: string;
-begin
-  Result := FIni.ReadString(SEC_CONFIG, KEY_CURL_BINARY_PATH, '/usr/bin/curl');
-end;
-
-function TSmaliIdeConfig.GetDecompile: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_DECOMPILE_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetCloseAllOtherPages: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetAndroidSDKPath: string;
-begin
-  Result := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, '');
-end;
-
-function TSmaliIdeConfig.GetAlpha: Integer;
-begin
-  Result := FIni.ReadInteger(SEC_COMMON, KEY_UI_ALPHA, 255);
-end;
-
-function TSmaliIdeConfig.GetAndroidSDKVersion: string;
-begin
-  Result := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, '');
-end;
-
-function TSmaliIdeConfig.GetCloseAllPages: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_CLOSE_ALL_PAGES_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetCodeTheme: string;
-begin
-  Result := FIni.ReadString(SEC_CONFIG, KEY_THEME, 'Default.style');
-end;
-
-function TSmaliIdeConfig.GetColor: Integer;
-begin
-  Result := FIni.ReadInteger(SEC_COMMON, KEY_UI_COLOR, clWhite);
-end;
-
-function TSmaliIdeConfig.GetCompile: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_COMPILE_SHORTCUT, 0);
-end;
-
-function TSmaliIdeConfig.GetDeleteFile: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_DELETE_FILE_SHORTCUT, 0);
-end;
 
 function TSmaliIdeConfig.GetFileTypeEditor(Atype: string): string;
 begin
@@ -348,176 +144,6 @@ begin
   Result := FFileTypes;
 end;
 
-function TSmaliIdeConfig.GetFontAntiAliasing: Boolean;
-begin
-  Result := FIni.ReadBool(SEC_COMMON, KEY_FONT_ANTI_ALIASING, True);
-end;
-
-function TSmaliIdeConfig.GetFontColor: Integer;
-begin
-  Result := FIni.ReadInteger(SEC_COMMON, KEY_UI_FONT_COLOR, clBlack);
-end;
-
-function TSmaliIdeConfig.GetFontName: string;
-begin
-  Result := FIni.ReadString(SEC_COMMON, KEY_FONT_NAME, {$IFDEF WINDOWS}'Microsoft Yahei'{$ELSE}{$IFDEF DARWIN}'Monaco'{$ELSE}'DejaVu Sans Mono'{$ENDIF}{$ENDIF});
-end;
-
-function TSmaliIdeConfig.GetFontSize: Integer;
-begin
-  Result := FIni.ReadInteger(SEC_COMMON, KEY_FONT_SIZE, 10);
-end;
-
-function TSmaliIdeConfig.GetHintClassMethod: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_CLASSMETHOD_SHORTCUT, ShortCut(VK_K, [ssCtrl]));
-end;
-
-function TSmaliIdeConfig.GetHintKeyword: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_KEYWORD_SHORTCUT, ShortCut(VK_J, [ssCtrl]));
-end;
-
-function TSmaliIdeConfig.GetHintTemplate: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_TEMPLATE_SHORTCUT, ShortCut(VK_L, [ssCtrl]));
-end;
-
-function TSmaliIdeConfig.GetInstallFramework: TShortCut;
-begin
-  Result := FIni.ReadInteger(SEC_CONFIG, KEY_INSTALL_FRAMEWORK_SHORTCUT, 0);
-end;
-
-procedure TSmaliIdeConfig.SetCurlBinaryPath(AValue: string);
-begin
-  FIni.WriteString(SEC_CONFIG, KEY_CURL_BINARY_PATH, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetDecompile(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_DECOMPILE_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetDeleteFile(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_DELETE_FILE_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetFontAntiAliasing(AValue: Boolean);
-begin
-  FIni.WriteBool(SEC_COMMON, KEY_FONT_ANTI_ALIASING, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetFontColor(AValue: Integer);
-begin
-  FIni.WriteInteger(SEC_COMMON, KEY_UI_FONT_COLOR, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetFontName(AValue: string);
-begin
-  FIni.WriteString(SEC_COMMON, KEY_FONT_NAME, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetFontSize(AValue: Integer);
-begin
-  FIni.WriteInteger(SEC_COMMON, KEY_FONT_SIZE, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetHintClassMethod(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_HINT_CLASSMETHOD_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetHintKeyword(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_HINT_KEYWORD_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetHintTemplate(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_HINT_TEMPLATE_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetInstallFramework(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_INSTALL_FRAMEWORK_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetJavaBinaryPath(AValue: string);
-begin
-  FIni.WriteString(SEC_CONFIG, KEY_JAVA_BINARY_PATH, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetJumpClassMethod(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_JUMP_CLASS_METHOD_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetJumpToJava(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_JUMP_TO_JAVA_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetNewAnnotation(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_ANNOTATION_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetNewClass(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_CLASS_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetNewEnum(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_ENUM_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetNewInterface(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_INTERFACE_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetNewTextFile(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_TEXTFILE_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetSettings(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_SETTINGS_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetShowClassIndex(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_CLASSINDEX_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetShowConsole(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_CONSOLE_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetShowSearchResult(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetShowSSmali(AValue: Boolean);
-begin
-  FIni.WriteBool(SEC_CONFIG, KEY_SHOW_SSMALI, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetShowSsmaliShortcut(AValue: TShortCut);
-begin
-  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, AValue);
-end;
-
-procedure TSmaliIdeConfig.SetTransparent(AValue: Boolean);
-begin
-  FIni.WriteBool(SEC_COMMON, KEY_UI_TRANSPARENT, AValue);
-end;
-
 constructor TSmaliIdeConfig.Create;
 var
   path: string;
@@ -525,10 +151,82 @@ begin
   path:= ChangeFileExt(ParamStr(0), '.ini');
   FIni := TIniFile.Create(path);
   FFileTypes := TStringList.Create;
+
+  FJavaBinaryPath := FIni.ReadString(SEC_CONFIG, KEY_JAVA_BINARY_PATH, {$IFNDEF WINDOWS}'/usr/bin/java'{$ELSE}WindowsUtils.GetDefaultJavaPath(){$ENDIF});
+  FCurlBinaryPath := FIni.ReadString(SEC_CONFIG, KEY_CURL_BINARY_PATH, '/usr/bin/curl');
+  FAndroidSDKPath := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, '');
+  FAndroidSDKVersion := FIni.ReadString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, '');
+  FHintKeyword := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_KEYWORD_SHORTCUT, ShortCut(VK_J, [ssCtrl]));
+  FHintClassMethod := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_CLASSMETHOD_SHORTCUT, ShortCut(VK_K, [ssCtrl]));
+  FHintTemplate := FIni.ReadInteger(SEC_CONFIG, KEY_HINT_TEMPLATE_SHORTCUT, ShortCut(VK_L, [ssCtrl]));
+  FJumpClassMethod := FIni.ReadInteger(SEC_CONFIG, KEY_JUMP_CLASS_METHOD_SHORTCUT, ShortCut(VK_F2, []));
+  FJumpToJava := FIni.ReadInteger(SEC_CONFIG, KEY_JUMP_TO_JAVA_SHORTCUT, ShortCut(VK_RETURN, [ssAlt]));
+  FNewAnnotation := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_ANNOTATION_SHORTCUT, 0);
+  FNewClass := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_CLASS_SHORTCUT, 0);
+  FNewEnum := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_ENUM_SHORTCUT, 0);
+  FNewInterface := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_INTERFACE_SHORTCUT, 0);
+  FNewTextFile := FIni.ReadInteger(SEC_CONFIG, KEY_NEW_TEXTFILE_SHORTCUT, 0);
+  FDeleteFile := FIni.ReadInteger(SEC_CONFIG, KEY_DELETE_FILE_SHORTCUT, 0);
+  FCloseAllOtherPages := FIni.ReadInteger(SEC_CONFIG, KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT, 0);
+  FCloseAllPages := FIni.ReadInteger(SEC_CONFIG, KEY_CLOSE_ALL_PAGES_SHORTCUT, 0);
+  FShowClassIndex := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_CLASSINDEX_SHORTCUT, 0);
+  FShowConsole := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_CONSOLE_SHORTCUT, 0);
+  FShowSearchResult := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, 0);
+  FShowSsmaliShortcut := FIni.ReadInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, 0);
+  FDecompile := FIni.ReadInteger(SEC_CONFIG, KEY_DECOMPILE_SHORTCUT, 0);
+  FCompile := FIni.ReadInteger(SEC_CONFIG, KEY_COMPILE_SHORTCUT, 0);
+  FInstallFramework := FIni.ReadInteger(SEC_CONFIG, KEY_INSTALL_FRAMEWORK_SHORTCUT, 0);
+  FSettings := FIni.ReadInteger(SEC_CONFIG, KEY_SETTINGS_SHORTCUT, 0);
+  FCodeTheme := FIni.ReadString(SEC_CONFIG, KEY_THEME, 'Default.style');
+  FShowSSmali := FIni.ReadBool(SEC_CONFIG, KEY_SHOW_SSMALI, False);
+  FAlpha := FIni.ReadInteger(SEC_COMMON, KEY_UI_ALPHA, 255);
+  FColor := FIni.ReadInteger(SEC_COMMON, KEY_UI_COLOR, clWhite);
+  FFontAntiAliasing := FIni.ReadBool(SEC_COMMON, KEY_FONT_ANTI_ALIASING, True);
+  FFontColor := FIni.ReadInteger(SEC_COMMON, KEY_UI_FONT_COLOR, clBlack);
+  FFontName := FIni.ReadString(SEC_COMMON, KEY_FONT_NAME, {$IFDEF WINDOWS}'Microsoft Yahei'{$ELSE}{$IFDEF DARWIN}'Monaco'{$ELSE}'DejaVu Sans Mono'{$ENDIF}{$ENDIF});
+  FFontSize := FIni.ReadInteger(SEC_COMMON, KEY_FONT_SIZE, 10);
+  FTransparent := FIni.ReadBool(SEC_COMMON, KEY_UI_TRANSPARENT, False);
+
 end;
 
 destructor TSmaliIdeConfig.Destroy;
 begin
+
+  FIni.WriteString(SEC_CONFIG, KEY_JAVA_BINARY_PATH, FJavaBinaryPath);
+  FIni.WriteString(SEC_CONFIG, KEY_CURL_BINARY_PATH, FCurlBinaryPath);
+  FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_PATH, FAndroidSDKPath);
+  FIni.WriteString(SEC_CONFIG, KEY_ANDROID_SDK_VERSION, FAndroidSDKVersion);
+  FIni.WriteInteger(SEC_CONFIG, KEY_HINT_KEYWORD_SHORTCUT, FHintKeyword);
+  FIni.WriteInteger(SEC_CONFIG, KEY_HINT_CLASSMETHOD_SHORTCUT, FHintClassMethod);
+  FIni.WriteInteger(SEC_CONFIG, KEY_HINT_TEMPLATE_SHORTCUT, FHintTemplate);
+  FIni.WriteInteger(SEC_CONFIG, KEY_JUMP_CLASS_METHOD_SHORTCUT, FJumpClassMethod);
+  FIni.WriteInteger(SEC_CONFIG, KEY_JUMP_TO_JAVA_SHORTCUT, FJumpToJava);
+  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_ANNOTATION_SHORTCUT, FNewAnnotation);
+  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_CLASS_SHORTCUT, FNewClass);
+  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_ENUM_SHORTCUT, FNewEnum);
+  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_INTERFACE_SHORTCUT, FNewInterface);
+  FIni.WriteInteger(SEC_CONFIG, KEY_NEW_TEXTFILE_SHORTCUT, FNewTextFile);
+  FIni.WriteInteger(SEC_CONFIG, KEY_DELETE_FILE_SHORTCUT, FDeleteFile);
+  FIni.WriteInteger(SEC_CONFIG, KEY_CLOSE_ALL_OTHER_PAGES_SHORTCUT, FCloseAllOtherPages);
+  FIni.WriteInteger(SEC_CONFIG, KEY_CLOSE_ALL_PAGES_SHORTCUT, FCloseAllPages);
+  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_CLASSINDEX_SHORTCUT, FShowClassIndex);
+  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_CONSOLE_SHORTCUT, FShowConsole);
+  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SEARCHRESULT_SHORTCUT, FShowSearchResult);
+  FIni.WriteInteger(SEC_CONFIG, KEY_SHOW_SSMALI_SHORTCUT, FShowSsmaliShortcut);
+  FIni.WriteInteger(SEC_CONFIG, KEY_DECOMPILE_SHORTCUT, FDecompile);
+  FIni.WriteInteger(SEC_CONFIG, KEY_COMPILE_SHORTCUT, FCompile);
+  FIni.WriteInteger(SEC_CONFIG, KEY_INSTALL_FRAMEWORK_SHORTCUT, FInstallFramework);
+  FIni.WriteInteger(SEC_CONFIG, KEY_SETTINGS_SHORTCUT, FSettings);
+  FIni.WriteString(SEC_CONFIG, KEY_THEME, FCodeTheme);
+  FIni.WriteBool(SEC_CONFIG, KEY_SHOW_SSMALI, FShowSSmali);
+  FIni.WriteInteger(SEC_COMMON, KEY_UI_ALPHA, FAlpha);
+  FIni.WriteInteger(SEC_COMMON, KEY_UI_COLOR, FColor);
+  FIni.WriteBool(SEC_COMMON, KEY_FONT_ANTI_ALIASING, FFontAntiAliasing);
+  FIni.WriteInteger(SEC_COMMON, KEY_UI_FONT_COLOR, FFontColor);
+  FIni.WriteString(SEC_COMMON, KEY_FONT_NAME, FFontName);
+  FIni.WriteInteger(SEC_COMMON, KEY_FONT_SIZE, FFontSize);
+  FIni.WriteBool(SEC_COMMON, KEY_UI_TRANSPARENT, FTransparent);
+
   FFileTypes.Free;
   FIni.Free;
   inherited Destroy;

@@ -39,7 +39,7 @@ type
 implementation
 
 uses
-  config;
+  config, ThemeUtils;
 
 { TFileTypeItemView }
 
@@ -119,10 +119,8 @@ begin
   FBtnEditor.OnClick:=@innerEditorClick;
   FBtnDelete.OnClick:=@innerDeleteClick;
 
-  FBtnEditor.Color:= GlobalConfig.Color;
-  FBtnDelete.Color:= GlobalConfig.Color;
-  FBtnEditor.Font.Color:= GlobalConfig.FontColor;
-  FBtnDelete.Font.Color:= GlobalConfig.FontColor;
+  ThemeUtils.RecolorButton(FBtnEditor);
+  ThemeUtils.RecolorButton(FBtnDelete);
 end;
 
 end.

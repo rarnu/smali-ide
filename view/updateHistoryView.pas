@@ -90,6 +90,9 @@ begin
 
   FDownload.OnClick:=@downloadClick;
   FChangeLog.OnClick:=@changelogClick;
+
+  ThemeUtils.RecolorButton(FDownload);
+  ThemeUtils.RecolorButton(FChangeLog);
 end;
 
 end.
