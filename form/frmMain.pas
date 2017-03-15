@@ -199,7 +199,8 @@ implementation
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,
-  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView, ThemeUtils, frmInputBox;
+  frmDecompile, frmAbout, frmSettings, config, frmUpdate, baseData, sdkCodeView, ThemeUtils, frmInputBox,
+  frmMessageDlg;
 
 { TFormMain }
 
@@ -584,21 +585,21 @@ begin
   if (node = nil) then Exit;
   path := CodeUtils.NodeToPath(CurrentProjectPath, node);
   if (DirectoryExists(path)) then begin
-    if MessageDlg('Hint', 'Delete whole folder? You cannot undo this operation.', mtConfirmation, mbOKCancel, 0) = mrOK then begin
+    if frmMessageDlg.MessageDlg('Hint', 'Delete whole folder? You cannot undo this operation.', btOkCancel) = mrOK then begin
        // delete directory
       if DeleteDirectory(path, False) then begin
         tvProjectFiles.Items.Delete(node);
       end else begin
-        MessageDlg('Error', 'Delete folder failed.', mtError, [mbOK], 0);
+        frmMessageDlg.MessageDlg('Error', 'Delete folder failed.', btOK);
       end;
     end;
   end else begin
-    if MessageDlg('Hint', 'Delete the file? You cannot undo this operation.', mtConfirmation, mbOKCancel, 0) = mrOK then begin
+    if frmMessageDlg.MessageDlg('Hint', 'Delete the file? You cannot undo this operation.', btOkCancel) = mrOK then begin
       // delete file
       if DeleteFile(path) then begin
         tvProjectFiles.Items.Delete(node);
       end else begin
-        MessageDlg('Error', 'Delete file failed', mtError, [mbOK], 0);
+        frmMessageDlg.MessageDlg('Error', 'Delete file failed', btOK);
       end;
     end;
   end;
@@ -644,7 +645,7 @@ begin
     lblSearchState.Caption:= 'Searching';
 
   end else begin
-    MessageDlg('Hint', 'Last search is not completed.', mtInformation, [mbOK], 0);
+    frmMessageDlg.MessageDlg('Hint', 'Last search is not completed.', btOK);
   end;
 end;
 

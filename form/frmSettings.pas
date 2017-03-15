@@ -244,7 +244,7 @@ var
 implementation
 
 uses
-  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils, ThemeUtils, frmInputBox;
+  config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils, ThemeUtils, frmInputBox, frmMessageDlg;
 
 {$R *.lfm}
 
@@ -345,7 +345,7 @@ begin
         GlobalConfig.SetShortcut(key, AcceptShortcut);
       end else begin
         // key is combined to another item
-        MessageDlg('Error', 'Key is already used', mtError, [mbOK], 0);
+        frmMessageDlg.MessageDlg('Error', 'Key is already used', btOK);
       end;
     end else begin
       GlobalConfig.SetShortcut(key, 0);

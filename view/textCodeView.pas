@@ -93,7 +93,7 @@ type
 implementation
 
 uses
-  TextUtils, baseData, config, ThemeUtils;
+  TextUtils, baseData, config, ThemeUtils, frmMessageDlg;
 
 { TTextCodeView }
 
@@ -427,7 +427,7 @@ var
 begin
   Result := True;
   if FIsChanged then begin
-    dlg := MessageDlg('Hint', 'File changed, do you want to save it?', mtConfirmation, mbYesNoCancel, 0);
+    dlg := frmMessageDlg.MessageDlg('Hint', 'File changed, do you want to save it?', btYesNoCancel);
     if dlg = mrYes then begin
       Save();
     end;

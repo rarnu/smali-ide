@@ -26,7 +26,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="28">
+    <Units Count="29">
       <Unit0>
         <Filename Value="smaliide.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -163,10 +163,17 @@
       <Unit27>
         <Filename Value="form/frmInputBox.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormBase1"/>
+        <ComponentName Value="FormInputBox"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit27>
+      <Unit28>
+        <Filename Value="form/frmMessageDlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMessageDlg"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit28>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

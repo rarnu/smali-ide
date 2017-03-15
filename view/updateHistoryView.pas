@@ -32,6 +32,9 @@ type
 
 implementation
 
+uses
+  ThemeUtils, frmMessageDlg;
+
 { THistoryVersionView }
 
 function THistoryVersionView.GetVersion: string;
@@ -42,7 +45,7 @@ end;
 procedure THistoryVersionView.changelogClick(Sender: TObject);
 begin
   if (FVersionDesc.Trim <> '') then begin
-    MessageDlg('Version', FVersionDesc, mtInformation, [mbOK], 0);
+    frmMessageDlg.MessageDlg('Version', FVersionDesc, btOK);
   end;
 end;
 
