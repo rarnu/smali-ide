@@ -77,7 +77,7 @@ var
   i: Integer;
   ret: string = '';
 begin
-  for i := 1 to 9 do begin
+  for i := 1 to 100 do begin
     if (i = 1) then begin
       if (path.Contains(SPLIT + 'smali' + SPLIT)) then begin
         ret := path.Substring(path.IndexOf(SPLIT + 'smali' + SPLIT) + 7);
@@ -275,7 +275,7 @@ begin
   Result := '';
   // class index to file path
   basePath:= ExtractFilePath(projectPath);
-  for i := 1 to 9 do begin
+  for i := 1 to 100 do begin
     if (i = 1) then begin
       fullPath:= basePath + 'smali' + SPLIT + indexPkg.Replace('.', SPLIT, [rfIgnoreCase, rfReplaceAll]) + '.smali';
       if (FileExists(fullPath)) then begin

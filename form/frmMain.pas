@@ -403,7 +403,7 @@ begin
       Break;
     end;
     Inc(smaliIdx);
-    if (smaliIdx > 9) then Break;
+    if (smaliIdx > 100) then Break;
   end;
 
   if (FileExists(openPath)) then begin
