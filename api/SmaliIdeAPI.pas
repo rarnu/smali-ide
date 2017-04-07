@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, HttpUtils, jsonparser, fpjson, jsonscanner, fgl;
 
 const
-  BASE_URL = 'http://rarnu.com/smaliide/';
+  BASE_URL = 'http://rarnu.xyz/smaliide/';
 
 const
   PLATFORM = {$IFDEF WINDOWS}'2'{$ELSE}{$IFDEF DARWIN}'1'{$ELSE}'0'{$ENDIF}{$ENDIF};
