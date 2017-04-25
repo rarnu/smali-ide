@@ -144,6 +144,9 @@ begin
     begin
       {$IFNDEF WINDOWS}
       AProcess.Executable:= ExtractFilePath(ParamStr(0)) + 'bin' + SPLIT + 'jadx';
+      // start 8 threads
+      AProcess.Parameters.Add('-j');
+      AProcess.Parameters.Add('8');
       AProcess.Parameters.Add('--show-bad-code');
       AProcess.Parameters.Add('-r');
       AProcess.Parameters.Add('-d');
@@ -152,7 +155,7 @@ begin
       {$ELSE}
       // TODO: decompile for windows
       AProcess.Executable:= 'C:\Windows\System32\cmd.exe';
-      AProcess.Parameters.Add('/c "' + Format('%sbin%sjadx.bat --show-bad-code -r -d %s %s', [ExtractFilePath(ParamStr(0)), SPLIT, FParam[1], FParam[0]]) + '"');
+      AProcess.Parameters.Add('/c "' + Format('%sbin%sjadx.bat -j 8 --show-bad-code -r -d %s %s', [ExtractFilePath(ParamStr(0)), SPLIT, FParam[1], FParam[0]]) + '"');
       {$ENDIF}
     end;
   ctSsmaliDecompile:
