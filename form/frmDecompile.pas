@@ -47,7 +47,7 @@ implementation
 uses
   ThemeUtils;
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormDecompile }
 

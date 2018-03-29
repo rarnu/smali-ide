@@ -39,7 +39,7 @@ Known Issues:
 @author(David Muir <david@loanhead45.freeserve.co.uk>)
 @created(April 13, 2000)
 @lastmod(2000-06-23)
-The SynHighlighterLFM unit provides SynEdit with a Delphi Form Source (.LFM) highlighter.
+The SynHighlighterLFM unit provides SynEdit with a Delphi Form Source (.frm) highlighter.
 The highlighter formats form source code similar to when forms are viewed as text in the Delphi editor.
 }
 unit SynHighlighterLFM;

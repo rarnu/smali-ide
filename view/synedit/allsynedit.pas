@@ -31,7 +31,7 @@ uses
   SynHighlighterTeX, synhighlighterunixshellscript, SynHighlighterVB, 
   SynHighlighterXML, SynMacroRecorder, SynMemo, SynPluginMultiCaret, 
   SynPluginSyncroEdit, SynPluginSyncronizedEditBase, SynPluginTemplateEdit, 
-  SynRegExpr, SynTextDrawer, LazarusPackageIntf;
+  SynRegExpr, SynTextDrawer, TyphonPackageIntf;
 
 implementation
 

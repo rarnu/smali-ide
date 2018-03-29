@@ -195,7 +195,7 @@ var
 
 implementation
 
-{$R *.lfm}
+{$R *.frm}
 
 uses
   smaliCodeView, TextUtils, CodeUtils, ProjectUtils, EncryptUtils, textCodeView, codeViewIntf, imageView,

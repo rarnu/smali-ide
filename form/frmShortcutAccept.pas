@@ -33,7 +33,7 @@ var
 
 implementation
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormShortcutAccept }
 

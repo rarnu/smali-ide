@@ -246,7 +246,7 @@ implementation
 uses
   config, frmShortcutAccept, baseData, fileTypeItemView, WindowsUtils, ThemeUtils, frmInputBox, frmMessageDlg;
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormSettings }
 

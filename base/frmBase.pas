@@ -31,7 +31,7 @@ implementation
 uses
   config, ThemeUtils;
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormBase }
 

@@ -23,12 +23,12 @@
     </RunParams>
     <RequiredPackages Count="1">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="adLCL"/>
       </Item1>
     </RequiredPackages>
     <Units Count="29">
       <Unit0>
-        <Filename Value="smaliide.lpr"/>
+        <Filename Value="smaliide.ppr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>

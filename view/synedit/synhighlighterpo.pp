@@ -375,13 +375,13 @@ begin
             '"Content-Type: text/plain; charset=UTF-8\n"' + LineEnding +
             '"Content-Transfer-Encoding: 8bit\n"' + LineEnding +
             LineEnding +
-            '#: lazarusidestrconsts.dlgcochecks' + LineEnding +
+            '#: TyphonIDEstrconsts.dlgcochecks' + LineEnding +
             '#, fuzzy' + LineEnding +
             '#| msgid "Checks:"' + LineEnding +
             'msgid "Checks"' + LineEnding +
             'msgstr "Controleert:"' + LineEnding +
             LineEnding +
-            '#: lazarusidestrconsts.listemplateeditparamcellhelp' + LineEnding +
+            '#: TyphonIDEstrconsts.listemplateeditparamcellhelp' + LineEnding +
             'msgid ""' + LineEnding +
             '"Inserts an editable Cell, with a default value\n"' + LineEnding +
             '"\"\",Sync=n (,S=n), to Sync with a previous cell (n=1 to highest prev cell\n"' + LineEnding +

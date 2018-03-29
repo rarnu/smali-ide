@@ -319,7 +319,7 @@ resourcestring
   SYNS_FilterRTF                =  'Rich Text Format (*.rtf)|*.rtf';
   SYNS_FilterBatch              =  'MS-DOS Batch Files (*.bat;*.cmd)|*.bat;*.cmd';
   SYNS_FilterDFM                =  'Borland Form Files (*.dfm;*.xfm)|*.dfm;*.xfm';
-  SYNS_FilterLFM                =  'Typhon Form Files (*.lfm)|*.lfm';
+  SYNS_FilterLFM                =  'Typhon Form Files (*.frm)|*.frm';
   SYNS_FilterX86Asm             =  'x86 Assembly Files (*.asm)|*.ASM';
   SYNS_FilterGembase            =  'GEMBASE Files (*.dml,*.gem)|*.DML;*.GEM';
   SYNS_FilterINI                =  'INI Files (*.ini)|*.ini';

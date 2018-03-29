@@ -40,7 +40,7 @@ implementation
 uses
   config, baseData, ThemeUtils;
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormJava }
 

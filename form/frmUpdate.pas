@@ -48,7 +48,7 @@ implementation
 uses
   updateHistoryView, ThemeUtils;
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormUpdate }
 

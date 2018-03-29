@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="84">
+      <Unit0>
+        <Filename Value="smaliide.ppr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="37" Y="7"/>
+        <UsageCount Value="200"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="form/frmMain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="322"/>
+        <CursorPos X="59" Y="334"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="base/frmBase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormBase"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="44" Y="21"/>
+        <UsageCount Value="200"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="form/frmAbout.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormAbout"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="43"/>
+        <CursorPos X="5" Y="66"/>
+        <UsageCount Value="200"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="view/smaliCodeView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="487"/>
+        <CursorPos X="7" Y="502"/>
+        <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="util/TextUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="30" Y="8"/>
+        <UsageCount Value="202"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="util/CodeUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="485"/>
+        <CursorPos X="34" Y="509"/>
+        <UsageCount Value="202"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="util/ProjectUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="projectUtils"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="23"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="util/EncryptUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="15" Y="12"/>
+        <UsageCount Value="201"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="view/textCodeView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="99" Y="430"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="view/codeViewIntf.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="29" Y="34"/>
+        <UsageCount Value="201"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="view/imageView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="2"/>
+        <CursorPos X="4" Y="35"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="util/SearchInFileUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="33"/>
+        <CursorPos X="23" Y="66"/>
+        <UsageCount Value="200"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="util/CommandUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="117"/>
+        <CursorPos X="10" Y="127"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="form/frmDecompile.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormDecompile"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="42"/>
+        <CursorPos X="39" Y="93"/>
+        <UsageCount Value="200"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="base/baseData.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="87"/>
+        <CursorPos X="37" Y="120"/>
+        <UsageCount Value="193"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="form/frmSettings.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormSettings"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="354"/>
+        <CursorPos X="36" Y="371"/>
+        <UsageCount Value="189"/>
+        <Loaded Value="True"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="base/config.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="35"/>
+        <CursorPos X="53" Y="74"/>
+        <UsageCount Value="188"/>
+        <Loaded Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="form/frmShortcutAccept.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormShortcutAccept"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="28"/>
+        <CursorPos X="6" Y="75"/>
+        <UsageCount Value="177"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="10"/>
+        <CursorPos X="40" Y="123"/>
+        <UsageCount Value="160"/>
+        <Loaded Value="True"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="api/SmaliIdeAPI.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="21" Y="11"/>
+        <UsageCount Value="148"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="form/frmJava.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormJava"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="86"/>
+        <CursorPos X="37" Y="135"/>
+        <UsageCount Value="133"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="form/frmUpdate.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormUpdate"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="50"/>
+        <CursorPos X="42" Y="75"/>
+        <UsageCount Value="116"/>
+        <Loaded Value="True"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="view/updateHistoryView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="51"/>
+        <CursorPos X="30" Y="64"/>
+        <UsageCount Value="116"/>
+        <Loaded Value="True"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="util/WindowsUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="19" Y="23"/>
+        <UsageCount Value="100"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="util/ThemeUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="41" Y="33"/>
+        <UsageCount Value="55"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="view/sdkCodeView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="285"/>
+        <CursorPos X="3" Y="327"/>
+        <UsageCount Value="42"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="form/frmInputBox.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormInputBox"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="7" Y="51"/>
+        <UsageCount Value="33"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="form/frmMessageDlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMessageDlg"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="67"/>
+        <CursorPos X="25" Y="87"/>
+        <UsageCount Value="29"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="form/frmMain.frm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="16" Y="9"/>
+        <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="FRM"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/comctrls.pp"/>
+        <UnitName Value="ComCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2650"/>
+        <CursorPos X="39" Y="2667"/>
+        <UsageCount Value="10"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="view/synedit/synedit.pp"/>
+        <UnitName Value="SynEdit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1209"/>
+        <CursorPos X="14" Y="1232"/>
+        <UsageCount Value="13"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/stdctrls.pp"/>
+        <UnitName Value="StdCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="47"/>
+        <CursorPos X="3" Y="67"/>
+        <UsageCount Value="12"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/rtl/objpas/classes/classesh.inc"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="88"/>
+        <CursorPos Y="112"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/menus.pp"/>
+        <UnitName Value="Menus"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="404"/>
+        <CursorPos X="7" Y="428"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/lcltype.pp"/>
+        <UnitName Value="LCLType"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1169"/>
+        <CursorPos X="19" Y="1196"/>
+        <UsageCount Value="12"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="view/synedit/synhighlightersmali.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="27"/>
+        <UsageCount Value="15"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/graphics.pp"/>
+        <UnitName Value="Graphics"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="42"/>
+        <CursorPos X="79" Y="68"/>
+        <UsageCount Value="12"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="util/ThreadUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="63"/>
+        <CursorPos X="11" Y="104"/>
+        <UsageCount Value="7"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/treeview.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2008"/>
+        <CursorPos X="21" Y="2012"/>
+        <UsageCount Value="6"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/lmessages.pp"/>
+        <UnitName Value="LMessages"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos Y="37"/>
+        <UsageCount Value="6"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/rtl/objpas/sysutils/filutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="72"/>
+        <CursorPos X="3" Y="97"/>
+        <UsageCount Value="15"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="view/synedit/syncompletion.pas"/>
+        <UnitName Value="SynCompletion"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="109"/>
+        <CursorPos X="15" Y="135"/>
+        <UsageCount Value="13"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/controls.pp"/>
+        <UnitName Value="Controls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2132"/>
+        <CursorPos X="14" Y="2157"/>
+        <UsageCount Value="8"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="../../hujiang/scriptengine/engine/network/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1451"/>
+        <CursorPos X="15" Y="1477"/>
+        <UsageCount Value="3"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="../../AngelaSpace/coursetrip/native/library/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1451"/>
+        <UsageCount Value="3"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="../../hujiang/protect-guard/server/protect/code/fclweb/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1451"/>
+        <UsageCount Value="3"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="../../hujiang/android_hjclass_tv/jni/network/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1451"/>
+        <UsageCount Value="3"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="../../onecat/api/common/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1451"/>
+        <UsageCount Value="3"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="../../hujiang/protect-guard/native/fclweb/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1451"/>
+        <UsageCount Value="3"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="../root-tools/utils/netport/netdb.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="17"/>
+        <UsageCount Value="3"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/packages/fcl-process/src/process.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="8"/>
+        <CursorPos X="37" Y="36"/>
+        <UsageCount Value="1"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/rtl/objpas/sysutils/sysunih.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos X="65" Y="56"/>
+        <UsageCount Value="8"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/rtl/objpas/sysutils/syshelph.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="148"/>
+        <CursorPos X="14" Y="171"/>
+        <UsageCount Value="8"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="view/synedit/synedithighlighter.pp"/>
+        <UnitName Value="SynEditHighlighter"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="149"/>
+        <CursorPos X="8" Y="166"/>
+        <UsageCount Value="7"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="view/synedit/synhighlighterjscript.pas"/>
+        <UnitName Value="SynHighlighterJScript"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1494"/>
+        <CursorPos X="13" Y="1518"/>
+        <UsageCount Value="6"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="util/ShortcutUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="28"/>
+        <UsageCount Value="7"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/customnotebook.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="413"/>
+        <CursorPos X="20" Y="436"/>
+        <UsageCount Value="8"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/widgetset/wscomctrls.pp"/>
+        <UnitName Value="WSComCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="45"/>
+        <CursorPos X="61" Y="67"/>
+        <UsageCount Value="8"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/packages/fcl-base/src/inifiles.pp"/>
+        <UnitName Value="IniFiles"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1124"/>
+        <CursorPos X="3" Y="1129"/>
+        <UsageCount Value="10"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/lclintf.pas"/>
+        <UnitName Value="LCLIntf"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos Y="47"/>
+        <UsageCount Value="1"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/sysenvapis_unix.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="30" Y="52"/>
+        <UsageCount Value="1"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="util/HttpUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="29" Y="48"/>
+        <UsageCount Value="14"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="view/synedit/synhighlighterjava.pas"/>
+        <UnitName Value="SynHighlighterJava"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="223"/>
+        <CursorPos X="26" Y="233"/>
+        <UsageCount Value="10"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="view/synedit/syngutterbase.pp"/>
+        <UnitName Value="SynGutterBase"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="185"/>
+        <CursorPos X="14" Y="209"/>
+        <UsageCount Value="11"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="view/synedit/syngutterlinenumber.pp"/>
+        <UnitName Value="SynGutterLineNumber"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="25" Y="51"/>
+        <UsageCount Value="11"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="C:/codetyphon/typhon/components/BaseUtils/fileutil.pas"/>
+        <UnitName Value="FileUtil"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos Y="27"/>
+        <UsageCount Value="4"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="C:/codetyphon/fpcsrc/packages/fcl-process/src/process.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="48" Y="25"/>
+        <UsageCount Value="4"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="view/synedit/synhighlighterdodolasmali.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="95"/>
+        <CursorPos X="28" Y="114"/>
+        <UsageCount Value="15"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="/usr/local/codetyphon/fpcsrc/rtl/objpas/fgl.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="38"/>
+        <UsageCount Value="8"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/buttons.pp"/>
+        <UnitName Value="Buttons"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="103"/>
+        <CursorPos X="3" Y="129"/>
+        <UsageCount Value="8"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/extctrls.pp"/>
+        <UnitName Value="ExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1000"/>
+        <CursorPos X="3" Y="1026"/>
+        <UsageCount Value="8"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="96"/>
+        <CursorPos X="15" Y="121"/>
+        <UsageCount Value="12"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/controlscrollbar.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="214"/>
+        <CursorPos X="5" Y="256"/>
+        <UsageCount Value="12"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/scrollingwincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="214"/>
+        <CursorPos X="3" Y="226"/>
+        <UsageCount Value="12"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/winapih.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="247"/>
+        <CursorPos X="10" Y="272"/>
+        <UsageCount Value="12"/>
+      </Unit75>
+      <Unit76>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/include/intfbasewinapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2116"/>
+        <CursorPos X="3" Y="2121"/>
+        <UsageCount Value="12"/>
+      </Unit76>
+      <Unit77>
+        <Filename Value="form/frmSettings.frm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1263"/>
+        <CursorPos X="14" Y="1305"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="FRM"/>
+      </Unit77>
+      <Unit78>
+        <Filename Value="/usr/local/codetyphon/typhon/components/pl_Solutions/source/LSControls.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="63" Y="27"/>
+        <UsageCount Value="11"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="/usr/local/codetyphon/typhon/components/pl_Solutions/source/LSCommonIntf.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="37"/>
+        <UsageCount Value="11"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="view/synedit/syneditmiscclasses.pp"/>
+        <UnitName Value="SynEditMiscClasses"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="196"/>
+        <CursorPos X="7" Y="240"/>
+        <UsageCount Value="11"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="view/synedit/syneditplugins.pas"/>
+        <UnitName Value="SynEditPlugins"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="40"/>
+        <CursorPos X="9" Y="63"/>
+        <UsageCount Value="10"/>
+      </Unit81>
+      <Unit82>
+        <Filename Value="view/synedit/syneditmousecmds.pp"/>
+        <UnitName Value="SynEditMouseCmds"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="27"/>
+        <CursorPos X="22" Y="31"/>
+        <UsageCount Value="13"/>
+      </Unit82>
+      <Unit83>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/dialogs.pp"/>
+        <UnitName Value="Dialogs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="655"/>
+        <CursorPos X="36" Y="684"/>
+        <UsageCount Value="12"/>
+      </Unit83>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="19" Column="15"/>
+      </Position1>
+      <Position2>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="63" Column="17" TopLine="19"/>
+      </Position2>
+      <Position3>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="65" Column="17" TopLine="21"/>
+      </Position3>
+      <Position4>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="79" Column="15" TopLine="35"/>
+      </Position4>
+      <Position5>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="81" Column="15" TopLine="37"/>
+      </Position5>
+      <Position6>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="111" Column="13" TopLine="67"/>
+      </Position6>
+      <Position7>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="112" Column="13" TopLine="68"/>
+      </Position7>
+      <Position8>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="113" Column="13" TopLine="69"/>
+      </Position8>
+      <Position9>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="114" Column="13" TopLine="70"/>
+      </Position9>
+      <Position10>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="115" Column="13" TopLine="71"/>
+      </Position10>
+      <Position11>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="116" Column="13" TopLine="72"/>
+      </Position11>
+      <Position12>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="117" Column="49" TopLine="73"/>
+      </Position12>
+      <Position13>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="119" Column="13" TopLine="75"/>
+      </Position13>
+      <Position14>
+        <Filename Value="view/fileTypeItemView.pas"/>
+        <Caret Line="122" Column="13" TopLine="78"/>
+      </Position14>
+      <Position15>
+        <Filename Value="base/config.pas"/>
+        <Caret Line="166" Column="13" TopLine="140"/>
+      </Position15>
+      <Position16>
+        <Filename Value="base/config.pas"/>
+        <Caret Line="234" Column="5" TopLine="46"/>
+      </Position16>
+      <Position17>
+        <Filename Value="base/config.pas"/>
+        <Caret Line="104" Column="62" TopLine="83"/>
+      </Position17>
+      <Position18>
+        <Filename Value="base/config.pas"/>
+        <Caret Line="489" Column="82" TopLine="476"/>
+      </Position18>
+      <Position19>
+        <Filename Value="/usr/local/codetyphon/typhon/lcl/menus.pp"/>
+        <Caret Line="428" Column="10" TopLine="404"/>
+      </Position19>
+      <Position20>
+        <Filename Value="form/frmMain.pas"/>
+        <Caret Line="641" Column="19" TopLine="622"/>
+      </Position20>
+      <Position21>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="542" Column="14" TopLine="528"/>
+      </Position21>
+      <Position22>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="80" Column="20" TopLine="60"/>
+      </Position22>
+      <Position23>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="88" Column="53" TopLine="60"/>
+      </Position23>
+      <Position24>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="289" Column="13" TopLine="266"/>
+      </Position24>
+      <Position25>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="297" Column="32" TopLine="266"/>
+      </Position25>
+      <Position26>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="81" Column="21" TopLine="62"/>
+      </Position26>
+      <Position27>
+        <Filename Value="util/CodeUtils.pas"/>
+        <Caret Line="509" Column="34" TopLine="485"/>
+      </Position27>
+      <Position28>
+        <Filename Value="form/frmMain.pas"/>
+        <Caret Line="403" Column="13" TopLine="368"/>
+      </Position28>
+      <Position29>
+        <Filename Value="view/smaliCodeView.pas"/>
+        <Caret Line="820" Column="99" TopLine="203"/>
+      </Position29>
+      <Position30>
+        <Filename Value="view/smaliCodeView.pas"/>
+        <Caret Line="509" Column="5" TopLine="487"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="3">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="/usr/local/codetyphon/fpcsrc/rtl/objpas/sysutils/sysstr.inc"/>
+        <Line Value="139"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="util/CommandUtils.pas"/>
+        <Line Value="64"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="util/CommandUtils.pas"/>
+        <Line Value="59"/>
+      </Item3>
+    </BreakPoints>
+    <Watches Count="2">
+      <Item1>
+        <Expression Value="fKeywords[I]"/>
+      </Item1>
+      <Item2>
+        <Expression Value="btnViewClassIndex.FCaption"/>
+      </Item2>
+    </Watches>
+  </Debugging>
+</CONFIG>

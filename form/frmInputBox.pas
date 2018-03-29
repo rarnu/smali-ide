@@ -51,7 +51,7 @@ begin
   end;
 end;
 
-{$R *.lfm}
+{$R *.frm}
 
 { TFormInputBox }
 
