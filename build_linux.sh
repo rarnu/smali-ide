@@ -14,6 +14,6 @@ ${FPC} -MObjFPC -Scghi -Cg -O1 -g -gl -l -vewnhibq \
 	-Fu${TYPHON}/components/BaseUtils/lib/${ARCH} \
 	-Fu${TYPHON}/packager/units/${ARCH} \
 	-dLCL -dLCLgtk2 \
-	smaliide.lpr
+	smaliide.ppr
 
 

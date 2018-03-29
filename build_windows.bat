@@ -12,5 +12,5 @@ SET ARCH=x86_64-win64
 	-Fu%TYPHON%\components\BaseUtils\lib\%ARCH% ^
 	-Fu%TYPHON%\packager\units\%ARCH% ^
 	-dLCL -dLCLwin32 ^
-	smaliide.lpr
+	smaliide.ppr
 

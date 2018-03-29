@@ -22,7 +22,7 @@ ${FPC} -MObjFPC -Scghi -O1 -gw -gl -l -vewnhibq  \
 	-Fu${TYPHON}/components/BaseUtils/lib/${ARCH} \
 	-Fu${TYPHON}/packager/units/${ARCH} \
 	-dLCL -dLCLcarbon \
-	smaliide.lpr
+	smaliide.ppr
 
 # bundle
 mkdir smaliide.app
